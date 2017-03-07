@@ -1,0 +1,18 @@
+{
+  "name": "invoice-manager-frontend",
+  "version": "1.0.0",
+  "authors": [
+    "sylwek2531 <sylwester.sztajner@labnoratory.com>",
+    "lukasss88 <lukasz.szymanski@labnoratory.com>",
+    "Bielbiel <bartlomiej.biel@labnoratory.com>" ,
+    "MichalNiedziela1601 <michal.niedziela@labnoratory.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/aniaw/invoice-manager-frontend",
+  "dependencies": {
+    "angular": "1.6.0",
+    "bootstrap": "3.3.7",
+    "font-awesome": "4.7.0",
+    "angular-route": "1.6.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "invoice-manager-frontend",
+  "version": "1.0.0",
+  "authors": [
+    "sylwek2531 <sylwester.sztajner@labnoratory.com>",
+    "lukasss88 <lukasz.szymanski@labnoratory.com>",
+    "Bielbiel <bartlomiej.biel@labnoratory.com>" ,
+    "MichalNiedziela1601 <michal.niedziela@labnoratory.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aniaw/invoice-manager-frontend.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "connect-modrewrite": "0.9.0",
+    "grunt": "0.4.5",
+    "grunt-cli": "0.1.13",
+    "grunt-contrib-connect": "0.7.1",
+    "grunt-contrib-jshint": "0.11.3",
+    "grunt-contrib-watch": "0.6.1",
+    "load-grunt-tasks": "3.0.0"
+  }
+
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice Manager</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style/main.style.css">
+</head>
+<body ng-app="app">
+<div class="col-md-3">
+    <div id='mySidenav' class='sidenav'>
+        <h1 class="h1_MENU">MENU</h1>
+        <ul class='sidebar-hide'>
+            <li><a class='menu-1' ng-href="/"><i class="fa fa-home" aria-hidden="true"></i>Start</a></li>
+            <li><a class='menu-2' ng-href="/contractors"><i class="fa fa-list" aria-hidden="true"></i>Contractors</a></li>
+            <li><a class='menu-3' ng-href='/invoice'><i class="fa fa-file" aria-hidden="true"></i>Invoice</a></li>
+            <li><a class='menu-4' ng-href='/calendar'><i class="fa fa-calendar" aria-hidden="true"></i>Calendar</a></li>
+            <li><a class='menu-5' ng-href='/info'><i class="fa fa-info" aria-hidden="true"></i>Info</a></li>
+            <li><a class='menu-6' ng-href='/help'><i class="fa fa-question" aria-hidden="true"></i>Help</a></li>
+        </ul>
+    </div>
+</div>
+<div class="col-md-9">
+    <div ng-view></div>
+</div>
+
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+
+<script src="app.js"></script>
+<script src="app.config.js"></script>
+<script src="app.route.js"></script>
+
+<!-- Controllers-->
+<script src="modules/start/start.controller.js"></script>
+<script src="modules/contractors/contractors.controller.js"></script>
+</body>
+</html>
