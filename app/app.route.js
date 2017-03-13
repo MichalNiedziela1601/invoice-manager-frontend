@@ -9,6 +9,10 @@
         });
         $routeProvider.when('/contractors', {
             templateUrl: 'modules/contractors/contractors.tpl.html', controller: 'ContractorsController', controllerAs: 'contractorsCtrl'
+        });
+        $routeProvider.when('/invoice', {
+            templateUrl: 'modules/addInvoice/addInvoice.tpl.html', controller: 'AddInvoiceController',
+            controllerAs: 'addInvoiceCtrl', css: 'modules/addInvoice/addInvoice.css'
         }).otherwise({redirectTo: '/'});
     }
 

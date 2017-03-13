@@ -1,0 +1,200 @@
+<div class="row">
+    <div class="tabs-top-marg">
+        <uib-tabset active="active">
+            <uib-tab index="0" heading="Company invoice">
+                <div class="col-md-10 tabs-top-marg">
+                    <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()">
+                        <div class="form-group">
+                            <label for="invoice_nr" class="col-sm-2 control-label">Invoice number</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="invoice_nr" placeholder="Invoice number"
+                                       ng-model="addInvoiceCtrl.invoiceCompany.invoice_nr" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="invoice_type" class="col-sm-2 control-label">Invoice typ</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="invoice_type" placeholder="Invoice type"
+                                       ng-model="addInvoiceCtrl.invoiceCompany.type" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="company_delaer_id" class="col-sm-2 control-label">Id dealer</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="company_delaer_id" placeholder="Id dealer"
+                                       ng-model="addInvoiceCtrl.invoiceCompany.company_dealer" required min="1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="company_recipent_id" class="col-sm-2 control-label">Id recipent</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="company_recipent_id" placeholder="Id recipent"
+                                       ng-model="addInvoiceCtrl.invoiceCompany.company_recipent" required min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="invoice_create_date" class="col-sm-2 control-label">Create date</label>
+                            <div class="col-sm-10">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.createDate"
+                                           is-open="addInvoiceCtrl.create.opened" datepicker-options="addInvoiceCtrl.dateOptionsCreate" ng-required="true"
+                                           close-text="Close" id="invoice_create_date" ng-model="addInvoiceCtrl.invoiceCompany.create_date" required/>
+                                    <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openCreate()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="invoice_expire_date" class="col-sm-2 control-label">Expire end date</label>
+                            <div class="col-sm-10">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.expireDate"
+                                           is-open="addInvoiceCtrl.expire.opened" datepicker-options="addInvoiceCtrl.dateOptionsExpire" ng-required="true"
+                                           close-text="Close" id="invoice_expire_date" ng-model="addInvoiceCtrl.invoiceCompany.execution_end_date" required/>
+                                    <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openExpire()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="netto" class="col-sm-2 control-label">Netto</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="netto" placeholder="Netto" ng-model="addInvoiceCtrl.invoiceCompany.netto_value">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="brutto" class="col-sm-2 control-label">Brutto</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="brutto" placeholder="Brutto" ng-model="addInvoiceCtrl.invoiceCompany.brutto_value">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="statusSelect" id="status" ng-model="addInvoiceCtrl.invoiceCompany.status">
+                                        <option value="paid">Paid</option>
+                                        <option value="unpaid">Unpaid</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </uib-tab>
+
+            <!-- PERSON FORM-->
+
+            <uib-tab index="1" heading="Person invoice">
+
+                <div class="col-md-10 tabs-top-marg">
+                    <form class="form-horizontal" name="person" ng-submit="addInvoiceCtrl.addInvoicePerson()">
+                        <div class="form-group">
+                            <label for="invoice_nr_person" class="col-sm-2 control-label">Invoice number</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="invoice_nr_person" placeholder="Invoice number"
+                                       ng-model="addInvoiceCtrl.invoicePerson.invoice_nr" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="invoice_type_per" class="col-sm-2 control-label">Invoice typ</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="invoice_type_per" placeholder="Invoice type"
+                                       ng-model="addInvoiceCtrl.invoicePerson.type" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="person_delaer_id" class="col-sm-2 control-label">Id dealer</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="person_delaer_id" placeholder="Id dealer"
+                                       ng-model="addInvoiceCtrl.invoicePerson.person_dealer" required min="1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="person_recipent_id" class="col-sm-2 control-label">Id recipent</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="person_recipent_id" placeholder="Id recipent"
+                                       ng-model="addInvoiceCtrl.invoicePerson.person_recipent" required min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="invoice_create_date_per" class="col-sm-2 control-label">Create date</label>
+                            <div class="col-sm-10">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.createDate"
+                                           is-open="addInvoiceCtrl.create.opened" datepicker-options="addInvoiceCtrl.dateOptionsCreate" ng-required="true"
+                                           close-text="Close" id="invoice_create_date_per" ng-model="addInvoiceCtrl.invoicePerson.create_date" required/>
+                                    <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openCreate()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="invoice_expire_date_per" class="col-sm-2 control-label">Expire end date</label>
+                            <div class="col-sm-10">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.expireDate"
+                                           is-open="addInvoiceCtrl.expire.opened" datepicker-options="addInvoiceCtrl.dateOptionsExpire" ng-required="true"
+                                           close-text="Close" id="invoice_expire_date_per" ng-model="addInvoiceCtrl.invoicePerson.execution_end_date" required/>
+                                    <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openExpire()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="netto_per" class="col-sm-2 control-label">Netto</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="netto_per" placeholder="Netto" ng-model="addInvoiceCtrl.invoicePerson.netto_value">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="brutto_per" class="col-sm-2 control-label">Brutto</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="brutto_per" placeholder="Brutto"
+                                       ng-model="addInvoiceCtrl.invoicePerson.brutto_value">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="form-group">
+                                    <label for="status_per">Status</label>
+                                    <select name="statusSelect" id="status_per" ng-model="addInvoiceCtrl.invoicePerson.status">
+                                        <option value="paid">Paid</option>
+                                        <option value="unpaid">Unpaid</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </uib-tab>
+
+        </uib-tabset>
+    </div>
+</div>

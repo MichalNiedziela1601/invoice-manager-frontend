@@ -22,11 +22,14 @@
     </div>
 </div>
 <div class="col-md-9">
-    <div ng-view></div>
+    <div ng-view class="container-fluid"></div>
 </div>
 
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-css/angular-css.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
 <script src="app.js"></script>
 <script src="app.config.js"></script>
@@ -35,5 +38,6 @@
 <!-- Controllers-->
 <script src="modules/start/start.controller.js"></script>
 <script src="modules/contractors/contractors.controller.js"></script>
+<script src="modules/addInvoice/addInvoice.controller.js"></script>
 </body>
 </html>
