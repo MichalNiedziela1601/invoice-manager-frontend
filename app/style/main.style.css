@@ -46,3 +46,8 @@ ul {
     margin-right: 29px;
     width: 20px;
 }
+
+.menu-toggle {
+    margin-left: 55px;
+    font-size: 24px !important;
+}
