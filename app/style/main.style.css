@@ -47,6 +47,11 @@ ul {
     width: 20px;
 }
 
+
+.menu-toggle {
+    margin-left: 55px;
+    font-size: 24px !important;
+}
 .add-comp-width {
     display: inline-block;
     width: 100%;
