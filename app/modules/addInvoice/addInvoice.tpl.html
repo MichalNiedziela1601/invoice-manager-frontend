@@ -26,7 +26,7 @@
     <div ng-show="addInvoiceCtrl.showCreateCompany">
         <add-company company="addInvoiceCtrl.companyDetails" show-directive="addInvoiceCtrl.toggleShowCreateCompany()"></add-company>
     </div>
-    <div class="tabs-top-marg">
+    <div class="tabs-top-marg" ng-show="addInvoiceCtrl.transationType">
 
         <uib-tabset active="active">
             <uib-tab index="0" heading="Company invoice">
@@ -59,11 +59,12 @@
                             <label for="invoice_create_date" class="col-sm-2 control-label">Create date</label>
                             <div class="col-sm-10">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.createDate"
-                                           is-open="addInvoiceCtrl.create.opened" datepicker-options="addInvoiceCtrl.dateOptionsCreate" ng-required="true"
-                                           close-text="Close" id="invoice_create_date" ng-model="addInvoiceCtrl.invoiceCompany.createDate" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.createDatePicker.date"
+                                           is-open="addInvoiceCtrl.createDatePicker.opened" datepicker-options="addInvoiceCtrl.createDatePicker.options"
+                                           ng-required="true" close-text="Close" id="invoice_create_date" required/>
                                     <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openCreate()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.createDatePicker.open()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
           </span>
                                 </p>
                             </div>
@@ -73,11 +74,12 @@
                             <label for="invoice_expire_date" class="col-sm-2 control-label">Expire end date</label>
                             <div class="col-sm-10">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.expireDate"
-                                           is-open="addInvoiceCtrl.expire.opened" datepicker-options="addInvoiceCtrl.dateOptionsExpire" ng-required="true"
-                                           close-text="Close" id="invoice_expire_date" ng-model="addInvoiceCtrl.invoiceCompany.executionEndDate" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.executionDatePicker.date"
+                                           is-open="addInvoiceCtrl.executionDatePicker.opened" datepicker-options="addInvoiceCtrl.executionDatePicker.options"
+                                           ng-required="true" close-text="Close" id="invoice_expire_date" required/>
                                     <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openExpire()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.executionDatePicker.open()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
           </span>
                                 </p>
                             </div>
@@ -162,11 +164,12 @@
                             <label for="invoice_create_date_per" class="col-sm-2 control-label">Create date</label>
                             <div class="col-sm-10">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.createDate"
-                                           is-open="addInvoiceCtrl.create.opened" datepicker-options="addInvoiceCtrl.dateOptionsCreate" ng-required="true"
-                                           close-text="Close" id="invoice_create_date_per" ng-model="addInvoiceCtrl.invoicePerson.createDate" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.createDatePicker.date"
+                                           is-open="addInvoiceCtrl.createDatePicker.opened" datepicker-options="addInvoiceCtrl.createDatePicker.options"
+                                           ng-required="true" close-text="Close" id="invoice_create_date_per" required/>
                                     <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openCreate()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.createDatePicker.open()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
           </span>
                                 </p>
                             </div>
@@ -176,11 +179,12 @@
                             <label for="invoice_expire_date_per" class="col-sm-2 control-label">Expire end date</label>
                             <div class="col-sm-10">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.expireDate"
-                                           is-open="addInvoiceCtrl.expire.opened" datepicker-options="addInvoiceCtrl.dateOptionsExpire" ng-required="true"
-                                           close-text="Close" id="invoice_expire_date_per" ng-model="addInvoiceCtrl.invoicePerson.executionEndDate" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.executionDatePicker.date"
+                                           is-open="addInvoiceCtrl.executionDatePicker.opened" datepicker-options="addInvoiceCtrl.executionDatePicker.options"
+                                           ng-required="true" close-text="Close" id="invoice_expire_date_per" required/>
                                     <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openExpire()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.executionDatePicker.open()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
           </span>
                                 </p>
                             </div>
