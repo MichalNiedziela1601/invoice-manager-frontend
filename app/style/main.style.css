@@ -46,3 +46,8 @@ ul {
     margin-right: 29px;
     width: 20px;
 }
+
+.add-comp-width {
+    display: inline-block;
+    width: 100%;
+}

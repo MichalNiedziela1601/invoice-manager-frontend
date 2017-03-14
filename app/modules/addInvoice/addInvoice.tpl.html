@@ -1,8 +1,36 @@
 <div class="row">
+    <div>
+        <p> Select type of transaction:</p>
+        <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="sell">Sell</label><br/>
+        <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="buy">Buy</label><br/>
+    </div>
+    <div>
+        <form ng-submit="addInvoiceCtrl.findContractor()" class="form-horizontal">
+            <div class="form-group">
+                <label for="find_contractor" class="col-sm-2 control-label">Find contractor by nip:</label>
+
+                <div class="col-sm-4">
+                    <input type="number" class="form-control" ng-model="addInvoiceCtrl.nipContractor" id="find_contractor">
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Find</button>
+                    <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.toggleShowCreateCompany()">Add company</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div ng-show="addInvoiceCtrl.showCreateCompany">
+        <add-company company="addInvoiceCtrl.companyDetails" show-directive="addInvoiceCtrl.toggleShowCreateCompany()"></add-company>
+    </div>
     <div class="tabs-top-marg">
+
         <uib-tabset active="active">
             <uib-tab index="0" heading="Company invoice">
-                <div class="col-md-10 tabs-top-marg">
+                <div class="col-md-8 tabs-top-marg">
                     <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()">
                         <div class="form-group">
                             <label for="invoice_nr" class="col-sm-2 control-label">Invoice number</label>
@@ -11,14 +39,6 @@
                                        ng-model="addInvoiceCtrl.invoiceCompany.invoice_nr" required>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="invoice_type" class="col-sm-2 control-label">Invoice typ</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="invoice_type" placeholder="Invoice type"
-                                       ng-model="addInvoiceCtrl.invoiceCompany.type" required>
-                            </div>
-                        </div>
-
 
                         <div class="form-group">
                             <label for="company_delaer_id" class="col-sm-2 control-label">Id dealer</label>
@@ -75,18 +95,23 @@
                                 <input type="text" class="form-control" id="brutto" placeholder="Brutto" ng-model="addInvoiceCtrl.invoiceCompany.brutto_value">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="statusSelect" id="status" ng-model="addInvoiceCtrl.invoiceCompany.status">
-                                        <option value="paid">Paid</option>
-                                        <option value="unpaid">Unpaid</option>
-                                    </select>
-                                </div>
+                            <label for="url_comp" class="col-sm-2 control-label">URL</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="url_comp" placeholder="URL" ng-model="addInvoiceCtrl.invoiceCompany.url">
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label for="status" class="col-sm-2 control-label">Status</label>
+                            <div class="col-sm-5">
+                                <select name="statusSelect" id="status" class="form-control" ng-model="addInvoiceCtrl.invoiceCompany.status">
+                                    <option value="paid">Paid</option>
+                                    <option value="unpaid">Unpaid</option>
+                                </select></div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-default">Add</button>

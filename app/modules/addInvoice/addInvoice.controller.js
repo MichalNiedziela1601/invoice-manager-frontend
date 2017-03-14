@@ -2,11 +2,16 @@
 {
     'use strict';
 
-    function AddInvoiceController()
+    function AddInvoiceController(Invoice)
     {
         var ctrl = this;
+        ctrl.transationType = null;
+        ctrl.showAddInvoice = false;
+        ctrl.showCreateCompany = false;
         ctrl.invoiceCompany = {};
         ctrl.invoicePerson = {};
+        ctrl.companyDetails = {};
+
         ctrl.create = {
             opened: false
         };
@@ -62,8 +67,12 @@
 
         function addInvoiceCompany()
         {
+            ctrl.invoiceCompany.type = ctrl.transationType;
             ctrl.invoiceCompany.createDate = ctrl.createDate.toISOString().slice(0, 10);
             ctrl.invoiceCompany.executionEndDate = ctrl.expireDate.toISOString().slice(0, 10);
+            Invoice.add(ctrl.invoiceCompany).then(function(){
+
+            });
         }
 
         function addInvoicePerson()
@@ -72,10 +81,18 @@
             ctrl.invoicePerson.executionEndDate = ctrl.expireDate.toISOString().slice(0, 10);
         }
 
+        function toggleShowCreateCompany(){
+            ctrl.showCreateCompany = !ctrl.showCreateCompany;
+        }
+
         function init()
         {
             todayCreate();
             todayExpire();
+        }
+
+        function findContractor(){
+
         }
 
         ////////////////////////////////////
@@ -90,10 +107,12 @@
         ctrl.openExpire = openExpire;
         ctrl.addInvoiceCompany = addInvoiceCompany;
         ctrl.addInvoicePerson = addInvoicePerson;
+        ctrl.findContractor = findContractor;
+        ctrl.toggleShowCreateCompany = toggleShowCreateCompany;
     }
 
     angular.module('app')
-            .controller('AddInvoiceController', AddInvoiceController);
+            .controller('AddInvoiceController', ['Invoice',AddInvoiceController]);
 
 
 })();
