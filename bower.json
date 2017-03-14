@@ -4,7 +4,7 @@
   "authors": [
     "sylwek2531 <sylwester.sztajner@labnoratory.com>",
     "lukasss88 <lukasz.szymanski@labnoratory.com>",
-    "Bielbiel <bartlomiej.biel@labnoratory.com>" ,
+    "Bielbiel <bartlomiej.biel@labnoratory.com>",
     "MichalNiedziela1601 <michal.niedziela@labnoratory.com>"
   ],
   "license": "ISC",
@@ -13,6 +13,8 @@
     "angular": "1.6.0",
     "bootstrap": "3.3.7",
     "font-awesome": "4.7.0",
-    "angular-route": "1.6.0"
+    "angular-route": "1.6.0",
+    "angular-bootstrap": "2.5.0",
+    "angular-css": "1.0.8"
   }
 }
