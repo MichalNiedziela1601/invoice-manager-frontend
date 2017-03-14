@@ -1,18 +1,20 @@
+'use strict';
+
 var modRewrite = require('connect-modrewrite');
+var config = {app: 'app'};
+var mountFolder;
 
 module.exports = function (grunt)
 {
-    'use strict';
-
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
     require('load-grunt-tasks')(grunt);
 
-
-    var config = {
-        app: 'app'
+    mountFolder = function (connect, dir)
+    {
+        return connect['static'](require('path').resolve(dir));
     };
 
     grunt.initConfig({
@@ -22,15 +24,16 @@ module.exports = function (grunt)
                         options: {
                             livereload: '<%= connect.options.livereload %>'
                         },
-                        files: ['<%= config.app %>/**/*.html', '<%= config.app %>/**/*.js']
+                        files: ['<%= config.app %>/index.html',
+                                '<%= config.app %>/*.js',
+                                '<%= config.app %>/modules/**/*']
                     }
                 },
-
                 connect: {
                     options: {
                         port: 9000,
                         livereload: 35729,
-                        hostname: '127.0.0.1'
+                        hostname: 'localhost'
                     },
                     livereload: {
                         options: {
@@ -38,36 +41,44 @@ module.exports = function (grunt)
                             middleware: function (connect)
                             {
                                 return [
-                                    modRewrite(['^[^\\.]*$ /index.html [L]']),
-                                    connect().use('/bower_components', connect.static('./bower_components')), connect.static(config.app)
-
-                                ];
+                                    // in case of using html5Mode - makes accessible uris without hashbang but containing view's path
+                                    modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png|\\.jpg|\\.ttf|\\.woff|(\\api.+)$ /index.html [L]']),
+                                    mountFolder(connect, config.app),
+                                    connect().use('/bower_components', connect.static('./bower_components')),
+                                    require('grunt-connect-proxy/lib/utils').proxyRequest];
                             }
                         }
-                    }
-                },
-                jshint: {
-                    default: {
-                        options: {
-                            jshintrc: true
-                        },
-                        files: {
-                            src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']
-                        }
                     },
-                    verify: {
-                        options: {
-                            jshintrc: true,
-                            reporter: 'checkstyle',
-                            reporterOutput: 'target/jshint.xml'
+                    proxies: [{
+                        context: '/api',
+                        host: 'localhost',
+                        port: 3000,
+                        changeOrigin: true
+                    }],
+                    jshint: {
+                        default: {
+                            options: {
+                                jshintrc: true
+                            },
+                            files: {
+                                src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']
+                            }
                         },
-                        files: {src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']}
+                        verify: {
+                            options: {
+                                jshintrc: true,
+                                reporter: 'checkstyle',
+                                reporterOutput: 'target/jshint.xml'
+                            },
+                            files: {src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']}
+                        }
                     }
                 }
+
             }
     );
 
-    grunt.registerTask('serve', ['connect:livereload', 'watch']);
+    grunt.registerTask('serve', ['configureProxies', 'connect:livereload', 'watch']);
 
     grunt.registerTask('default', ['serve']);
 };
