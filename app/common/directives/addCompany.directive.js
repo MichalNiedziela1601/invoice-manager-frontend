@@ -5,15 +5,15 @@
     function AddCompanyDirective()
     {
 
-        function controllerFn($scope)
+        function controllerFn()
         {
             var ctrl = this;
             ctrl.newCompany = {};
 
             function addCompany()
             {
-                $scope.company = ctrl.newCompany;
-                $scope.showDirective();
+                ctrl.company = ctrl.newCompany;
+                ctrl.showDirective();
             }
 
             ctrl.addCompany = addCompany;
@@ -22,7 +22,7 @@
         return {
             restrict: 'EA',
             replace: true,
-            scope: {
+            bindToController: {
                 company: '=',
                 showDirective: '&'
             },
