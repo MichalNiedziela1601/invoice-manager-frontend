@@ -2,12 +2,13 @@
 {
     'use strict';
 
-    function AddInvoiceController(Invoice)
+    function AddInvoiceController(Invoice,Company)
     {
         var ctrl = this;
         ctrl.transationType = null;
         ctrl.showAddInvoice = false;
         ctrl.showCreateCompany = false;
+        ctrl.nipContractor = null;
         ctrl.invoiceCompany = {};
         ctrl.invoicePerson = {};
         ctrl.companyDetails = {};
@@ -66,7 +67,9 @@
 
         function findContractor()
         {
-
+            Company.findByNip(ctrl.nipContractor).then(function(result){
+                ctrl.companyDetails = result;
+            });
         }
 
         ////////////////////////////////////
@@ -78,7 +81,7 @@
     }
 
     angular.module('app')
-            .controller('AddInvoiceController', ['Invoice', AddInvoiceController]);
+            .controller('AddInvoiceController', ['Invoice','Company', AddInvoiceController]);
 
 
 })();
