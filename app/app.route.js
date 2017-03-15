@@ -16,6 +16,12 @@
             templateUrl: 'modules/invoices/list/invoices.tpl.html', controller: 'InvoicesController', controllerAs: 'invoicesCtrl'
         });
 
+        $routeProvider.when('/registration', {
+            templateUrl: 'modules/registration/registrationCompany.tpl.html',
+            controller: 'RegistrationCompanyController',
+            controllerAs: 'registrationCompanyCtrl'
+        });
+
         $routeProvider.when('/add/invoice', {
             templateUrl: '/modules/invoices/add/addInvoice.tpl.html',
             controller: 'AddInvoiceController',
