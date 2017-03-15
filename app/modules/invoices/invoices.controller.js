@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function ListController(ListService)
+    function InvoicesController(ListService)
     {
         var ctrl = this;
         ctrl.message = 'Invoices';
@@ -12,6 +12,6 @@
         });
     }
 
-    angular.module('app').controller('ListController', ['ListService', ListController]);
+    angular.module('app').controller('InvoicesController', ['ListService', InvoicesController]);
 
 })();

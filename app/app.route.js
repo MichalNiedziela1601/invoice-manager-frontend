@@ -12,7 +12,7 @@
         });
 
         $routeProvider.when('/invoices', {
-            templateUrl: 'modules/invoices/list.tpl.html', controller: 'ListController', controllerAs: 'listCtrl'
+            templateUrl: 'modules/invoices/invoices.tpl.html', controller: 'InvoicesController', controllerAs: 'invoicesCtrl'
         });
 
         $routeProvider.when('/invoice', {
