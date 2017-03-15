@@ -26,7 +26,7 @@
                 company: '=',
                 showDirective: '&'
             },
-            templateUrl: 'common/directives/addCompany.tpl.html',
+            templateUrl: '/common/directives/addCompany.tpl.html',
             controller: controllerFn,
             controllerAs: 'addCompDCtrl'
         };
