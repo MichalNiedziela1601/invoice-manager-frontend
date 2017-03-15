@@ -17,8 +17,6 @@
         };
     }
 
-    angular.module('app')
-            .factory('Company', ['$resource', CompanyFactory]);
-
+    angular.module('app').factory('Company', ['$resource', CompanyFactory]);
 
 })();

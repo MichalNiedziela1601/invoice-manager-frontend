@@ -1,17 +1,17 @@
 (function ()
 {
     'use strict';
-    function InvoicesController(ListService)
+    function InvoicesController(InvoiceDAO)
     {
         var ctrl = this;
         ctrl.message = 'Invoices';
 
-        ListService.get().then(function (data)
+        InvoiceDAO.query().then(function (data)
         {
             ctrl.invoicesList = data;
         });
     }
 
-    angular.module('app').controller('InvoicesController', ['ListService', InvoicesController]);
+    angular.module('app').controller('InvoicesController', ['InvoiceDAO', InvoicesController]);
 
 })();
