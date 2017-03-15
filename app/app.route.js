@@ -12,14 +12,14 @@
         });
 
         $routeProvider.when('/invoices', {
-            templateUrl: 'modules/invoices/invoices.tpl.html', controller: 'InvoicesController', controllerAs: 'invoicesCtrl'
+            templateUrl: 'modules/invoices/list/invoices.tpl.html', controller: 'InvoicesController', controllerAs: 'invoicesCtrl'
         });
 
         $routeProvider.when('/invoice', {
-            templateUrl: 'modules/addInvoice/addInvoice.tpl.html',
+            templateUrl: 'modules/invoices/add/addInvoice.tpl.html',
             controller: 'AddInvoiceController',
             controllerAs: 'addInvoiceCtrl',
-            css: 'modules/addInvoice/addInvoice.css'
+            css: 'modules/invoices/add/addInvoice.css'
 
         }).otherwise({redirectTo: '/'});
     }
