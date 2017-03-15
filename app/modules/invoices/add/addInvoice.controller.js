@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(Invoice,Company)
+    function AddInvoiceController(InvoiceDAO,Company)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -47,7 +47,7 @@
             ctrl.invoiceCompany.type = ctrl.transationType;
             ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
             ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-            Invoice.add(ctrl.invoiceCompany).then(function ()
+            InvoiceDAO.add(ctrl.invoiceCompany).then(function ()
             {
 
             });
@@ -81,7 +81,7 @@
     }
 
     angular.module('app')
-            .controller('AddInvoiceController', ['Invoice','Company', AddInvoiceController]);
+            .controller('AddInvoiceController', ['InvoiceDAO','Company', AddInvoiceController]);
 
 
 })();
