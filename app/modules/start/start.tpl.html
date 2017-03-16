@@ -1,3 +1,45 @@
-<div class="row">
-    <h1>{{startCtrl.message}}</h1>
+<div class="col-md-offset-2 col-md-8 ">
+    <div class="row form-horizontal">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">{{startCtrl.message}}</h1>
+                <hr/>
+            </div>
+        </div>
+        <div class="main-login main-center">
+            <form class="form-horizontal">
+
+
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" ng-model="startCtrl.loginCredential.email" name="email" id="email" placeholder="Enter your Email" required>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="password" ng-model="startCtrl.loginCredential.password" id="password" placeholder="Enter your Password" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <button type="button" ng-click="startCtrl.login()" class="btn btn-primary btn-lg btn-block login-button">Login</button>
+                </div>
+                <div class="login-register">
+                    <a href="../registration">Registation</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
