@@ -6,6 +6,12 @@
         var ctrl = this;
         ctrl.message = 'Registration';
 
+        function registration()
+        {
+            
+        }
+        ctrl.registration = registration;
+
 
     }
 
