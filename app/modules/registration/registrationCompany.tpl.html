@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="main-login main-center">
-            <form class="form-horizontal">
+            <form class="form-horizontal" ng-submit="registrationCompanyCtrl.registration()">
 
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Company Name*</label>
@@ -34,7 +34,8 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.nip" name="nip" id="nip" placeholder="Enter your NIP" required>
+                            <input type="number" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.nip" name="nip" id="nip" placeholder="Enter your NIP" required>
+
                         </div>
                     </div>
                 </div>
@@ -60,7 +61,7 @@
                 </div>
 
                 <div class="form-group ">
-                    <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                    <input type="submit" class="btn btn-primary btn-lg btn-block login-button" value="Register">
                 </div>
                 <div class="login-register">
                     <a href="../start/start.tpl.html">Login</a>
