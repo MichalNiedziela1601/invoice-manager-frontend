@@ -6,9 +6,13 @@
         var ctrl = this;
         ctrl.message = 'Invoices';
 
-        InvoiceDAO.query().then(function (data)
+        InvoiceDAO.query({type: 'Sale'}).then(function (data)
         {
-            ctrl.invoicesList = data;
+            ctrl.invoicesListSale = data;
+        });
+        InvoiceDAO.query({type: 'Buy'}).then(function (data)
+        {
+            ctrl.invoicesListBuy = data;
         });
     }
 
