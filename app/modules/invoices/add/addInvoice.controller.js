@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(InvoiceDAO, Company, $uibModal)
+    function AddInvoiceController(InvoiceDAO, CompanyDAO, $uibModal)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -58,7 +58,7 @@
 
         function findContractor()
         {
-            Company.findByNip(ctrl.nipContractor).then(function (result)
+            CompanyDAO.findByNip(ctrl.nipContractor).then(function (result)
             {
                 ctrl.companyDetails = result;
             });
@@ -93,6 +93,6 @@
         ctrl.toggleShowCreateCompany = toggleShowCreateCompany;
     }
 
-    angular.module('app').controller('AddInvoiceController', ['InvoiceDAO', 'Company', '$uibModal', AddInvoiceController]);
+    angular.module('app').controller('AddInvoiceController', ['InvoiceDAO', 'CompanyDAO', '$uibModal', AddInvoiceController]);
 
 })();
