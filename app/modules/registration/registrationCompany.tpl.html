@@ -1,136 +1,72 @@
-<div class="row">
-    <h1>{{registrationCompanyCtrl.message}}</h1>
+<div class="col-md-offset-2 col-md-8 ">
+    <div class="row form-horizontal">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">{{registrationCompanyCtrl.message}}</h1>
+                <hr/>
+            </div>
+        </div>
+        <div class="main-login main-center">
+            <form class="form-horizontal">
+
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">Company Name*</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter Company Name" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Your Email*</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nip" class="cols-sm-2 control-label">NIP*</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="nip" id="nip" placeholder="Enter your NIP" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password*</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm" class="cols-sm-2 control-label">Confirm Password*</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Confirm your Password" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                </div>
+                <div class="login-register">
+                    <a href="../start/start.tpl.html">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-<div class="col-md-8">
-    <form class="form-horizontal">
-        <div class="row">
-            <h2>Company data</h2>
-        </div>
 
-        <div class="form-group">
-            <label for="company_name" class="col-sm-3 control-label">Company Name</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="company_name" placeholder="Company name" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="nip" class="col-sm-3 control-label">NIP</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="nip" placeholder="NIP" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="regon" class="col-sm-3 control-label">REGON</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="regon" placeholder="REGON" required>
-            </div>
-        </div>
-
-        <div class="row">
-            <h2>Bank data</h2>
-        </div>
-
-        <div class="form-group">
-            <label for="bank_name" class="col-sm-3 control-label">Bank name</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="bank_name" placeholder="Bank name" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="account_number" class="col-sm-3 control-label">Account number</label>
-            <div class="col-sm-9">
-                <input type="number" class="form-control" id="account_number" placeholder="Account number" required>
-            </div>
-        </div>
-
-        <div class="row">
-            <h2>Address</h2>
-        </div>
-
-        <div class="form-group">
-            <label for="street" class="col-sm-3 control-label">Street</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="street" placeholder="Street" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="number_building" class="col-sm-3 control-label">Number building</label>
-            <div class="col-sm-9">
-                <input type="number" class="form-control" id="number_building" placeholder="Number building" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="number_flat" class="col-sm-3 control-label">Number flat</label>
-            <div class="col-sm-9">
-                <input type="number" class="form-control" id="number_flat" placeholder="Number flat" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="city" class="col-sm-3 control-label">City</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="city" placeholder="City" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="zip_code" class="col-sm-3 control-label">Zip code</label>
-            <div class="col-sm-9">
-                <input type="number" class="form-control" id="zip_code" placeholder="Zip code" required>
-            </div>
-        </div>
-        <div class="row">
-            <h2>Personal data</h2>
-        </div>
-        <div class="form-group">
-            <label for="first_name" class="col-sm-3 control-label">First name</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="first_name" placeholder="First name" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="last_name" class="col-sm-3 control-label">Last name</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="last_name" placeholder="Last name" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="pesel" class="col-sm-3 control-label">PESEL</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="pesel" placeholder="PESEL" required>
-            </div>
-        </div>
-
-        <div class="row">
-            <h2>Login data</h2>
-        </div>
-
-        <div class="form-group">
-            <label for="email" class="col-sm-3 control-label">Email</label>
-            <div class="col-sm-9">
-                <input type="email" class="form-control" id="email" placeholder="Email" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="password" class="col-sm-3 control-label">Password</label>
-            <div class="col-sm-9">
-                <input type="password" class="form-control" id="password" placeholder="Password" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="repeat_password" class="col-sm-3 control-label">Repeat password</label>
-            <div class="col-sm-9">
-                <input type="password" class="form-control" id="repeat_password" placeholder="Repeat password" required>
-            </div>
-        </div>
-    </form>
-</div>
