@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(InvoiceDAO,Company)
+    function AddInvoiceController(InvoiceDAO, Company, $uibModal)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -14,27 +14,18 @@
         ctrl.companyDetails = {};
 
         ctrl.createDatePicker = {
-            date: new Date(),
-            opened: false,
-            options: {
-                formatYear: 'yy',
-                maxDate: new Date(),
-                startingDay: 1
-            },
-            open: function ()
+            date: new Date(), opened: false, options: {
+                formatYear: 'yy', maxDate: new Date(), startingDay: 1
+            }, open: function ()
             {
                 this.opened = !this.opened;
             }
         };
 
         ctrl.executionDatePicker = {
-            date: new Date(),
-            opened: false,
-            options: {
-                formatYear: 'yy',
-                startingDay: 1
-            },
-            open: function ()
+            date: new Date(), opened: false, options: {
+                formatYear: 'yy', startingDay: 1
+            }, open: function ()
             {
                 this.opened = !this.opened;
             }
@@ -67,10 +58,32 @@
 
         function findContractor()
         {
-            Company.findByNip(ctrl.nipContractor).then(function(result){
+            Company.findByNip(ctrl.nipContractor).then(function (result)
+            {
                 ctrl.companyDetails = result;
             });
         }
+
+        // modal function
+        ctrl.open = function (size, items)
+        {
+
+            var modalInstance = $uibModal.open({
+                template: '<pdf-viewer delegate-handle="relativity-special-general-theory" url="modalCtrl.pdfUrl"scale="1"></pdf-viewer>',
+                controller: 'ModalPdfController',
+                controllerAs: 'modalCtrl',
+                size: size
+
+            });
+
+            modalInstance.result.then(function (selectedItem)
+            {
+                ctrl.selected = selectedItem;
+            }, function ()
+            {
+
+            });
+        };
 
         ////////////////////////////////////
 
@@ -80,8 +93,6 @@
         ctrl.toggleShowCreateCompany = toggleShowCreateCompany;
     }
 
-    angular.module('app')
-            .controller('AddInvoiceController', ['InvoiceDAO','Company', AddInvoiceController]);
-
+    angular.module('app').controller('AddInvoiceController', ['InvoiceDAO', 'Company', '$uibModal', AddInvoiceController]);
 
 })();
