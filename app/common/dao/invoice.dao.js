@@ -5,14 +5,14 @@
     {
         var api = $resource('/api/invoice', null, {
             get: {
-                isArray: false
+                isArray: true
             }
         });
 
         return {
-            query: function ()
+            query: function (filtr)
             {
-                return api.get().$promise;
+                return api.get(filtr).$promise;
             },
             add: function (invoice)
             {

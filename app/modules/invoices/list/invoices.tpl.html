@@ -15,11 +15,12 @@
         <td>Expire Date</td>
         <td>Url</td>
     </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+
+    <tr ng-repeat="purchase in invoicesCtrl.invoicesListSale">
+        <td>{{purchase.invoiceNr}}</td>
+        <td>{{purchase.createDate}}</td>
+        <td>{{purchase.executionEndDate}}</td>
+        <td>{{purchase.url}}</td>
     </tr>
     </tbody>
 </table>
@@ -38,11 +39,11 @@
             <td>Expire Date</td>
             <td>Url</td>
         </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+        <tr  ng-repeat="sale in invoicesCtrl.invoicesListBuy">
+            <td>{{sale.invoiceNr}}</td>
+            <td>{{sale.createDate}}</td>
+            <td>{{sale.executionEndDate}}</td>
+            <td>{{sale.url}}</td>
         </tr>
         </tbody>
     </table>
