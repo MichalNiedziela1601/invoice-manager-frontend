@@ -7,7 +7,6 @@
         var ctrl = this;
         ctrl.transationType = null;
         ctrl.showAddInvoice = false;
-        ctrl.showCreateCompany = false;
         ctrl.nipContractor = null;
         ctrl.invoiceCompany = {};
         ctrl.invoicePerson = {};
@@ -64,6 +63,29 @@
             });
         }
 
+        ctrl.openAddCompanyModal = function (size)
+        {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/modules/invoices/add/addCompanyModal/addCompanyModal.tpl.html',
+                controller: 'AddCompanyModalController',
+                controllerAs: 'addCompModalCtrl',
+                size: size,
+                resolve: {
+                    companyDetails: function(){
+                        return ctrl.companyDetails;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (compDetails)
+            {
+                ctrl.companyDetails = compDetails;
+            }, function ()
+            {
+
+            });
+        };
+
         // modal function
         ctrl.open = function (size, items)
         {
@@ -90,7 +112,6 @@
         ctrl.addInvoiceCompany = addInvoiceCompany;
         ctrl.addInvoicePerson = addInvoicePerson;
         ctrl.findContractor = findContractor;
-        ctrl.toggleShowCreateCompany = toggleShowCreateCompany;
     }
 
     angular.module('app').controller('AddInvoiceController', ['InvoiceDAO', 'CompanyDAO', '$uibModal', AddInvoiceController]);

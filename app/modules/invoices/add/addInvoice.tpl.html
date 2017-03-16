@@ -17,15 +17,12 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-default">Find</button>
-                    <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.toggleShowCreateCompany()">Add company</button>
+                    <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.openAddCompanyModal('lg')">Add company</button>
                 </div>
             </div>
         </form>
+    </div>
 
-    </div>
-    <div ng-show="addInvoiceCtrl.showCreateCompany">
-        <add-company company="addInvoiceCtrl.companyDetails" show-directive="addInvoiceCtrl.toggleShowCreateCompany()"></add-company>
-    </div>
     <div class="tabs-top-marg" ng-show="addInvoiceCtrl.transationType">
 
         <uib-tabset active="active">
