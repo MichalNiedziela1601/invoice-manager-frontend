@@ -1,12 +1,12 @@
 <div class="add-comp-width">
     <h3>Add new company</h3>
 
-    <div class="col-md-8">
+    <div class="col-md-10">
         <form class="form-horizontal" name="companyForm" ng-submit="addCompDCtrl.addCompany()">
             <div class="form-group">
                 <label for="name_company" class="col-sm-2 control-label">Company Name</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name_company" placeholder="Company name" ng-model="addCompDCtrl.newCompany.name" required>
+                    <input type="text" class="form-control" id="name_company" placeholder="Company name" ng-model="addCompDCtrl.company.name" required>
                 </div>
             </div>
 
@@ -14,51 +14,51 @@
             <div class="form-group">
                 <label for="nip_comp" class="col-sm-2 control-label">NIP</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="nip_comp" placeholder="Nip" ng-model="addCompDCtrl.newCompany.nip" required min="1">
+                    <input type="number" class="form-control" id="nip_comp" placeholder="Nip" ng-model="addCompDCtrl.company.nip" required min="1">
                 </div>
             </div>
             <div class="form-group">
                 <label for="regon_comp" class="col-sm-2 control-label">Regon</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="regon_comp" placeholder="Regon" ng-model="addCompDCtrl.newCompany.regon" required min="1">
+                    <input type="number" class="form-control" id="regon_comp" placeholder="Regon" ng-model="addCompDCtrl.company.regon" required min="1">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email_comp" class="col-sm-2 control-label">E-mail</label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email_comp" placeholder="E-mail" ng-model="addCompDCtrl.newCompany.email" required>
+                    <input type="email" class="form-control" id="email_comp" placeholder="E-mail" ng-model="addCompDCtrl.company.email" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="street" class="col-sm-2 control-label">Street</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="street" placeholder="Street" ng-model="addCompDCtrl.newCompany.street">
+                    <input type="text" class="form-control" id="street" placeholder="Street" ng-model="addCompDCtrl.company.street">
                 </div>
             </div>
             <div class="form-group">
                 <label for="build_nr" class="col-sm-2 control-label">Build number</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="build_nr" placeholder="Build number" ng-model="addCompDCtrl.newCompany.buildNr">
+                    <input type="text" class="form-control" id="build_nr" placeholder="Build number" ng-model="addCompDCtrl.company.buildNr">
                 </div>
             </div>
             <div class="form-group">
                 <label for="flat_nr" class="col-sm-2 control-label">Flat number</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="flat_nr" placeholder="Flat number" ng-model="addCompDCtrl.newCompany.flatNr">
+                    <input type="text" class="form-control" id="flat_nr" placeholder="Flat number" ng-model="addCompDCtrl.company.flatNr">
                 </div>
             </div>
             <div class="form-group">
                 <label for="post_code" class="col-sm-2 control-label">Post code</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="post_code" placeholder="Post code" ng-model="addCompDCtrl.newCompany.postCode">
+                    <input type="text" class="form-control" id="post_code" placeholder="Post code" ng-model="addCompDCtrl.company.postCode">
                 </div>
             </div>
             <div class="form-group">
                 <label for="city" class="col-sm-2 control-label">City</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="city" placeholder="City" ng-model="addCompDCtrl.newCompany.city">
+                    <input type="text" class="form-control" id="city" placeholder="City" ng-model="addCompDCtrl.company.city">
                 </div>
             </div>
 

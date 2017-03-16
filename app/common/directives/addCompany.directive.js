@@ -8,11 +8,9 @@
         function controllerFn()
         {
             var ctrl = this;
-            ctrl.newCompany = {};
 
             function addCompany()
             {
-                ctrl.company = ctrl.newCompany;
                 ctrl.showDirective();
             }
 
