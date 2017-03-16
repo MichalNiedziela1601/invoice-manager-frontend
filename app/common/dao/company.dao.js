@@ -1,9 +1,9 @@
 (function ()
 {
     'use strict';
-    function CompanyFactory($resource)
+    function CompanyDAO($resource)
     {
-        var api = $resource('/api/company/:nip', null, {
+        var api = $resource('/api/company/:a', null, {
             get: {
                 isArray: false
             }
@@ -12,11 +12,11 @@
         return {
             findByNip: function (nip)
             {
-                return api.get({nip: nip}).$promise;
+                return api.get({a: nip}).$promise;
             }
         };
     }
 
-    angular.module('app').factory('Company', ['$resource', CompanyFactory]);
+    angular.module('app').factory('CompanyDAO', ['$resource', CompanyDAO]);
 
 })();
