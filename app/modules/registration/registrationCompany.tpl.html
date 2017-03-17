@@ -14,7 +14,7 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter Company Name" required>
+                            <input type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.companyName" name="name" id="name" placeholder="Enter Company Name" required>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,8 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Enter your Email" required>
+                            <input type="email" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.email" name="email" id="email" placeholder="Enter your Email" required>
+
                         </div>
                     </div>
                 </div>
@@ -34,7 +35,8 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-                            <input type="number" class="form-control" name="nip" id="nip" placeholder="Enter your NIP" required>
+                            <input type="number" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.nip" name="nip" id="nip" placeholder="Enter your NIP" required>
+
                         </div>
                     </div>
                 </div>
@@ -44,21 +46,18 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" ng-model="password" class="form-control" name="password" id="password" placeholder="Enter your Password"
-                                   required>
+                            <input type="password" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.password" name="password" id="password" placeholder="Enter your Password" required>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="confirm" class="cols-sm-2 control-label">Confirm Password*</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" ng-model="confirmPassword" class="form-control" name="confirm" id="confirm"
-                                   placeholder="Confirm your Password" required>
+                            <input type="password" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.repeatPassword" name="confirm" id="confirm" placeholder="Confirm your Password" required>
                         </div>
-                        <div ng-show="password !== confirmPassword" class="alert alert-danger" id="alert" role="alert">
+                        <div ng-show="registrationCompanyCtrl.registrationCredential.password !== registrationCompanyCtrl.registrationCredential.repeatPassword" class="alert alert-danger" id="alert" role="alert">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only">Error:</span>
                             Passwords do not match
