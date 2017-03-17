@@ -19,7 +19,8 @@
         $routeProvider.when('/registration', {
             templateUrl: 'modules/registration/registrationCompany.tpl.html',
             controller: 'RegistrationCompanyController',
-            controllerAs: 'registrationCompanyCtrl'
+            controllerAs: 'registrationCompanyCtrl',
+            css: '/modules/registration/registrationCompany.css'
         });
 
         $routeProvider.when('/add/invoice', {

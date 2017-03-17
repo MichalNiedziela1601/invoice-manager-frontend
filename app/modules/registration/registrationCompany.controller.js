@@ -15,7 +15,7 @@
                     repeatPassword: ''
                 };
 
-        ctrl.registration = function ()
+           ctrl.registration = function ()
         {
             AuthDAO.registration(ctrl.registrationCredential).then(function ()
             {

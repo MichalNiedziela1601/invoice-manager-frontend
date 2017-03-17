@@ -24,7 +24,8 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.email" name="email" id="email" placeholder="Enter your Email" required>
+                            <input type="email" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.email" name="email" id="email" placeholder="Enter your Email" required>
+
                         </div>
                     </div>
                 </div>
@@ -49,13 +50,17 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="confirm" class="cols-sm-2 control-label">Confirm Password*</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.repeatPassword" name="confirm" id="confirm" placeholder="Confirm your Password" required>
+                        </div>
+                        <div ng-show="registrationCompanyCtrl.registrationCredential.password !== registrationCompanyCtrl.registrationCredential.repeatPassword" class="alert alert-danger" id="alert" role="alert">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            Passwords do not match
                         </div>
                     </div>
                 </div>
