@@ -36,22 +36,6 @@
                                        ng-model="addInvoiceCtrl.invoiceCompany.invoiceNr" required>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="company_delaer_id" class="col-sm-2 control-label">Id dealer</label>
-                            <div class="col-sm-10">
-                                <input type="number" class="form-control" id="company_delaer_id" placeholder="Id dealer"
-                                       ng-model="addInvoiceCtrl.invoiceCompany.companyDealer" required min="1">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="company_recipent_id" class="col-sm-2 control-label">Id recipent</label>
-                            <div class="col-sm-10">
-                                <input type="number" class="form-control" id="company_recipent_id" placeholder="Id recipent"
-                                       ng-model="addInvoiceCtrl.invoiceCompany.companyRecipent" required min="1">
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label for="invoice_create_date" class="col-sm-2 control-label">Create date</label>
                             <div class="col-sm-10">
@@ -85,19 +69,21 @@
                         <div class="form-group">
                             <label for="netto" class="col-sm-2 control-label">Netto</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="netto" placeholder="Netto" ng-model="addInvoiceCtrl.invoiceCompany.nettoValue">
+                                <input type="text" class="form-control" id="netto" placeholder="Netto" ng-model="addInvoiceCtrl.invoiceCompany.nettoValue"
+                                       required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="brutto" class="col-sm-2 control-label">Brutto</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="brutto" placeholder="Brutto" ng-model="addInvoiceCtrl.invoiceCompany.bruttoValue">
+                                <input type="text" class="form-control" id="brutto" placeholder="Brutto" ng-model="addInvoiceCtrl.invoiceCompany.bruttoValue"
+                                       required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="url_comp" class="col-sm-2 control-label">URL</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="url_comp" placeholder="URL" ng-model="addInvoiceCtrl.invoiceCompany.url">
+                                <input type="text" class="form-control" id="url_comp" placeholder="URL" ng-model="addInvoiceCtrl.invoiceCompany.url" required>
                             </div>
                         </div>
 
@@ -105,7 +91,7 @@
                         <div class="form-group">
                             <label for="status" class="col-sm-2 control-label">Status</label>
                             <div class="col-sm-5">
-                                <select name="statusSelect" id="status" class="form-control" ng-model="addInvoiceCtrl.invoiceCompany.status">
+                                <select name="statusSelect" id="status" class="form-control" ng-model="addInvoiceCtrl.invoiceCompany.status" required>
                                     <option value="paid">Paid</option>
                                     <option value="unpaid">Unpaid</option>
                                 </select></div>
@@ -141,23 +127,6 @@
                                        ng-model="addInvoiceCtrl.invoicePerson.type" required>
                             </div>
                         </div>
-
-
-                        <div class="form-group">
-                            <label for="person_delaer_id" class="col-sm-2 control-label">Id dealer</label>
-                            <div class="col-sm-10">
-                                <input type="number" class="form-control" id="person_delaer_id" placeholder="Id dealer"
-                                       ng-model="addInvoiceCtrl.invoicePerson.personDealer" required min="1">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="person_recipent_id" class="col-sm-2 control-label">Id recipent</label>
-                            <div class="col-sm-10">
-                                <input type="number" class="form-control" id="person_recipent_id" placeholder="Id recipent"
-                                       ng-model="addInvoiceCtrl.invoicePerson.personRecipent" required min="1">
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label for="invoice_create_date_per" class="col-sm-2 control-label">Create date</label>
                             <div class="col-sm-10">
@@ -191,14 +160,15 @@
                         <div class="form-group">
                             <label for="netto_per" class="col-sm-2 control-label">Netto</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="netto_per" placeholder="Netto" ng-model="addInvoiceCtrl.invoicePerson.nettoValue">
+                                <input type="text" class="form-control" id="netto_per" placeholder="Netto" ng-model="addInvoiceCtrl.invoicePerson.nettoValue"
+                                       required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="brutto_per" class="col-sm-2 control-label">Brutto</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="brutto_per" placeholder="Brutto"
-                                       ng-model="addInvoiceCtrl.invoicePerson.bruttoValue">
+                                <input type="text" class="form-control" id="brutto_per" placeholder="Brutto" ng-model="addInvoiceCtrl.invoicePerson.bruttoValue"
+                                       required>
                             </div>
                         </div>
 
@@ -206,7 +176,7 @@
                             <div class="col-sm-offset-2 col-sm-10">
                                 <div class="form-group">
                                     <label for="status_per">Status</label>
-                                    <select name="statusSelect" id="status_per" ng-model="addInvoiceCtrl.invoicePerson.status">
+                                    <select name="statusSelect" id="status_per" ng-model="addInvoiceCtrl.invoicePerson.status" required>
                                         <option value="paid">Paid</option>
                                         <option value="unpaid">Unpaid</option>
                                     </select>
@@ -215,7 +185,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Add</button>
+                                <input type="submit" class="btn btn-default" value="Add">
                                 <a class="btn btn-info" ng-click="addInvoiceCtrl.open()">Preview</a>
                             </div>
                         </div>
