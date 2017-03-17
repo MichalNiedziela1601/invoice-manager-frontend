@@ -2,36 +2,32 @@
 {
     'use strict';
 
-    function AddCompanyDirective()
+    function AddCompanyDirective(CompanyDAO)
     {
 
-        function controllerFn()
+        function controller()
         {
             var ctrl = this;
 
             function addCompany()
             {
-                ctrl.showDirective();
+                CompanyDAO.addCompany(ctrl.company).then(function ()
+                {
+
+                })
             }
 
             ctrl.addCompany = addCompany;
         }
 
         return {
-            restrict: 'EA',
-            replace: true,
-            bindToController: {
-                company: '=',
-                showDirective: '&'
-            },
-            transclude: true,
-            templateUrl: '/common/directives/addCompany.tpl.html',
-            controller: controllerFn,
-            controllerAs: 'addCompDCtrl'
+            restrict: 'EA', replace: true, bindToController: {
+                company: '=', showDirective: '&'
+            }, transclude: true, templateUrl: '/common/directives/addCompany.tpl.html', controller: controller, controllerAs: 'addCompDCtrl'
         };
     }
 
     angular.module('app')
-            .directive('addCompany', AddCompanyDirective);
+            .directive('addCompany', ['CompanyDAO', AddCompanyDirective]);
 
 })();
