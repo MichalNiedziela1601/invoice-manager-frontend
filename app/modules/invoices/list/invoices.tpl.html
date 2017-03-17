@@ -18,8 +18,8 @@
 
     <tr ng-repeat="purchase in invoicesCtrl.invoicesListSale">
         <td>{{purchase.invoiceNr}}</td>
-        <td>{{purchase.createDate}}</td>
-        <td>{{purchase.executionEndDate}}</td>
+        <td>{{purchase.createDate | date:'dd-MM-yyyy'}}</td>
+        <td>{{purchase.executionEndDate | date:'dd-MM-yyyy'}}</td>
         <td>{{purchase.url}}</td>
     </tr>
     </tbody>
@@ -41,8 +41,8 @@
         </tr>
         <tr  ng-repeat="sale in invoicesCtrl.invoicesListBuy">
             <td>{{sale.invoiceNr}}</td>
-            <td>{{sale.createDate}}</td>
-            <td>{{sale.executionEndDate}}</td>
+            <td>{{sale.createDate | date:'dd-MM-yyyy'}}</td>
+            <td>{{sale.executionEndDate | date:'dd-MM-yyyy'}}</td>
             <td>{{sale.url}}</td>
         </tr>
         </tbody>
