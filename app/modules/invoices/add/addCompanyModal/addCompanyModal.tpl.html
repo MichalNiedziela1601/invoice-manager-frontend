@@ -1,7 +1,8 @@
 <div class="modal-body" id="modal-body">
-    <add-company show-directive="addCompModalCtrl.ok()" company="addCompModalCtrl.companyDetails"></add-company>
+    <add-company show-directive="addCompModalCtrl.ok()" company="addCompModalCtrl.companyDetails">
+        <button class="btn btn-warning" type="button" ng-click="addCompModalCtrl.cancel()">Cancel</button>
+    </add-company>
+
 </div>
-<div class="modal-footer">
-    <button class="btn btn-warning" type="button" ng-click="addCompModalCtrl.cancel()">Cancel</button>
-</div>
+
 
