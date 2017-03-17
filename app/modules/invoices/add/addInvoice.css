@@ -1,3 +1,16 @@
 .tabs-top-marg {
     margin-top: 2em;
 }
+.invoice-checkboxes, .form-inline {
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+#inputNip {
+    margin-right: 10px;
+}
+.companyBtn {
+    width: 120px;
+}
+.invoice-checkboxes .form-inline label:nth-child(3){
+    margin-left: 20px;
+}
