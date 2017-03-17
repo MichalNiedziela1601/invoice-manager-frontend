@@ -50,10 +50,6 @@
             ctrl.invoicePerson.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
         }
 
-        function toggleShowCreateCompany()
-        {
-            ctrl.showCreateCompany = !ctrl.showCreateCompany;
-        }
 
         function findContractor()
         {
@@ -69,6 +65,7 @@
                 templateUrl: '/modules/invoices/add/addCompanyModal/addCompanyModal.tpl.html',
                 controller: 'AddCompanyModalController',
                 controllerAs: 'addCompModalCtrl',
+                backdrop: 'static',
                 size: size,
                 resolve: {
                     companyDetails: function(){

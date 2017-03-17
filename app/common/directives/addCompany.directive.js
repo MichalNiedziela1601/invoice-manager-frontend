@@ -24,6 +24,7 @@
                 company: '=',
                 showDirective: '&'
             },
+            transclude: true,
             templateUrl: '/common/directives/addCompany.tpl.html',
             controller: controllerFn,
             controllerAs: 'addCompDCtrl'
