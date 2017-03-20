@@ -1,20 +1,104 @@
 <div class="row">
-    <h1>Add Invoice</h1>
-    <div>
-        <form class="form-inline" ng-submit="addInvoiceCtrl.findContractor()">
-            <label for="inputNip" class="col-sm-2">Find contractor by nip:</label>
-            <input type="text" class="form-control" id="inputNip">
-            <button type="submit" class="btn btn-primary companyBtn">Find</button>
-        </form>
-        <button type="button" class="btn btn-default col-sm-offset-2 companyBtn" ng-click="addInvoiceCtrl.openAddCompanyModal('lg')">Add company</button>
-    </div>
 
-    <div class="invoice-checkboxes">
-        <form class="form-inline">
-            <label class="col-sm-2">Select type of transaction:</label>
-            <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="sell">Sell</label>
-            <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="buy">Buy</label>
-        </form>
+    <div class="row">
+
+        <div class="col-md-6">
+            <h1>Add Invoice</h1>
+            <div>
+                <form class="form-inline">
+                    <label for="inputNip" class="col-sm-4">Find contractor by nip:</label>
+                    <input type="text" class="form-control" id="inputNip" ng-model="addInvoiceCtrl.nipContractor">
+                    <span id="showAlert" ng-show="addInvoiceCtrl.showAlert">Company not found</span>
+                    <button type="submit" class="btn btn-primary companyBtn" ng-click="addInvoiceCtrl.findContractor(addInvoiceCtrl.nipContractor)">Find
+                    </button>
+                </form>
+                <button type="button" class="btn btn-default companyBtn col-md-offset-4" ng-click="addInvoiceCtrl.openAddCompanyModal('lg')">Add company
+                </button>
+            </div>
+            <div class="invoice-checkboxes">
+                <form class="form-inline">
+                    <label class="col-sm-4">Select type of transaction:</label>
+                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="sell">Sell</label>
+                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="buy">Buy</label>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-3 loggedCompany">
+            <h3>Logged Company</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td>name</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.name}}</td>
+                </tr>
+                <tr>
+                    <td>nip</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.nip}}</td>
+                </tr>
+                <tr>
+                    <td>regon</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.regon}}</td>
+                </tr>
+                <tr>
+                    <td>street</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.street}}</td>
+                </tr>
+                <tr>
+                    <td>build nr</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.buildNr}}</td>
+                </tr>
+                <tr>
+                    <td>flat nr</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.flatNr}}</td>
+                </tr>
+                <tr>
+                    <td>post-code</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.postCode}}</td>
+                </tr>
+                <tr>
+                    <td>city</td>
+                    <td>{{addInvoiceCtrl.mockedCompany.city}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-md-3 findCompanyDetails" ng-show="addInvoiceCtrl.showBox">
+            <h3>Found Company</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td>name</td>
+                    <td>{{addInvoiceCtrl.companyDetails.name}}</td>
+                </tr>
+                <tr>
+                    <td>nip</td>
+                    <td>{{addInvoiceCtrl.companyDetails.nip}}</td>
+                </tr>
+                <tr>
+                    <td>regon</td>
+                    <td>{{addInvoiceCtrl.companyDetails.regon}}</td>
+                </tr>
+                <tr>
+                    <td>street</td>
+                    <td>{{addInvoiceCtrl.companyDetails.street}}</td>
+                </tr>
+                <tr>
+                    <td>build nr</td>
+                    <td>{{addInvoiceCtrl.companyDetails.buildNr}}</td>
+                </tr>
+                <tr>
+                    <td>flat nr</td>
+                    <td>{{addInvoiceCtrl.companyDetails.flatNr}}</td>
+                </tr>
+                <tr>
+                    <td>post-code</td>
+                    <td>{{addInvoiceCtrl.companyDetails.postCode}}</td>
+                </tr>
+                <tr>
+                    <td>city</td>
+                    <td>{{addInvoiceCtrl.companyDetails.city}}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <div class="tabs-top-marg" ng-show="addInvoiceCtrl.transationType">

@@ -11,6 +11,14 @@
 .companyBtn {
     width: 120px;
 }
+.companyBtn:nth-child(2){
+    margin-top: 10px;
+}
 .invoice-checkboxes .form-inline label:nth-child(3){
     margin-left: 20px;
+}
+#showAlert {
+    position: absolute;
+    top: 132px;
+    left: 245px;
 }
