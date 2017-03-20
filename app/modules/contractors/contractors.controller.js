@@ -10,6 +10,9 @@
         {
             ctrl.companies = data;
         });
+        ctrl.company = {
+
+        };
     }
 
     angular.module('app').controller('ContractorsController', ['CompanyDAO', ContractorsController]);
