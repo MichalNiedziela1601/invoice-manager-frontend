@@ -21,7 +21,7 @@
                 return api.query().$promise;
             }, addCompany: function (company)
             {
-                return api.addCompany(company).$promise
+                return api.addCompany(company).$promise;
             }
         };
     }
