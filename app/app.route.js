@@ -13,7 +13,10 @@
         });
 
         $routeProvider.when('/invoices', {
-            templateUrl: 'modules/invoices/list/invoices.tpl.html', controller: 'InvoicesController', controllerAs: 'invoicesCtrl'
+            templateUrl: 'modules/invoices/list/invoices.tpl.html',
+            controller: 'InvoicesController',
+            controllerAs: 'invoicesCtrl',
+            css: '/modules/invoices/list/invoices.css'
         });
 
         $routeProvider.when('/registration', {
@@ -24,9 +27,7 @@
         });
 
         $routeProvider.when('/user', {
-            templateUrl: 'modules/user/user.tpl.html',
-            controller: 'UserController',
-            controllerAs: 'userCtrl'
+            templateUrl: 'modules/user/user.tpl.html', controller: 'UserController', controllerAs: 'userCtrl'
         });
 
         $routeProvider.when('/add/invoice', {
