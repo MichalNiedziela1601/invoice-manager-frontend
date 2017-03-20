@@ -23,6 +23,12 @@
             css: '/modules/registration/registrationCompany.css'
         });
 
+        $routeProvider.when('/user', {
+            templateUrl: 'modules/user/user.tpl.html',
+            controller: 'UserController',
+            controllerAs: 'userCtrl'
+        });
+
         $routeProvider.when('/add/invoice', {
             templateUrl: '/modules/invoices/add/addInvoice.tpl.html',
             controller: 'AddInvoiceController',
