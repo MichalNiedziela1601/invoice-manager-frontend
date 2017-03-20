@@ -6,8 +6,7 @@
         var api = $resource('/api/company/:a', null, {
             get: {
                 isArray: false
-            }, query: {method: 'GET', isArray: true},
-            addCompany: {
+            }, query: {method: 'GET', isArray: true}, addCompany: {
                 method: 'POST', isArray: false
             }
         });

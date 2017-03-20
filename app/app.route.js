@@ -13,7 +13,10 @@
         });
 
         $routeProvider.when('/invoices', {
-            templateUrl: 'modules/invoices/list/invoices.tpl.html', controller: 'InvoicesController', controllerAs: 'invoicesCtrl'
+            templateUrl: 'modules/invoices/list/invoices.tpl.html',
+            controller: 'InvoicesController',
+            controllerAs: 'invoicesCtrl',
+            css: '/modules/invoices/list/invoices.css'
         });
         $routeProvider.when('/invoices/details/:id', {
             templateUrl: '/modules/invoices/details/details.tpl.html', controller: 'DetailsController', controllerAs: 'detailsCtrl'
