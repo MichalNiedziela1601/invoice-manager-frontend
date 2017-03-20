@@ -1,0 +1,39 @@
+<div class="row">
+    <h1>{{detailsCtrl.message}}</h1>
+</div>
+<div class="col-md-6">
+    <table class="table table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th colspan="10">Details invoices</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Number Invoice</td>
+            <td>Dealer Nip</td>
+            <td>Recipent Nip</td>
+            <td>Type</td>
+            <td>Create Date</td>
+            <td>Execution End Date</td>
+            <td>Value Brutto</td>
+            <td>Value Netto</td>
+            <td>Status</td>
+            <td>Url</td>
+        </tr>
+
+        <tr>
+            <td>{{detailsCtrl.invoiceDetails.invoiceNr}}</td>
+            <td>{{detailsCtrl.invoiceDetails.delaerNip}}</td>
+            <td>{{detailsCtrl.invoiceDetails.recipentNip}}</td>
+            <td>{{detailsCtrl.invoiceDetails.type}}</td>
+            <td>{{detailsCtrl.invoiceDetails.createDate}}</td>
+            <td>{{detailsCtrl.invoiceDetails.executionEndDate}}</td>
+            <td>{{detailsCtrl.invoiceDetails.bruttoValue}}</td>
+            <td>{{detailsCtrl.invoiceDetails.nettoValue}}</td>
+            <td>{{detailsCtrl.invoiceDetails.status}}</td>
+            <td>{{detailsCtrl.invoiceDetails.url}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
