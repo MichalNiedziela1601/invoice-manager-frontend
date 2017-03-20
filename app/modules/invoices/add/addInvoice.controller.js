@@ -50,14 +50,23 @@
             ctrl.invoicePerson.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
         }
 
-
         function findContractor()
         {
             CompanyDAO.findByNip(ctrl.nipContractor).then(function (result)
             {
+                ctrl.showBox = true;
                 ctrl.companyDetails = result;
+            }).catch(function ()
+            {
+                ctrl.showAlert = true;
             });
         }
+
+        // mocked company
+        ctrl.mockedCompany = {
+            name: 'Fajna firma', nip: 999999999, regon: 99999, street: 'Zamojskiego', buildNr: '70', flatNr: '20', postCode: '22-400', city: 'Zamosc'
+        };
+
 
         ctrl.openAddCompanyModal = function (size)
         {
@@ -68,7 +77,8 @@
                 backdrop: 'static',
                 size: size,
                 resolve: {
-                    companyDetails: function(){
+                    companyDetails: function ()
+                    {
                         return ctrl.companyDetails;
                     }
                 }
