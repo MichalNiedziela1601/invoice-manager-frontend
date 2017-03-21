@@ -169,8 +169,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-push-1">Status</label>
                             <div class="col-sm-10">
-                                <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" value="paid" required>Paid</label>
-                                <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" value="unpaid" required>Unpaid</label>
+                                <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="paid" required>Paid</label>
+                                <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status"
+                                value="unpaid" >Unpaid</label>
                             </div>
                         </div>
 
@@ -252,8 +253,8 @@
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-push-1">Status</label>
                             <div class="col-sm-10">
-                                <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" value="paid" required>Paid</label>
-                                <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" value="unpaid" required>Unpaid</label>
+                                <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="paid" required>Paid</label>
+                                <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="unpaid" >Unpaid</label>
                             </div>
                         </div>
 
