@@ -55,10 +55,13 @@
             CompanyDAO.findByNip(ctrl.nipContractor).then(function (result)
             {
                 ctrl.showBox = true;
+                ctrl.showAlert = false;
                 ctrl.companyDetails = result;
             }).catch(function ()
             {
                 ctrl.showAlert = true;
+                ctrl.showBox = false;
+
             });
         }
 
