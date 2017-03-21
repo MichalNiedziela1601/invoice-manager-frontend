@@ -62,11 +62,10 @@
             });
         }
 
-        // mocked company
-        ctrl.mockedCompany = {
-            name: 'Fajna firma', nip: 999999999, regon: 99999, street: 'Zamojskiego', buildNr: '70', flatNr: '20', postCode: '22-400', city: 'Zamosc'
-        };
-
+        CompanyDAO.findByNip(1224567890).then(function (result)
+        {
+            ctrl.mockedCompany = result;
+        });
 
         ctrl.openAddCompanyModal = function (size)
         {
