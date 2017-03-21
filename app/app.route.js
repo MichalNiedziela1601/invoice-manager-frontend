@@ -9,7 +9,13 @@
         });
 
         $routeProvider.when('/contractors', {
-            templateUrl: 'modules/contractors/contractors.tpl.html', controller: 'ContractorsController', controllerAs: 'contractorsCtrl'
+            templateUrl: 'modules/contractors/listView/contractors.tpl.html', controller: 'ContractorsController', controllerAs: 'contractorsCtrl'
+        });
+
+        $routeProvider.when('/add/contractors', {
+            templateUrl: '/modules/contractors/add/addContractors.tpl.html',
+            controller: 'AddContractorsController',
+            controllerAs: 'addContractorsCtrl'
         });
 
         $routeProvider.when('/invoices', {
