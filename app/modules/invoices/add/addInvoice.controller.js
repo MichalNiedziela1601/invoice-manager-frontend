@@ -74,18 +74,16 @@
                 controller: 'AddCompanyModalController',
                 controllerAs: 'addCompModalCtrl',
                 backdrop: 'static',
-                size: size,
-                resolve: {
-                    companyDetails: function ()
-                    {
-                        return ctrl.companyDetails;
-                    }
-                }
+                size: size
             });
 
             modalInstance.result.then(function (compDetails)
             {
-                ctrl.companyDetails = compDetails;
+                CompanyDAO.findByNip(compDetails.nip).then(function(result){
+                    ctrl.companyDetails = result;
+                    ctrl.showBox = true;
+                });
+
             }, function ()
             {
 
