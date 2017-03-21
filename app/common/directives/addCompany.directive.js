@@ -11,6 +11,7 @@
 
             function addCompany()
             {
+                console.log(ctrl.company);
                 CompanyDAO.addCompany(ctrl.company).then(function ()
                 {
                     ctrl.showDirective();
