@@ -31,12 +31,22 @@
         };
 
         ////////////////////////////
+        function checkTypeTransaction(invoice){
+            if('sell' === ctrl.transationType){
+                invoice.companyDealer = ctrl.mockedCompany.id;
+                invoice.companyRecipent = ctrl.companyDetails.id;
+            } else {
+                invoice.companyDealer = ctrl.companyDetails.id;
+                invoice.companyRecipent = ctrl.mockedCompany.id;
+            }
+        }
 
         function addInvoiceCompany()
         {
             ctrl.invoiceCompany.type = ctrl.transationType;
             ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
             ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
+            checkTypeTransaction(ctrl.invoiceCompany);
             InvoiceDAO.add(ctrl.invoiceCompany).then(function ()
             {
 
