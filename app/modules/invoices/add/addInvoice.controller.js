@@ -66,10 +66,12 @@
             {
                 ctrl.showBox = true;
                 ctrl.showAlert = false;
+                ctrl.showButton = false;
                 ctrl.companyDetails = result;
             }).catch(function ()
             {
                 ctrl.showAlert = true;
+                ctrl.showButton = true;
                 ctrl.showBox = false;
 
             });
