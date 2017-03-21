@@ -7,7 +7,10 @@
         ctrl.message = 'Registration';
 
         ctrl.registrationCredential = {
-            companyName: '', email: '', nip: '', password: '', repeatPassword: ''
+            name: '', nip: '', email: '', password: ''
+        };
+        ctrl.registrationRepeatPassword ={
+            repeatPassword: ''
         };
 
         ctrl.registration = function ()
@@ -20,7 +23,7 @@
 
         ctrl.isPasswordsEqual = function ()
         {
-            return ctrl.registrationCredential.password !== ctrl.registrationCredential.repeatPassword;
+            return ctrl.registrationCredential.password !== ctrl.registrationRepeatPassword.repeatPassword;
         };
     }
 
