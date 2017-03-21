@@ -14,7 +14,7 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.companyName" name="name" id="name" placeholder="Enter Company Name" required>
+                            <input type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.name" name="name" id="name" placeholder="Enter Company Name" required>
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.repeatPassword" name="confirm" id="confirm" placeholder="Confirm your Password" required>
+                            <input type="password" class="form-control" ng-model="registrationCompanyCtrl.registrationRepeatPassword.repeatPassword" name="confirm" id="confirm" placeholder="Confirm your Password" required>
                         </div>
                         <div ng-show="registrationCompanyCtrl.isPasswordsEqual()" class="alert alert-danger" id="alert" role="alert">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
