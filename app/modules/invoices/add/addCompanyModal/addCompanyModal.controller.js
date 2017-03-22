@@ -16,11 +16,8 @@
         {
             $uibModalInstance.dismiss('cancel');
         };
-
     }
 
     angular.module('app')
             .controller('AddCompanyModalController', ['$uibModalInstance', 'companyDetails', AddCompanyModalController]);
-
-
 })();
