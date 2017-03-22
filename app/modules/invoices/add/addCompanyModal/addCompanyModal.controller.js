@@ -2,14 +2,14 @@
 {
     'use strict';
 
-    function AddCompanyModalController($uibModalInstance, companyDetails)
+    function AddCompanyModalController($uibModalInstance)
     {
         var ctrl = this;
-        ctrl.companyDetails = companyDetails;
+        ctrl.company = {};
 
         ctrl.ok = function ()
         {
-            $uibModalInstance.close(ctrl.companyDetails);
+            $uibModalInstance.close(ctrl.company);
         };
 
         ctrl.cancel = function ()
@@ -19,5 +19,7 @@
     }
 
     angular.module('app')
-            .controller('AddCompanyModalController', ['$uibModalInstance', 'companyDetails', AddCompanyModalController]);
+            .controller('AddCompanyModalController', ['$uibModalInstance', AddCompanyModalController]);
+
+
 })();

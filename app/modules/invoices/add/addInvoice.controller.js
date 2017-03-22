@@ -31,12 +31,22 @@
         };
 
         ////////////////////////////
+        function checkTypeTransaction(invoice){
+            if('sell' === ctrl.transationType){
+                invoice.companyDealer = ctrl.mockedCompany.id;
+                invoice.companyRecipent = ctrl.companyDetails.id;
+            } else {
+                invoice.companyDealer = ctrl.companyDetails.id;
+                invoice.companyRecipent = ctrl.mockedCompany.id;
+            }
+        }
 
         function addInvoiceCompany()
         {
             ctrl.invoiceCompany.type = ctrl.transationType;
             ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
             ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
+            checkTypeTransaction(ctrl.invoiceCompany);
             InvoiceDAO.add(ctrl.invoiceCompany).then(function ()
             {
 
@@ -55,10 +65,15 @@
             CompanyDAO.findByNip(ctrl.nipContractor).then(function (result)
             {
                 ctrl.showBox = true;
+                ctrl.showAlert = false;
+                ctrl.showButton = false;
                 ctrl.companyDetails = result;
             }).catch(function ()
             {
                 ctrl.showAlert = true;
+                ctrl.showButton = true;
+                ctrl.showBox = false;
+
             });
         }
 
@@ -74,18 +89,16 @@
                 controller: 'AddCompanyModalController',
                 controllerAs: 'addCompModalCtrl',
                 backdrop: 'static',
-                size: size,
-                resolve: {
-                    companyDetails: function ()
-                    {
-                        return ctrl.companyDetails;
-                    }
-                }
+                size: size
             });
 
             modalInstance.result.then(function (compDetails)
             {
-                ctrl.companyDetails = compDetails;
+                CompanyDAO.findByNip(compDetails.nip).then(function(result){
+                    ctrl.companyDetails = result;
+                    ctrl.showBox = true;
+                });
+
             }, function ()
             {
 

@@ -6,11 +6,11 @@
         var ctrl = this;
         ctrl.message = 'Invoices';
 
-        InvoiceDAO.query({type: 'Sale'}).then(function (data)
+        InvoiceDAO.query({type: 'sell'}).then(function (data)
         {
             ctrl.invoicesListSale = data;
         });
-        InvoiceDAO.query({type: 'Buy'}).then(function (data)
+        InvoiceDAO.query({type: 'buy'}).then(function (data)
         {
             ctrl.invoicesListBuy = data;
         });

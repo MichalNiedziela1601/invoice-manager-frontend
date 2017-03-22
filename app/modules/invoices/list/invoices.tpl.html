@@ -2,7 +2,7 @@
     <h1>{{invoicesCtrl.message}}</h1>
 </div>
 <uib-tabset active="active" class="invoicesPanel">
-    <uib-tab index="0" heading="Purchase">
+    <uib-tab index="0" heading="Sell">
         <div class="col-md-6">
             <table class="table table-bordered table-condensed">
                 <tbody>
@@ -12,18 +12,18 @@
                     <td>Expire Date</td>
                     <td>Url</td>
                 </tr>
-                <tr ng-repeat="purchase in invoicesCtrl.invoicesListSale">
+                <tr ng-repeat="sell in invoicesCtrl.invoicesListSale">
                     <td>
-                        <a ng-href="/invoices/details/{{purchase.id}}">{{purchase.invoiceNr}}</a></td>
-                    <td>{{purchase.createDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{purchase.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{purchase.url}}</td>
+                        <a ng-href="/invoices/details/{{sell.id}}">{{sell.invoiceNr}}</a></td>
+                    <td>{{sell.createDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{sell.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{sell.url}}</td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </uib-tab>
-    <uib-tab index="1" heading="Sale">
+    <uib-tab index="1" heading="Buy">
         <div class="col-md-6">
             <table class="table table-bordered table-condensed">
                 <tbody>
@@ -33,12 +33,12 @@
                     <td>Expire Date</td>
                     <td>Url</td>
                 </tr>
-                <tr ng-repeat="sale in invoicesCtrl.invoicesListBuy">
+                <tr ng-repeat="buy in invoicesCtrl.invoicesListBuy">
                     <td>
-                        <a ng-href="/invoices/details/{{sale.id}}">{{sale.invoiceNr}}</a></td>
-                    <td>{{sale.createDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{sale.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{sale.url}}</td>
+                        <a ng-href="/invoices/details/{{buy.id}}">{{buy.invoiceNr}}</a></td>
+                    <td>{{buy.createDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{buy.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{buy.url}}</td>
                 </tr>
                 </tbody>
             </table>

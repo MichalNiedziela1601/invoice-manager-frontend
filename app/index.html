@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Invoice Manager</title>
-    <base href="/" />
+    <base href="/"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="style/main.style.css">
@@ -14,7 +14,11 @@
     <div class='sidenav '>
         <ul class='sidebar-hide'>
             <li><a class='menu-1' ng-href="/"><i class="fa fa-home" aria-hidden="true"></i>Start</a></li>
-            <li><a class='menu-2' ng-href="/contractors"><i class="fa fa-list" aria-hidden="true"></i>Contractors</a></li>
+            <li><a class='menu-2' ng-click="appCtrl.toggleCollapsed()"><i class="fa fa-user " aria-hidden="true"></i>Contractors</a></li>
+            <div uib-collapse="appCtrl.isCollapse">
+                <li><a class='menu-toggle' ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i>Add contractors</a></li>
+                <li><a class='menu-toggle' ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i>List contractors</a></li>
+            </div>
             <li class="menu-3"><a ng-click="appCtrl.toggleCollapse()"><i class="fa fa-arrow-down" aria-hidden="true"></i>Invoice</a></li>
             <div uib-collapse="appCtrl.isCollapsed">
                 <li><a class='menu-toggle' ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i>Add invoice</a></li>
@@ -46,7 +50,7 @@
 <!-- Controllers-->
 <script src="app.controller.js"></script>
 <script src="modules/start/start.controller.js"></script>
-<script src="modules/contractors/contractors.controller.js"></script>
+<script src="modules/contractors/listView/contractors.controller.js"></script>
 <script src="modules/invoices/list/invoices.controller.js"></script>
 <script src="modules/invoices/add/addInvoice.controller.js"></script>
 <script src="modules/registration/registrationCompany.controller.js"></script>
@@ -54,7 +58,7 @@
 <script src="modules/user/user.controller.js"></script>
 <script src="modules/invoices/details/details.controller.js"></script>
 <script src="modules/invoices/add/uploadPdf.controller.js"></script>
-
+<script src="modules/contractors/add/addContractors.controller.js"></script>
 
 <!-- Services -->
 <script src="common/dao/company.dao.js"></script>
