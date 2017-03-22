@@ -105,27 +105,6 @@
             });
         };
 
-        // modal function
-        ctrl.open = function (size, items)
-        {
-
-            var modalInstance = $uibModal.open({
-                template: '<pdf-viewer delegate-handle="relativity-special-general-theory" url="modalCtrl.pdfUrl"scale="1"></pdf-viewer>',
-                controller: 'ModalPdfController',
-                controllerAs: 'modalCtrl',
-                size: size
-
-            });
-
-            modalInstance.result.then(function (selectedItem)
-            {
-                ctrl.selected = selectedItem;
-            }, function ()
-            {
-
-            });
-        };
-
         ////////////////////////////////////
 
         ctrl.addInvoiceCompany = addInvoiceCompany;

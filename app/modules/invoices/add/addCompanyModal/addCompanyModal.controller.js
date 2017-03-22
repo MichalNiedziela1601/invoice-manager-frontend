@@ -16,7 +16,6 @@
         {
             $uibModalInstance.dismiss('cancel');
         };
-
     }
 
     angular.module('app')
