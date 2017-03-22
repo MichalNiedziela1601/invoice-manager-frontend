@@ -33,12 +33,12 @@
                     <td>Expire Date</td>
                     <td>Url</td>
                 </tr>
-                <tr ng-repeat="sale in invoicesCtrl.invoicesListBuy">
+                <tr ng-repeat="buy in invoicesCtrl.invoicesListBuy">
                     <td>
-                        <a ng-href="/invoices/details/{{sale.id}}">{{sale.invoiceNr}}</a></td>
-                    <td>{{sale.createDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{sale.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{sale.url}}</td>
+                        <a ng-href="/invoices/details/{{buy.id}}">{{buy.invoiceNr}}</a></td>
+                    <td>{{buy.createDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{buy.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{buy.url}}</td>
                 </tr>
                 </tbody>
             </table>
