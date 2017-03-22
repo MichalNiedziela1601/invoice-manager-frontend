@@ -71,6 +71,10 @@ module.exports = function (grunt)
     grunt.registerTask('serve', ['configureProxies', 'connect:livereload', 'watch']);
 
     grunt.registerTask('default', ['serve']);
+
     grunt.registerTask('verify', ['karma:unit']);
+
+    grunt.registerTask('test:dev', ['karma:dev']);
+
 
 };

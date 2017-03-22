@@ -20,3 +20,12 @@
 ### 3. Use application
 
 ## WELL DONE!!
+
+### 4.Testing aplication 
+```sh
+- npm test
+```
+OR
+```sh
+- grunt test:dev
+```
