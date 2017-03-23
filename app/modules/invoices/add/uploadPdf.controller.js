@@ -23,7 +23,7 @@
                     var file = files[i];
                     if (!file.$error) {
                         Upload.upload({
-                            url: 'https://angular-file-upload-cors-srv.appspot.com/upload', data: {
+                            url: '/api/google', data: {
                                 file: file
                             }
                         }).then(function (resp)

@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(InvoiceDAO, CompanyDAO, $uibModal)
+    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -31,8 +31,9 @@
         };
 
         ////////////////////////////
-        function checkTypeTransaction(invoice){
-            if('sell' === ctrl.transationType){
+        function checkTypeTransaction(invoice)
+        {
+            if ('sell' === ctrl.transationType) {
                 invoice.companyDealer = ctrl.mockedCompany.id;
                 invoice.companyRecipent = ctrl.companyDetails.id;
             } else {
@@ -47,9 +48,18 @@
             ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
             ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
             checkTypeTransaction(ctrl.invoiceCompany);
-            InvoiceDAO.add(ctrl.invoiceCompany).then(function ()
-            {
 
+            Upload.upload({
+                url: '/api/invoice',
+                data: {
+                    invoice: ctrl.invoiceCompany,
+                    file: ctrl.file
+                }
+            }).then(function ()
+            {
+                ctrl.invoiceCompany = {};
+            }).catch(function(error){
+                console.error(error);
             });
         }
 
@@ -94,14 +104,11 @@
 
             modalInstance.result.then(function (compDetails)
             {
-                CompanyDAO.findByNip(compDetails.nip).then(function(result){
+                CompanyDAO.findByNip(compDetails.nip).then(function (result)
+                {
                     ctrl.companyDetails = result;
                     ctrl.showBox = true;
                 });
-
-            }, function ()
-            {
-
             });
         };
 
@@ -112,6 +119,6 @@
         ctrl.findContractor = findContractor;
     }
 
-    angular.module('app').controller('AddInvoiceController', ['InvoiceDAO', 'CompanyDAO', '$uibModal', AddInvoiceController]);
+    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', AddInvoiceController]);
 
 })();
