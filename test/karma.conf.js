@@ -13,10 +13,24 @@ module.exports = function (config)
         frameworks: ['jasmine'],
 
         // list of files / patterns to load in the browser
-        files: ['app/bower_components/angular/angular.js', 'app/bower_components/angular-mocks/angular-mocks.js',
-            'app/bower_components/angular-route/angular-route.min.js','app/app.js','app/app.config.js',
-            'app/modules/**/*.js', 'app/common/**/*.js',
-            'test/unit/**/*.spec.js', 'test/testHelper.js'],
+        files: ['app/bower_components/angular/angular.js',
+            'app/bower_components/angular-animate/angular-animate.min.js',
+            'app/bower_components/angular-bootstrap/ui-bootstrap.min.js',
+            'app/bower_components/angular-css/angular-css.min.js',
+            'app/bower_components/angular-mocks/angular-mocks.js',
+            'app/bower_components/angular-password/angular-password.min.js',
+            'app/bower_components/angular-resource/angular-resource.min.js',
+            'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+            'app/bower_components/angular-route/angular-route.min.js',
+            'app/bower_components/angular-sanitize/angular-sanitize.min.js',
+            'app/bower_components/ng-file-upload/ng-file-upload.min.js',
+            'app/app.js',
+            'app/app.config.js',
+            'app/app.route.js',
+            'app/modules/**/*.js',
+            'app/common/**/*.js',
+            'test/unit/**/*.spec.js',
+            'test/testHelper.js'],
 
         // list of files / patterns to exclude
         exclude: [],
