@@ -10,11 +10,14 @@
         function toggleCollapsed()
         {
             ctrl.isCollapse = !ctrl.isCollapse;
+            ctrl.isCollapsed = true;
         }
 
         function toggleCollapse()
         {
             ctrl.isCollapsed = !ctrl.isCollapsed;
+            ctrl.isCollapse = true;
+
         }
 
         ctrl.toggleCollapsed = toggleCollapsed;
