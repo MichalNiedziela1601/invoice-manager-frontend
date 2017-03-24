@@ -10,8 +10,9 @@
         ctrl.nipContractor = null;
         ctrl.invoiceCompany = {};
         ctrl.invoicePerson = {};
-        ctrl.companyDetails = {};
+        ctrl.companyDetails = null;
         ctrl.url = true;
+        ctrl.isContractorCompany = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -45,23 +46,32 @@
 
         function addInvoiceCompany()
         {
-            ctrl.invoiceCompany.type = ctrl.transationType;
-            ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
-            ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-            checkTypeTransaction(ctrl.invoiceCompany);
+            if(ctrl.companyDetails) {
+                ctrl.invoiceCompany.type = ctrl.transationType;
+                ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
+                ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
+                checkTypeTransaction(ctrl.invoiceCompany);
 
-            Upload.upload({
-                url: '/api/invoice',
-                data: {
-                    invoice: ctrl.invoiceCompany,
-                    file: ctrl.file
-                }
-            }).then(function ()
-            {
-                ctrl.invoiceCompany = {};
-            }).catch(function(error){
-                console.error(error);
-            });
+                Upload.upload({
+                    url: '/api/invoice',
+                    data: {
+                        invoice: ctrl.invoiceCompany,
+                        file: ctrl.file
+                    }
+                }).then(function ()
+                {
+                    ctrl.addInvoice=true;
+                    ctrl.createDatePicker.date = new Date();
+                    ctrl.executionDatePicker.date = new Date();
+                    ctrl.transationType = null;
+                    ctrl.invoiceCompany = {};
+                }).catch(function (error)
+                {
+                    console.error(error);
+                });
+            } else {
+                ctrl.isContractorCompany = true;
+            }
         }
 
         function addInvoicePerson()
@@ -113,11 +123,23 @@
             });
         };
 
+        function closeNoCompanyAlert()
+        {
+            ctrl.isContractorCompany = false;
+        }
+
+        function closeAddInvoiceSuccess()
+        {
+            ctrl.addInvoice = false;
+        }
+
         ////////////////////////////////////
 
         ctrl.addInvoiceCompany = addInvoiceCompany;
         ctrl.addInvoicePerson = addInvoicePerson;
         ctrl.findContractor = findContractor;
+        ctrl.closeNoCompanyAlert = closeNoCompanyAlert;
+        ctrl.closeAddInvoiceSuccess = closeAddInvoiceSuccess;
     }
 
     angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', AddInvoiceController]);
