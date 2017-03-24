@@ -24,14 +24,6 @@
                 </button>
             </div>
             <span id="showAlert" class="col-md-6" ng-show="addInvoiceCtrl.showAlert">Company not found</span>
-
-            <div class="invoice-checkboxes col-md-12 row">
-                <form class="form-inline">
-                    <label class="col-sm-6">Select type of transaction:</label>
-                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="sell">Sell</label>
-                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" value="buy">Buy</label>
-                </form>
-            </div>
         </div>
 
         <div class="col-md-6">
@@ -112,12 +104,21 @@
             </div>
         </div>
     </div>
-    <div class="tabs-top-marg" ng-show="addInvoiceCtrl.transationType">
+    <div class="tabs-top-marg">
 
         <uib-tabset active="active">
             <uib-tab index="0" heading="Company invoice">
                 <div class="col-md-8 tabs-top-marg">
                     <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Select type of transaction:</label>
+                            <div class="col-sm-10">
+                                <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell" required>Sell</label>
+                                <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy">Buy</label>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="invoice_nr" class="col-sm-2 control-label">Invoice number</label>
                             <div class="col-sm-10">
@@ -178,9 +179,7 @@
                         <div class="form-group">
                             <label for="url_comp" class="col-sm-2 control-label">Add file</label>
                             <div class="col-sm-10">
-                                <input type="file" ngf-select ng-model="addInvoiceCtrl.file" name="file"
-                                       accept="/*" required
-                                       >
+                                <input type="file" ngf-select ng-model="addInvoiceCtrl.file" name="file" accept="/*" required>
                             </div>
                         </div>
 
@@ -212,6 +211,15 @@
 
                 <div class="col-md-10 tabs-top-marg">
                     <form class="form-horizontal" name="person" ng-submit="addInvoiceCtrl.addInvoicePerson()">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Select type of transaction:</label>
+                            <div class="col-sm-10">
+                                <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell" required>Sell</label>
+                                <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy">Buy</label>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="invoice_nr_person" class="col-sm-2 control-label">Invoice number</label>
                             <div class="col-sm-10">
