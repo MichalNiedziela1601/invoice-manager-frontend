@@ -102,7 +102,7 @@
 
         <uib-tabset active="active">
             <uib-tab index="0" heading="Company invoice">
-                <div class="col-md-8 tabs-top-marg">
+                <div class="col-md-6 tabs-top-marg">
                     <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()">
 
                         <div class="form-group">
@@ -180,13 +180,27 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-push-1">Status</label>
                             <div class="col-sm-10">
                                 <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="paid" required>Paid</label>
                                 <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="unpaid">Unpaid</label>
                             </div>
+                        </div>
+
+
+                        <div ng-show="addInvoiceCtrl.isContractorCompany" uib-alert class="alert-danger"
+                             close="addInvoiceCtrl.closeNoCompanyAlert()">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            Not choose company
+                        </div>
+
+                        <div ng-show="addInvoiceCtrl.addInvoice" uib-alert class="alert-success"
+                             close="addInvoiceCtrl.closeAddInvoiceSuccess()">
+                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Success:</span>
+                            Invoice Added
                         </div>
 
                         <div class="form-group">
