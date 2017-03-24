@@ -11,6 +11,7 @@
         ctrl.invoiceCompany = {};
         ctrl.invoicePerson = {};
         ctrl.companyDetails = {};
+        ctrl.url = true;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
