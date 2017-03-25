@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal)
+    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $scope)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -13,6 +13,7 @@
         ctrl.companyDetails = null;
         ctrl.url = true;
         ctrl.companyNotChosen = false;
+        ctrl.noResults = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -109,6 +110,7 @@
 
         ctrl.openAddCompanyModal = function (size)
         {
+            ctrl.noResults = !ctrl.noResults;
             ctrl.modalInstance = $uibModal.open({
                 templateUrl: '/modules/invoices/add/addCompanyModal/addCompanyModal.tpl.html',
                 controller: 'AddCompanyModalController',
@@ -137,6 +139,20 @@
             ctrl.addInvoice = false;
         }
 
+        function findCompaniesByNip(nip)
+        {
+            return CompanyDAO.getNips(nip).then(function (response)
+            {
+                return response;
+            });
+        }
+
+        function onSelect($item)
+        {
+            ctrl.nipContractor = $item.nip;
+            ctrl.findContractor();
+        }
+
         ////////////////////////////////////
 
         ctrl.addInvoiceCompany = addInvoiceCompany;
@@ -144,9 +160,10 @@
         ctrl.findContractor = findContractor;
         ctrl.closeNoCompanyAlert = closeNoCompanyAlert;
         ctrl.closeAddInvoiceSuccess = closeAddInvoiceSuccess;
+        ctrl.findCompaniesByNip = findCompaniesByNip;
+        $scope.onSelect = onSelect;
     }
 
-    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', AddInvoiceController]);
+    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$scope', AddInvoiceController]);
 
 })();
-

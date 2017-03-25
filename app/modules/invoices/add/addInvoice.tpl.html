@@ -7,17 +7,23 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <label for="inputNip" class="col-sm-4">Find contractor by nip:</label>
+                    <label class="col-sm-4">Find contractor by nip:</label>
                     <div class="input-group" class="col-md-8">
-                        <input type="text" class="form-control" id="inputNip" ng-model="addInvoiceCtrl.nipContractor">
-                        <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="addInvoiceCtrl.findContractor(addInvoiceCtrl.nipContractor)">Find
-        </button>
-      </span>
+                        <div class="typeahead-demo"><input type="text" ng-model="addInvoiceCtrl.asyncSelected" placeholder="Nip contractors"
+                                                           uib-typeahead="companies.nip for companies in addInvoiceCtrl.findCompaniesByNip($viewValue)"
+                                                           typeahead-loading="addInvoiceCtrl.loadingLocations" typeahead-no-results="addInvoiceCtrl.noResults"
+                                                           class="form-control" typeahead-on-select="onSelect($item,$model,$label)">
+                            <i ng-show="addInvoiceCtrl.loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                            <div ng-show="addInvoiceCtrl.noResults">
+                                <i class="glyphicon glyphicon-remove"></i>
+                                Company not found,
+                                <p>to add new company click <a href="" ng-click="addInvoiceCtrl.openAddCompanyModal('lg')">here</a></p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            <p id="showAlert" class="col-md-7" ng-show="addInvoiceCtrl.showAlert">Company not found, to add new company click <a href="" ng-click="addInvoiceCtrl.openAddCompanyModal('lg')" ng-show="addInvoiceCtrl.showButton">here</a></p>
         </div>
 
         <div class="col-md-6">
