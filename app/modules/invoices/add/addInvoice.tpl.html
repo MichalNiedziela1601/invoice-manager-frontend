@@ -189,11 +189,11 @@
                         </div>
 
 
-                        <div ng-show="addInvoiceCtrl.isContractorCompany" uib-alert class="alert-danger"
+                        <div ng-show="addInvoiceCtrl.companyNotChosen" uib-alert class="alert-danger"
                              close="addInvoiceCtrl.closeNoCompanyAlert()">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only">Error:</span>
-                            Not choose company
+                            Company has not been chosen!
                         </div>
 
                         <div ng-show="addInvoiceCtrl.addInvoice" uib-alert class="alert-success"

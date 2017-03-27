@@ -12,7 +12,7 @@
         ctrl.invoicePerson = {};
         ctrl.companyDetails = null;
         ctrl.url = true;
-        ctrl.isContractorCompany = false;
+        ctrl.companyNotChosen = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -33,14 +33,14 @@
         };
 
         ////////////////////////////
-        function checkTypeTransaction(invoice)
+        function checkTypeTransaction()
         {
             if ('sell' === ctrl.transationType) {
-                invoice.companyDealer = ctrl.mockedCompany.id;
-                invoice.companyRecipent = ctrl.companyDetails.id;
+                ctrl.invoiceCompany.companyDealer = ctrl.mockedCompany.id;
+                ctrl.invoiceCompany.companyRecipent = ctrl.companyDetails.id;
             } else if ('buy' === ctrl.transationType) {
-                invoice.companyDealer = ctrl.companyDetails.id;
-                invoice.companyRecipent = ctrl.mockedCompany.id;
+                ctrl.invoiceCompany.companyDealer = ctrl.companyDetails.id;
+                ctrl.invoiceCompany.companyRecipent = ctrl.mockedCompany.id;
             }
         }
 
@@ -50,7 +50,7 @@
                 ctrl.invoiceCompany.type = ctrl.transationType;
                 ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
                 ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-                checkTypeTransaction(ctrl.invoiceCompany);
+                checkTypeTransaction();
 
                 Upload.upload({
                     url: '/api/invoice',
@@ -70,7 +70,7 @@
                     console.error(error);
                 });
             } else {
-                ctrl.isContractorCompany = true;
+                ctrl.companyNotChosen= true;
             }
         }
 
@@ -126,7 +126,7 @@
 
         function closeNoCompanyAlert()
         {
-            ctrl.isContractorCompany = false;
+            ctrl.companyNotChosen = false;
         }
 
         function closeAddInvoiceSuccess()
