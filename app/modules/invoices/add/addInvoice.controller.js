@@ -38,7 +38,7 @@
             if ('sell' === ctrl.transationType) {
                 invoice.companyDealer = ctrl.mockedCompany.id;
                 invoice.companyRecipent = ctrl.companyDetails.id;
-            } else {
+            } else if ('buy' === ctrl.transationType) {
                 invoice.companyDealer = ctrl.companyDetails.id;
                 invoice.companyRecipent = ctrl.mockedCompany.id;
             }
@@ -98,6 +98,7 @@
             });
         }
 
+        //registration isn't working - mocked user
         CompanyDAO.findByNip(1224567890).then(function (result)
         {
             ctrl.mockedCompany = result;
@@ -105,7 +106,7 @@
 
         ctrl.openAddCompanyModal = function (size)
         {
-            var modalInstance = $uibModal.open({
+            ctrl.modalInstance = $uibModal.open({
                 templateUrl: '/modules/invoices/add/addCompanyModal/addCompanyModal.tpl.html',
                 controller: 'AddCompanyModalController',
                 controllerAs: 'addCompModalCtrl',
@@ -113,7 +114,7 @@
                 size: size
             });
 
-            modalInstance.result.then(function (compDetails)
+            ctrl.modalInstance.result.then(function (compDetails)
             {
                 CompanyDAO.findByNip(compDetails.nip).then(function (result)
                 {
@@ -145,3 +146,4 @@
     angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', AddInvoiceController]);
 
 })();
+
