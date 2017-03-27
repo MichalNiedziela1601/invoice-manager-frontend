@@ -17,6 +17,20 @@
                 });
             }
 
+            function validateNip()
+            {
+                if (9 < ctrl.company.nip.toString().length) {
+                    CompanyDAO.findByNip(ctrl.company.nip).then(function ()
+                    {
+                        ctrl.showAlert = true;
+                    }).catch(function ()
+                    {
+                        ctrl.showAlert = false;
+                    });
+                }
+            }
+
+            ctrl.validateNip = validateNip;
             ctrl.addCompany = addCompany;
         }
 

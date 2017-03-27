@@ -2,7 +2,7 @@
     <h3>Add new company</h3>
 
     <div class="col-md-10">
-        <form class="form-horizontal" name="companyForm" ng-submit="addCompDCtrl.addCompany()">
+        <form class="form-horizontal" name="companyForm" ng-submit="addCompDCtrl.addCompany(companyForm)">
             <div class="form-group">
                 <label for="name_company" class="col-sm-3 control-label">Company Name*</label>
                 <div class="col-sm-9">
@@ -14,20 +14,24 @@
             <div class="form-group">
                 <label for="nip_comp" class="col-sm-3 control-label">NIP*</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" id="nip_comp" placeholder="Nip" ng-model="addCompDCtrl.company.nip" required>
+                    <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" placeholder="Nip" ng-change="addCompDCtrl.validateNip()"
+                           ng-model="addCompDCtrl.company.nip" required>
+                    <p ng-show="addCompDCtrl.showAlert">Nip already exsist</p>
+                    <p ng-show="addCompDCtrl.showAlertLength">Nip must have 10 number</p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="regon_comp" class="col-sm-3 control-label">Regon</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" id="regon_comp" placeholder="Regon" ng-model="addCompDCtrl.company.regon">
+                    <input pattern="[0-9]{10}" class="form-control" id="regon_comp" placeholder="Regon" ng-model="addCompDCtrl.company.regon">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="street" class="col-sm-3 control-label">Street*</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="street" placeholder="Street" ng-model="addCompDCtrl.company.address.street" required minlength="2">
+                    <input type="text" class="form-control" id="street" placeholder="Street" ng-model="addCompDCtrl.company.address.street" required
+                           minlength="2">
                 </div>
             </div>
 
@@ -63,7 +67,8 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-9 text-center">
                     <button type="submit" class="btn btn-primary">Add</button>
-                    <ng-transclude></ng-transclude>
+                    <ng-transclude>
+                    </ng-transclude>
                 </div>
             </div>
         </form>
