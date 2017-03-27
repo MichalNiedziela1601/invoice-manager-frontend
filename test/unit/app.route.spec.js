@@ -153,6 +153,4 @@ describe('app.route.js', function ()
             expect(route.routes[null].redirectTo).toEqual('/');
         });
     });
-
-
 });

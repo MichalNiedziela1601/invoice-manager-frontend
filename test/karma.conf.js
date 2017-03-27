@@ -18,7 +18,6 @@ module.exports = function (config)
             'app/bower_components/angular-bootstrap/ui-bootstrap.min.js',
             'app/bower_components/angular-css/angular-css.min.js',
             'app/bower_components/angular-mocks/angular-mocks.js',
-            'app/bower_components/angular-password/angular-password.min.js',
             'app/bower_components/angular-resource/angular-resource.min.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'app/bower_components/angular-route/angular-route.min.js',
