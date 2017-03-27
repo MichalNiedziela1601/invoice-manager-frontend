@@ -176,7 +176,8 @@
                         <div class="form-group">
                             <label for="url_comp" class="col-sm-2 control-label">Add file</label>
                             <div class="col-sm-10">
-                                <input type="file" ngf-select ng-model="addInvoiceCtrl.file" name="file" accept="/*" required>
+                                <input type="file" ngf-select ng-model="addInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file" accept="/*" required>
+                                     <iframe ngf-src="addInvoiceCtrl.file" class="pdfView" ></iframe>
                             </div>
                         </div>
 
@@ -206,10 +207,6 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-default">Add</button>
-                                <span ng-controller="UploadPdfController">
-                                <button class="btn btn-info" ngf-select ng-model="files" ngf-multiple="true" accept="/*"
-                                        ngf-pattern="'image/*,application/pdf'">Upload preview</button>
-                                </span>
                             </div>
                         </div>
                     </form>
@@ -301,9 +298,6 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <input type="submit" class="btn btn-default" value="Add">
-                                <span ng-controller="UploadPdfController">
-                                <button class="btn btn-info" ngf-select ng-model="files" ngf-multiple="true" accept="/*" ngf-pattern="'application/pdf'">Upload preview</button>
-                                </span>
                             </div>
                         </div>
                     </form>
