@@ -44,23 +44,23 @@
             }
         }
 
+        ctrl.fileToUpload = {};
         function addInvoiceCompany()
         {
-            if(ctrl.companyDetails) {
+            if (ctrl.companyDetails) {
                 ctrl.invoiceCompany.type = ctrl.transationType;
                 ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
                 ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
                 checkTypeTransaction(ctrl.invoiceCompany);
-
-                Upload.upload({
-                    url: '/api/invoice',
-                    data: {
-                        invoice: ctrl.invoiceCompany,
-                        file: ctrl.file
+                ctrl.fileToUpload = {
+                    url: '/api/invoice', data: {
+                        invoice: ctrl.invoiceCompany, file: ctrl.file
                     }
-                }).then(function ()
+                };
+                Upload.upload(ctrl.fileToUpload).then(function ()
                 {
-                    ctrl.addInvoice=true;
+                    ctrl.objectURL = URL.createObjectURL(ctrl.file);
+                    ctrl.addInvoice = true;
                     ctrl.createDatePicker.date = new Date();
                     ctrl.executionDatePicker.date = new Date();
                     ctrl.transationType = null;

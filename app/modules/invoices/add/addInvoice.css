@@ -23,3 +23,13 @@
     left: 295px;
     font-size: 18px;
 }
+.findCompanyDetails{
+    margin-bottom: -38px;
+}
+.pdfView{
+    height: 585px;
+    width: 730px;
+    margin-left: 700px;
+    margin-top: -390px;
+    position: absolute;
+}
