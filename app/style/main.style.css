@@ -17,7 +17,7 @@ ul {
 
 /* The navigation menu links */
 .sidenav a {
-    padding: 18px 50px 8px 31px;
+    padding: 12px 50px 12px 31px;
     text-decoration: none;
     font-size: 26px;
     font-weight: 300;
@@ -27,13 +27,9 @@ ul {
     /*transition: 0.3s*/
 }
 
-.h1_MENU {
-    font-family: 'Open Sans', sans-serif !important;
-    color: white;
-    text-align: center;
-    font-size: 80px;
-    margin-top: -20px;
-    margin-bottom: 50px;
+.menu-1:hover, .menu-1:active, .menu-2:hover, .menu-2:active, .menu-3:hover, .menu-3:active, .menu-1:focus, .menu-2:focus, .menu-3:focus {
+    background: white;
+    color: #4A78C0;
 }
 
 .sidenav a i {

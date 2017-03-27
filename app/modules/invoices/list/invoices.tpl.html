@@ -10,14 +10,12 @@
                     <td>Number Invoice's</td>
                     <td>Create Date</td>
                     <td>Expire Date</td>
-                    <td>Url</td>
                 </tr>
                 <tr ng-repeat="sell in invoicesCtrl.invoicesListSale">
                     <td>
                         <a ng-href="/invoices/details/{{sell.id}}">{{sell.invoiceNr}}</a></td>
                     <td>{{sell.createDate | date:'dd-MM-yyyy'}}</td>
                     <td>{{sell.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{sell.url}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -31,14 +29,12 @@
                     <td>Number Invoice's</td>
                     <td>Create Date</td>
                     <td>Expire Date</td>
-                    <td>Url</td>
                 </tr>
                 <tr ng-repeat="buy in invoicesCtrl.invoicesListBuy">
                     <td>
                         <a ng-href="/invoices/details/{{buy.id}}">{{buy.invoiceNr}}</a></td>
                     <td>{{buy.createDate | date:'dd-MM-yyyy'}}</td>
                     <td>{{buy.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{buy.url}}</td>
                 </tr>
                 </tbody>
             </table>

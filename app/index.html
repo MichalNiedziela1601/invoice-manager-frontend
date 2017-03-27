@@ -16,13 +16,13 @@
             <li><a class='menu-1' ng-href="/"><i class="fa fa-home" aria-hidden="true"></i>Start</a></li>
             <li><a class='menu-2' ng-click="appCtrl.toggleCollapsed()"><i class="fa fa-user " aria-hidden="true"></i>Contractors</a></li>
             <div uib-collapse="appCtrl.isCollapse">
-                <li><a class='menu-toggle' ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i>Add contractors</a></li>
-                <li><a class='menu-toggle' ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i>List contractors</a></li>
+                <li><a class='menu-2 menu-toggle' ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i>Add contractors</a></li>
+                <li><a class='menu-2 menu-toggle' ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i>List contractors</a></li>
             </div>
-            <li class="menu-3"><a ng-click="appCtrl.toggleCollapse()"><i class="fa fa-arrow-right" aria-hidden="true"></i>Invoice</a></li>
+            <li><a class='menu-3' ng-click="appCtrl.toggleCollapse()"><i class="fa fa-arrow-right" aria-hidden="true"></i>Invoice</a></li>
             <div uib-collapse="appCtrl.isCollapsed">
-                <li><a class='menu-toggle' ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i>Add invoice</a></li>
-                <li><a class='menu-toggle' ng-href='/invoices'><i class="fa fa-clone" aria-hidden="true"></i>List of Invoices</a></li>
+                <li><a class='menu-3 menu-toggle' ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i>Add invoice</a></li>
+                <li><a class='menu-3 menu-toggle' ng-href='/invoices'><i class="fa fa-clone" aria-hidden="true"></i>List of Invoices</a></li>
             </div>
         </ul>
     </div>

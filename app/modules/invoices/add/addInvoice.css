@@ -20,5 +20,6 @@
 #showAlert {
     position: absolute;
     top: 132px;
-    left: 245px;
+    left: 295px;
+    font-size: 18px;
 }
