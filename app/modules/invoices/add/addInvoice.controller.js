@@ -44,7 +44,6 @@
             }
         }
 
-        ctrl.fileToUpload = {};
         function addInvoiceCompany()
         {
             if (ctrl.companyDetails) {
@@ -54,7 +53,7 @@
 
                 checkTypeTransaction();
 
-                Upload.upload({
+                ctrl.fileToUpload = {
                     url: '/api/invoice',
                     data: {
                         invoice: ctrl.invoiceCompany,
