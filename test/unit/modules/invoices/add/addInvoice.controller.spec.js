@@ -9,8 +9,8 @@ describe('addInvoice.controller.js', function ()
     var mockTestCompany;
     var mockFoundTestCompany;
     var fakeModal;
-    var fakeDate;
-    var fakeMaxDate;
+    var baseTime;
+
 
     beforeEach(module('app'));
 
@@ -27,8 +27,6 @@ describe('addInvoice.controller.js', function ()
             id: '2', name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: 33 - 120, city: 'City 1'
         };
 
-        fakeDate = new Date();
-        fakeMaxDate = new Date();
 
         spyOn(invoiceDaoMock, 'add').and.callFake(function ()
         {
@@ -72,6 +70,14 @@ describe('addInvoice.controller.js', function ()
 
     describe('initialization', function ()
     {
+        beforeEach(function ()
+        {
+            baseTime = new Date();
+            spyOn(window, 'Date').and.callFake(function() {
+                return baseTime;
+            });
+        });
+
         it('should set transactionType variable to null', function ()
         {
             expect(addCtrl.transationType).toEqual(null);
@@ -94,7 +100,7 @@ describe('addInvoice.controller.js', function ()
         });
         it('should set companyDetails variable to empty object', function ()
         {
-            expect(addCtrl.companyDetails).toEqual({});
+            expect(addCtrl.companyDetails).toEqual(null);
         });
 
         it('should set mockedCompany variable to result from company dao', function ()
@@ -106,10 +112,6 @@ describe('addInvoice.controller.js', function ()
         {
             it('should set new date', function ()
             {
-                expect(addCtrl.createDatePicker.date).toEqual(fakeDate);
-            });
-            it('should set createDatePicker.opened property', function ()
-            {
                 expect(addCtrl.createDatePicker.opened).toEqual(false);
             });
             it('should set createDatePicker.options.formatYear property', function ()
@@ -118,8 +120,7 @@ describe('addInvoice.controller.js', function ()
             });
             it('should set createDatePicker.options.maxDate property', function ()
             {
-
-                expect(addCtrl.createDatePicker.options.maxDate).toEqual(fakeMaxDate);
+                expect(addCtrl.createDatePicker.options.maxDate).toEqual(baseTime);
             });
             it('should set createDatePicker.options.maxDate property', function ()
             {
@@ -135,7 +136,7 @@ describe('addInvoice.controller.js', function ()
         {
             it('should set new date', function ()
             {
-                expect(addCtrl.executionDatePicker.date).toEqual(fakeDate);
+                expect(addCtrl.executionDatePicker.date).toEqual(baseTime);
             });
             it('should set executionDatePicker.opened property', function ()
             {
@@ -159,80 +160,87 @@ describe('addInvoice.controller.js', function ()
 
     describe('addInvoiceCompany', function ()
     {
-        describe('always', function ()
+        describe('company details exists', function ()
         {
             beforeEach(function ()
             {
+                addCtrl.companyDetails = mockTestCompany;
                 addCtrl.transationType = 'test';
                 addCtrl.createDatePicker.date = new Date('2000-12-15');
                 addCtrl.executionDatePicker.date = new Date('2001-01-23');
+
                 addCtrl.addInvoiceCompany();
             });
-            it('should set invoiceCompany.type to transactionType', function ()
+            describe('always', function ()
             {
-                expect(addCtrl.invoiceCompany.type).toEqual('test');
+
+                it('should set invoiceCompany.type to transactionType', function ()
+                {
+                    expect(addCtrl.invoiceCompany.type).toEqual('test');
+                });
+                it('should set invoiceCompany.createDate', function ()
+                {
+                    expect(addCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
+                });
+                it('should set invoiceCompany.executionEndDate', function ()
+                {
+                    expect(addCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
+                });
             });
-            it('should set invoiceCompany.createDate', function ()
+
+            describe('checkTypeTransaction', function ()
             {
-                expect(addCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
-            });
-            it('should set invoiceCompany.executionEndDate', function ()
-            {
-                expect(addCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
+                describe('sell type', function ()
+                {
+                    beforeEach(function ()
+                    {
+                        addCtrl.companyDetails.id = 9;
+                        addCtrl.mockedCompany.id = 2;
+                        addCtrl.transationType = 'sell';
+                        addCtrl.addInvoiceCompany();
+                    });
+
+                    it('should set companyDealer variable', function ()
+                    {
+                        expect(addCtrl.invoiceCompany.companyDealer).toEqual(2);
+                    });
+                    it('should set companyRecipent variable', function ()
+                    {
+                        expect(addCtrl.invoiceCompany.companyRecipent).toEqual(9);
+                    });
+                });
+                describe('buy type', function ()
+                {
+                    beforeEach(function ()
+                    {
+                        addCtrl.companyDetails.id = 8;
+                        addCtrl.mockedCompany.id = 1;
+                        addCtrl.transationType = 'buy';
+                        addCtrl.addInvoiceCompany();
+                    });
+
+                    it('should set companyDealer variable', function ()
+                    {
+                        expect(addCtrl.invoiceCompany.companyDealer).toEqual(8);
+                    });
+                    it('should set companyRecipent variable', function ()
+                    {
+                        expect(addCtrl.invoiceCompany.companyRecipent).toEqual(1);
+                    });
+                });
+
             });
         });
-        describe('checkTypeTransaction', function ()
-        {
-            describe('sell type', function ()
-            {
-                beforeEach(function ()
-                {
-                    addCtrl.companyDetails.id = 9;
-                    addCtrl.mockedCompany.id = 2;
-                    addCtrl.transationType = 'sell';
-                    addCtrl.addInvoiceCompany();
-                });
-
-                it('should set companyDealer variable', function ()
-                {
-                    expect(addCtrl.invoiceCompany.companyDealer).toEqual(2);
-                });
-                it('should set companyRecipent variable', function ()
-                {
-                    expect(addCtrl.invoiceCompany.companyRecipent).toEqual(9);
-                });
-            });
-            describe('buy type', function ()
-            {
-                beforeEach(function ()
-                {
-                    addCtrl.companyDetails.id = 8;
-                    addCtrl.mockedCompany.id = 1;
-                    addCtrl.transationType = 'buy';
-                    addCtrl.addInvoiceCompany();
-                });
-
-                it('should set companyDealer variable', function ()
-                {
-                    expect(addCtrl.invoiceCompany.companyDealer).toEqual(8);
-                });
-                it('should set companyRecipent variable', function ()
-                {
-                    expect(addCtrl.invoiceCompany.companyRecipent).toEqual(1);
-                });
-            });
-
-        });
-        describe('invoiceDAO.add function', function ()
+        describe('company details doesn\'t exists', function ()
         {
             beforeEach(function ()
             {
+                addCtrl.companyDetails = null;
                 addCtrl.addInvoiceCompany();
             });
-
-            it('should call invoiceDao.add function', function ()
+            it('should companyNotChosen to true', function ()
             {
-                expect(invoiceDaoMock.add).toHaveBeenCalledWith(addCtrl.invoiceCompany);
+                expect(addCtrl.companyNotChosen).toEqual(true);
             });
         });
     });
