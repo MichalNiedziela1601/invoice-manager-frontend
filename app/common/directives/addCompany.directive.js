@@ -26,11 +26,11 @@
 
             function validateNip()
             {
-                if (9 < ctrl.company.nip.toString().length) {
+                if (null !== ctrl.company.nip || 9 < ctrl.company.nip.toString().length) {
                     CompanyDAO.findByNip(ctrl.company.nip).then(function ()
                     {
                         ctrl.showAlert = true;
-                    }).catch(function ()
+                    }).catch(function (error)
                     {
                         ctrl.showAlert = false;
                     });
