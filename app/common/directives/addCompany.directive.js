@@ -4,10 +4,10 @@
 
     function AddCompanyDirective(CompanyDAO)
     {
+        var ctrl = this;
 
         function controller()
         {
-            var ctrl = this;
             ctrl.addComp = false;
 
             function addCompany()
@@ -36,7 +36,9 @@
                     }).catch(function (error)
                     {
                         ctrl.showAlert = false;
+                        console.error(error);
                     });
+
                 }
             }
 
