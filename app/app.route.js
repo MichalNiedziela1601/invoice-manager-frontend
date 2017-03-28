@@ -25,7 +25,7 @@
             css: '/modules/invoices/list/invoices.css'
         });
         $routeProvider.when('/invoices/details/:id', {
-            templateUrl: '/modules/invoices/details/details.tpl.html', controller: 'DetailsController', controllerAs: 'detailsCtrl'
+            templateUrl: '/modules/invoices/details/invoiceDetails.tpl.html', controller: 'InvoiceDetailsController', controllerAs: 'InvoiceDetailsCtrl'
         });
 
         $routeProvider.when('/registration', {

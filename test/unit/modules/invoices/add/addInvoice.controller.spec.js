@@ -178,7 +178,7 @@ describe('addInvoice.controller.js', function ()
 
     describe('addInvoiceCompany', function ()
     {
-        describe('company details exists', function ()
+        describe('company invoicesDetails exists', function ()
         {
             beforeEach(function ()
             {
@@ -249,7 +249,7 @@ describe('addInvoice.controller.js', function ()
 
             });
         });
-        describe('company details doesn\'t exists', function ()
+        describe('company invoicesDetails doesn\'t exists', function ()
         {
             beforeEach(function ()
             {
