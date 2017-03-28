@@ -2,13 +2,13 @@
 
     <div class="row">
 
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h1>Add Invoice</h1>
+            <div class="col-sm-11 findCompanyInput">
+                <div class="row well">
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <label class="col-sm-4">Find contractor by nip:</label>
-                    <div class="input-group" class="col-md-8">
+                    <label class="col-sm-5">Find contractor by nip:</label>
+                    <div class="input-group col-md-6">
                         <div class="typeahead-demo"><input type="text" ng-model="addInvoiceCtrl.asyncSelected" placeholder="Nip contractors"
                                                            uib-typeahead="companies.nip for companies in addInvoiceCtrl.findCompaniesByNip($viewValue)"
                                                            typeahead-loading="addInvoiceCtrl.loadingLocations" typeahead-no-results="addInvoiceCtrl.noResults"
@@ -16,14 +16,14 @@
                             <i ng-show="addInvoiceCtrl.loadingLocations" class="glyphicon glyphicon-refresh"></i>
                             <div ng-show="addInvoiceCtrl.noResults">
                                 <i class="glyphicon glyphicon-remove"></i>
-                                Company not found,
-                                <p>to add new company click <a href="" ng-click="addInvoiceCtrl.openAddCompanyModal('lg')">here</a></p>
+                                <p class="text-justify">Company not found,<br>
+                                to add new company click <a href="" ng-click="addInvoiceCtrl.openAddCompanyModal('lg')">here</a></p>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="col-md-6">
@@ -182,8 +182,9 @@
                         <div class="form-group">
                             <label for="url_comp" class="col-sm-2 control-label">Add file</label>
                             <div class="col-sm-10">
-                                <input type="file" ngf-select ng-model="addInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file" accept="/*" required>
-                                     <iframe ngf-src="addInvoiceCtrl.file" class="pdfView" ></iframe>
+                                <input type="file" ngf-select ng-model="addInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file" accept="/*"
+                                       required>
+                                <iframe ngf-src="addInvoiceCtrl.file" class="pdfView"></iframe>
                             </div>
                         </div>
 
@@ -196,15 +197,13 @@
                         </div>
 
 
-                        <div ng-show="addInvoiceCtrl.companyNotChosen" uib-alert class="alert-danger"
-                             close="addInvoiceCtrl.closeNoCompanyAlert()">
+                        <div ng-show="addInvoiceCtrl.companyNotChosen" uib-alert class="alert-danger" close="addInvoiceCtrl.closeNoCompanyAlert()">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only">Error:</span>
                             Company has not been chosen!
                         </div>
 
-                        <div ng-show="addInvoiceCtrl.addInvoice" uib-alert class="alert-success"
-                             close="addInvoiceCtrl.closeAddInvoiceSuccess()">
+                        <div ng-show="addInvoiceCtrl.addInvoice" uib-alert class="alert-success" close="addInvoiceCtrl.closeAddInvoiceSuccess()">
                             <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
                             <span class="sr-only">Success:</span>
                             Invoice Added

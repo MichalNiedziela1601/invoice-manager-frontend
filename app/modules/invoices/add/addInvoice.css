@@ -1,12 +1,27 @@
 .tabs-top-marg {
     margin-top: 2em;
 }
+.findCompanyInput {
+    margin-top: 25px;
+}
+.findCompanyInput label {
+    margin-top: 5px;
+}
+.findComapnyInput input {
+
+}
 .invoice-checkboxes, .form-inline {
     margin-top: 40px;
     margin-bottom: 15px;
 }
 #inputNip {
     margin-right: 10px;
+}
+.glyphicon-remove {
+    margin-top: 5px;
+}
+.text-justify {
+    display: inline-table;
 }
 .companyBtn {
     width: 120px;
@@ -41,6 +56,10 @@
     z-index: 1000;
     display: none;
     background-color: #f9f9f9;
+}
+.typeahead-demo input {
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
 }
 
 .typeahead-demo .custom-popup-wrapper > .message {
