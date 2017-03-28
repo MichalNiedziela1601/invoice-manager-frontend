@@ -50,3 +50,11 @@ ul {
     display: inline-block;
     width: 100%;
 }
+
+.st-sort-ascent:after{
+    content: '\25B2';
+}
+
+.st-sort-descent:after{
+    content: '\25BC';
+}
