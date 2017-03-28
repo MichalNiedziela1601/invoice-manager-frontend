@@ -1,39 +1,40 @@
 <div class="row">
-    <h1>{{InvoiceDetailsCtrl.message}}</h1>
-</div>
-<div class="col-md-10">
-    <table class="table table-bordered table-condensed">
-        <thead>
-        <tr>
-            <th colspan="10">Details invoices</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Number Invoice</td>
-            <td>Dealer Nip</td>
-            <td>Recipent Nip</td>
-            <td>Type</td>
-            <td>Create Date</td>
-            <td>Execution End Date</td>
-            <td>Value Brutto</td>
-            <td>Value Netto</td>
-            <td>Status</td>
-            <td>Url</td>
-        </tr>
 
-        <tr>
-            <td>{{InvoiceDetailsCtrl.details.invoiceNr}}</td>
-            <td>{{InvoiceDetailsCtrl.details.companyDealer.nip}}</td>
-            <td>{{InvoiceDetailsCtrl.details.companyRecipent.nip}}</td>
-            <td>{{InvoiceDetailsCtrl.details.type}}</td>
-            <td>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}}</td>
-            <td>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}}</td>
-            <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
-            <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
-            <td>{{InvoiceDetailsCtrl.details.status}}</td>
-            <td><a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">url</a> </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="col-md-10 col-md-offset-1">
+        <h1 class="page-header text-center">{{InvoiceDetailsCtrl.message}}</h1>
+        <table class="table table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th colspan="10">Details invoices</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Number Invoice</td>
+                <td>Dealer Nip</td>
+                <td>Recipent Nip</td>
+                <td>Type</td>
+                <td>Create Date</td>
+                <td>Execution End Date</td>
+                <td>Value Brutto</td>
+                <td>Value Netto</td>
+                <td>Status</td>
+                <td>Url</td>
+            </tr>
+
+            <tr>
+                <td>{{InvoiceDetailsCtrl.details.invoiceNr}}</td>
+                <td>{{InvoiceDetailsCtrl.details.companyDealer.nip}}</td>
+                <td>{{InvoiceDetailsCtrl.details.companyRecipent.nip}}</td>
+                <td>{{InvoiceDetailsCtrl.details.type}}</td>
+                <td>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}}</td>
+                <td>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
+                <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
+                <td>{{InvoiceDetailsCtrl.details.status}}</td>
+                <td><a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">url</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
