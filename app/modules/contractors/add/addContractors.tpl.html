@@ -1,9 +1,7 @@
 <div class="col-md-10 col-md-offset-1">
-    <add-company company="addContractorsCtrl.company" show-directive="addContractorsCtrl.closeAddCompanySuccess()">
-        <div ng-show="addContractorsCtrl.addComp" uib-alert class="alert-success" close="addContractorsCtrl.closeAddCompanySuccess()">
-            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-            <span class="sr-only">Success:</span>
-            Company Added
-        </div>
+    <add-company company="addContractorsCtrl.company"
+                 show-directive="addContractorsCtrl.closeAddCompanySuccess()"
+    show-success="true">
+
     </add-company>
 </div>
