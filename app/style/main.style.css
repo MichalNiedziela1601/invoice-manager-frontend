@@ -27,7 +27,7 @@ ul {
     /*transition: 0.3s*/
 }
 
-.menu-1:hover, .menu-1:active, .menu-2:hover, .menu-2:active, .menu-3:hover, .menu-3:active, .menu-1:focus, .menu-2:focus, .menu-3:focus {
+.menu-1:active, .menu-2:active, .menu-3:active, .menu-1:focus, .menu-2:focus, .menu-3:focus {
     background: white;
     color: #4A78C0;
 }
@@ -37,7 +37,7 @@ ul {
     width: 20px;
 }
 
-.menu-3, .menu-2 {
+.menu-3, .menu-2, .menu-2-main, .menu-3-main{
     cursor: pointer;
 }
 
