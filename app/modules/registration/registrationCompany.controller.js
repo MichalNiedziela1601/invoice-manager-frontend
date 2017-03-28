@@ -9,16 +9,21 @@
         ctrl.registrationCredential = {
             name: '', nip: '', email: '', password: ''
         };
-        ctrl.registrationRepeatPassword ={
+        ctrl.registrationRepeatPassword = {
             repeatPassword: ''
         };
 
         ctrl.registration = function ()
         {
-            AuthDAO.registration(ctrl.registrationCredential).then(function ()
-            {
+            if(ctrl.registrationCredential.password.length < 4){
+                ctrl.alertMinLength = true;
+            } else {
+                ctrl.alertMinLength = false;
+                AuthDAO.registration(ctrl.registrationCredential).then(function ()
+                {
 
-            });
+                });
+            }
         };
 
         ctrl.isPasswordsEqual = function ()
