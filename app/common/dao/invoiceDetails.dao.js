@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function DetailsDAO($resource)
+    function InvoiceDetailsDAO($resource)
     {
         var api = $resource('/api/invoice/:id', null, {
             details: {method: 'GET'}
@@ -12,8 +12,8 @@
             {
                 return api.details(id).$promise;
             }
-        }
+        };
     }
 
-    angular.module('app').factory('DetailsDAO', ['$resource', DetailsDAO]);
+    angular.module('app').factory('InvoiceDetailsDAO', ['$resource', InvoiceDetailsDAO]);
 })();

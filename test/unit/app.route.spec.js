@@ -78,19 +78,19 @@ describe('app.route.js', function ()
             expect(route.routes['/invoices'].css).toBe('/modules/invoices/list/invoices.css');
         });
     });
-    describe('/invoices/details/:id', function ()
+    describe('/invoices/invoicesDetails/:id', function ()
     {
         it('should has \'invoices/details/:id\' controller ', function ()
         {
-            expect(route.routes['/invoices/details/:id'].controller).toBe('DetailsController');
+            expect(route.routes['/invoices/details/:id'].controller).toBe('InvoiceDetailsController');
         });
         it('should has \'details.html\' template ', function ()
         {
-            expect(route.routes['/invoices/details/:id'].templateUrl).toBe('/modules/invoices/details/details.tpl.html');
+            expect(route.routes['/invoices/details/:id'].templateUrl).toBe('/modules/invoices/details/invoiceDetails.tpl.html');
         });
         it('should has \'invoices/details/:id\' as controller shortcut', function ()
         {
-            expect(route.routes['/invoices/details/:id'].controllerAs).toBe('detailsCtrl');
+            expect(route.routes['/invoices/details/:id'].controllerAs).toBe('InvoiceDetailsCtrl');
         });
     });
     describe('/registration', function ()
