@@ -2,36 +2,49 @@
     <h1 class="page-header text-center">Add new company</h1>
 
     <div class="col-md-10">
-        <form class="form-horizontal" name="companyForm" ng-submit="addCompDCtrl.addCompany(companyForm)">
+        <form class="form-horizontal" name="companyForm" ng-submit="addCompDCtrl.addCompany(companyForm)" novalidate>
             <div class="form-group">
                 <label for="name_company" class="col-sm-3 control-label">Company Name*</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="name_company" placeholder="Company name" ng-model="addCompDCtrl.company.name" required
-                           minlength="2">
+                    <input type="text" class="form-control" id="name_company" name="companyName" placeholder="Company name" ng-model="addCompDCtrl.company.name"
+                           required minlength="2">
+                    <div ng-messages="companyForm.companyName.$error" style="color:maroon" role="alert">
+                        <div ng-message="minlength">Company's name required min. length is 2</div>
+                    </div>
                 </div>
+
             </div>
 
             <div class="form-group">
                 <label for="nip_comp" class="col-sm-3 control-label">NIP*</label>
                 <div class="col-sm-9">
-                    <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" placeholder="Nip" ng-change="addCompDCtrl.validateNip()"
-                           ng-model="addCompDCtrl.company.nip" required nip-mask>
+                    <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="Nip"
+                            ng-model="addCompDCtrl.company.nip" required nip-mask>
                     <p ng-show="addCompDCtrl.showAlert">Nip already exsist</p>
-                    <p ng-show="addCompDCtrl.showAlertLength">Nip must have 10 number</p>
+                    <div ng-messages="companyForm.companyNip.$error" style="color:maroon" role="alert">
+                        <div ng-message="pattern">Company's nip required length is 10</div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="regon_comp" class="col-sm-3 control-label">Regon</label>
                 <div class="col-sm-9">
-                    <input pattern="[0-9]{10}" class="form-control" id="regon_comp" placeholder="Regon" ng-model="addCompDCtrl.company.regon">
+                    <input pattern="[0-9]{10}" class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
+                           ng-model="addCompDCtrl.company.regon">
+                    <div ng-messages="companyForm.companyRegon.$error" style="color:maroon" role="alert">
+                        <div ng-message="pattern">Company's regon required length is 10</div>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="street" class="col-sm-3 control-label">Street*</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="street" placeholder="Street" ng-model="addCompDCtrl.company.address.street" required
-                           minlength="2">
+                    <input type="text" class="form-control" id="street" name="companyStreet" placeholder="Street" ng-model="addCompDCtrl.company.address.street"
+                           required minlength="2">
+                    <div ng-messages="companyForm.companyStreet.$error" style="color:maroon" role="alert">
+                        <div ng-message="minlength">Company's street required min. length is 2</div>
+                    </div>
                 </div>
             </div>
 
@@ -52,8 +65,11 @@
             <div class="form-group">
                 <label for="post_code" class="col-sm-3 control-label">Post code*</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="post_code" placeholder="Example: 32820" ng-model="addCompDCtrl.company.address.postCode" required
-                           pattern="[0-9]{2}-[0-9]{3}" post-code-mask>
+                    <input type="text" class="form-control" id="post_code" name="companyPostcode" placeholder="Example: 32820"
+                           ng-model="addCompDCtrl.company.address.postCode" required pattern="[0-9]{2}-[0-9]{3}" post-code-mask>
+                    <div ng-messages="companyForm.companyPostcode.$error" style="color:maroon" role="alert">
+                        <div ng-message="pattern">Company's post-code required pattern is xx-xxx</div>
+                    </div>
                 </div>
             </div>
 
@@ -66,16 +82,21 @@
 
             <div ng-if="addCompDCtrl.showSuccess">
                 <div ng-show="addCompDCtrl.addComp" uib-alert class="alert-success col-xs-offset-3 col-xs-9" close="addCompDCtrl.closeAddSuccess()">
-                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-                <span class="sr-only">Success:</span>
-                Company Added
-            </div></div>
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Success:</span>
+                    Company Added
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
+                    <div ng-show="addCompDCtrl.invalidFormAlert" class="alert alert-danger" id="alert" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        Requested fields are not correct!
+                    </div>
                     <button type="submit" class="btn btn-primary">Add new company</button>
-                    <ng-transclude>
-                    </ng-transclude>
+                    <ng-transclude></ng-transclude>
                 </div>
             </div>
         </form>
