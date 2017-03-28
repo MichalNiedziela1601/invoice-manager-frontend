@@ -4,10 +4,10 @@
 
     function AddCompanyDirective(CompanyDAO)
     {
+        var ctrl = this;
 
         function controller()
         {
-            var ctrl = this;
             ctrl.addComp = false;
             ctrl.invalidFormAlert = false;
 
@@ -42,7 +42,9 @@
                     }).catch(function (error)
                     {
                         ctrl.showAlert = false;
+                        console.error(error);
                     });
+
                 }
             }
 

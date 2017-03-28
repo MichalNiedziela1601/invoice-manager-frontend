@@ -24,8 +24,11 @@
 ### 4.Testing aplication 
 ```sh
 - npm test
+    run: test and jshint
 ```
 OR
 ```sh
 - grunt test:dev
+
+- grunt jshint
 ```

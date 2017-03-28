@@ -8,7 +8,7 @@ describe('InvoiceListController', function ()
     var filterBuy;
 
     beforeEach(module('app'));
-    beforeEach(inject(function ($controller, InvoiceDAO)
+    beforeEach(inject(function ($controller)
     {
         invoices = [
             {id: 1, invoiceNr: 'Fv 12/23', type: 'sell'},
