@@ -11,6 +11,8 @@
             }
         });
 
+        var nips = $resource('/api/companies/:a',null);
+
         return {
             findByNip: function (nip)
             {
@@ -21,6 +23,9 @@
             }, addCompany: function (company)
             {
                 return api.addCompany(company).$promise;
+            },
+            getNips: function(nip){
+                return nips.query({a: nip}).$promise;
             }
         };
     }

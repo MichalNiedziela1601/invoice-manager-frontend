@@ -10,15 +10,18 @@ describe('addInvoice.controller.js', function ()
     var mockFoundTestCompany;
     var fakeModal;
     var baseTime;
+    var scope;
+    var nips;
 
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal)
+    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope)
     {
         invoiceDaoMock = InvoiceDAO;
         companyDaoMock = CompanyDAO;
         uibModal = $uibModal;
+        scope = $rootScope.$new();
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
         };
@@ -26,6 +29,11 @@ describe('addInvoice.controller.js', function ()
         mockFoundTestCompany = {
             id: '2', name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: 33 - 120, city: 'City 1'
         };
+
+        nips = [
+            {nip: 1234567890},
+            {nip: 1223456789}
+        ];
 
 
         spyOn(invoiceDaoMock, 'add').and.callFake(function ()
@@ -39,6 +47,16 @@ describe('addInvoice.controller.js', function ()
                 return successfulPromise(mockTestCompany);
             } else if (booleanValue === 1224567890) {
                 return successfulPromise(mockFoundTestCompany);
+            } else {
+                return unsuccessfulPromise();
+            }
+        });
+
+        spyOn(companyDaoMock, 'getNips').and.callFake(function(nip){
+            if(nip === 12){
+                return successfulPromise(nips);
+            } else if (nip === 1233){
+                return successfulPromise([]);
             } else {
                 return unsuccessfulPromise();
             }
@@ -63,7 +81,7 @@ describe('addInvoice.controller.js', function ()
             }
         };
 
-        addCtrl = $controller('AddInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal});
+        addCtrl = $controller('AddInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal, $scope: scope });
 
     }));
 
@@ -349,6 +367,67 @@ describe('addInvoice.controller.js', function ()
             it('should set variable showBox to true', function ()
             {
                 expect(addCtrl.showBox).toEqual(true);
+            });
+        });
+    });
+
+    describe('findCompaniesByNip', function ()
+    {
+        var nipsResult;
+        describe('when pass valid part of nip', function ()
+        {
+            beforeEach(function ()
+            {
+                addCtrl.findCompaniesByNip(12).then(function(result){
+                    nipsResult = result;
+                });
+            });
+            it('should call CompanyDAO.getNips', function ()
+            {
+                expect(companyDaoMock.getNips).toHaveBeenCalled();
+            });
+            it('should call CompanyDAO.getNIps with args', function ()
+            {
+                expect(companyDaoMock.getNips).toHaveBeenCalledWith(12);
+            });
+            it('should return array of nips', function ()
+            {
+                expect(nipsResult).toEqual(nips);
+            });
+        });
+
+        describe('when not pass valid part of nip', function ()
+        {
+            beforeEach(function ()
+            {
+                addCtrl.findCompaniesByNip(1233).then(function (result)
+                {
+                    nipsResult = result;
+                });
+            });
+            it('should return empty array', function ()
+            {
+                expect(nipsResult).toEqual([]);
+            });
+        });
+    });
+
+    describe('onSelect', function ()
+    {
+        describe('when choose nip from typehead', function ()
+        {
+            beforeEach(function ()
+            {
+                spyOn(addCtrl,'findContractor');
+                scope.onSelect(nips[0]);
+            });
+            it('should set nipContractor', function ()
+            {
+                expect(addCtrl.nipContractor).toBe(nips[0].nip);
+            });
+            it('should call findContractor', function ()
+            {
+                expect(addCtrl.findContractor).toHaveBeenCalled();
             });
         });
     });
