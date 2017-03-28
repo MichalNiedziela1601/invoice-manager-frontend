@@ -43,19 +43,7 @@ module.exports = function (grunt)
                 }
             }, proxies: [{
                 context: '/api', host: 'localhost', port: 3000, changeOrigin: true
-            }], jshint: {
-                default: {
-                    options: {
-                        jshintrc: true
-                    }, files: {
-                        src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']
-                    }
-                }, verify: {
-                    options: {
-                        jshintrc: true, reporter: 'checkstyle', reporterOutput: 'target/jshint.xml'
-                    }, files: {src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']}
-                }
-            }
+            }]
         }, karma: {
             options: {
                 configFile: 'test/karma.conf.js'
@@ -63,6 +51,19 @@ module.exports = function (grunt)
                 singleRun: true
             }, dev: {
                 singleRun: false
+            }
+        },
+        jshint: {
+            default: {
+                options: {
+                    jshintrc: true
+                }, files: {
+                    src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']
+                }
+            }, verify: {
+                options: {
+                    jshintrc: true, reporter: 'checkstyle', reporterOutput: 'target/jshint.xml'
+                }, files: {src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']}
             }
         }
 
@@ -72,7 +73,7 @@ module.exports = function (grunt)
 
     grunt.registerTask('default', ['serve']);
 
-    grunt.registerTask('verify', ['karma:unit']);
+    grunt.registerTask('verify', ['jshint:default','karma:unit']);
 
     grunt.registerTask('test:dev', ['karma:dev']);
 

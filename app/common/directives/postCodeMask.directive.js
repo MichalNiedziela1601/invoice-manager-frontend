@@ -8,7 +8,7 @@
         function linkFn(scope, elem, attrs, NgModelCtrl)
         {
             var formatPostCode = function(value){
-                if(value === undefined) return '';
+                if(value === undefined){ return '';}
                 value = value.toString();
                 value = value.replace(/[^0-9]/g,'');
                 if(value.length > 5){
@@ -24,11 +24,11 @@
             {
                 var value = elem.val();
                 var original = value;
-                if(!value || value.length == 0) {
+                if(!value || value.length === 0) {
                     return;
                 }
                 value = formatPostCode(value);
-                if(value != original){
+                if(value !== original){
                     elem.val(value);
                     elem.triggerHandler('input');
                 }
@@ -38,7 +38,7 @@
                 var keycode = e.keyCode;
                 var isTextInputKey =
                         (keycode > 47 && keycode < 58) ||
-                        keycode == 32 || keycode == 8 ||
+                        keycode === 32 || keycode === 8 ||
                         (keycode > 64 && keycode < 91) ||
                         (keycode > 95 && keycode < 112) ||
                         (keycode > 185 && keycode < 193) ||
@@ -49,7 +49,7 @@
             });
 
             NgModelCtrl.$formatters.push(function(value){
-                if (!value || value.length == 0) {
+                if (!value || value.length === 0) {
                     return value;
                 }
                 value = formatPostCode(value);
