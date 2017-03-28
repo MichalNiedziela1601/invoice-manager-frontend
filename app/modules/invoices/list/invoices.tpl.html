@@ -1,43 +1,46 @@
 <div class="row">
-    <h1>{{invoicesCtrl.message}}</h1>
+
+    <div class="col-md-10 col-md-offset-1">
+        <h1 class="page-header text-center">{{invoicesCtrl.message}}</h1>
+        <uib-tabset active="active" class="invoicesPanel">
+            <uib-tab index="0" heading="Sell">
+                <div class="col-md-6">
+                    <table class="table table-bordered table-condensed">
+                        <tbody>
+                        <tr>
+                            <td>Number Invoice's</td>
+                            <td>Create Date</td>
+                            <td>Expire Date</td>
+                        </tr>
+                        <tr ng-repeat="sell in invoicesCtrl.invoicesListSale">
+                            <td>
+                                <a ng-href="/invoices/details/{{sell.id}}">{{sell.invoiceNr}}</a></td>
+                            <td>{{sell.createDate | date:'dd-MM-yyyy'}}</td>
+                            <td>{{sell.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+            <uib-tab index="1" heading="Buy">
+                <div class="col-md-6">
+                    <table class="table table-bordered table-condensed">
+                        <tbody>
+                        <tr>
+                            <td>Number Invoice's</td>
+                            <td>Create Date</td>
+                            <td>Expire Date</td>
+                        </tr>
+                        <tr ng-repeat="buy in invoicesCtrl.invoicesListBuy">
+                            <td>
+                                <a ng-href="/invoices/details/{{buy.id}}">{{buy.invoiceNr}}</a></td>
+                            <td>{{buy.createDate | date:'dd-MM-yyyy'}}</td>
+                            <td>{{buy.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
 </div>
-<uib-tabset active="active" class="invoicesPanel">
-    <uib-tab index="0" heading="Sell">
-        <div class="col-md-6">
-            <table class="table table-bordered table-condensed">
-                <tbody>
-                <tr>
-                    <td>Number Invoice's</td>
-                    <td>Create Date</td>
-                    <td>Expire Date</td>
-                </tr>
-                <tr ng-repeat="sell in invoicesCtrl.invoicesListSale">
-                    <td>
-                        <a ng-href="/invoices/details/{{sell.id}}">{{sell.invoiceNr}}</a></td>
-                    <td>{{sell.createDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{sell.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </uib-tab>
-    <uib-tab index="1" heading="Buy">
-        <div class="col-md-6">
-            <table class="table table-bordered table-condensed">
-                <tbody>
-                <tr>
-                    <td>Number Invoice's</td>
-                    <td>Create Date</td>
-                    <td>Expire Date</td>
-                </tr>
-                <tr ng-repeat="buy in invoicesCtrl.invoicesListBuy">
-                    <td>
-                        <a ng-href="/invoices/details/{{buy.id}}">{{buy.invoiceNr}}</a></td>
-                    <td>{{buy.createDate | date:'dd-MM-yyyy'}}</td>
-                    <td>{{buy.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </uib-tab>
-</uib-tabset>
