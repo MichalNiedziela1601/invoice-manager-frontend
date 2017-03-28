@@ -9,17 +9,23 @@
         {
             var ctrl = this;
             ctrl.addComp = false;
+            ctrl.invalidFormAlert = false;
 
-            function addCompany()
+            function addCompany(form)
             {
-                if(undefined !== ctrl.company.regon && ctrl.company.regon.length === 0){
-                    delete ctrl.company.regon;
+                if (form.$valid) {
+                    if (undefined !== ctrl.company.regon && ctrl.company.regon.length === 0) {
+                        delete ctrl.company.regon;
+                    }
+                    CompanyDAO.addCompany(ctrl.company).then(function ()
+                    {
+                        ctrl.addComp = true;
+                        ctrl.showDirective();
+                    });
+                } else {
+                    ctrl.invalidFormAlert = true;
                 }
-                CompanyDAO.addCompany(ctrl.company).then(function ()
-                {
-                    ctrl.addComp = true;
-                    ctrl.showDirective();
-                });
+
             }
 
             function closeAddSuccess()
@@ -46,17 +52,9 @@
         }
 
         return {
-            restrict: 'EA',
-            replace: true,
-            bindToController: {
-                company: '=',
-                showDirective: '&',
-                showSuccess: '@'
-            },
-            transclude: true,
-            templateUrl: '/common/directives/addCompany.tpl.html',
-            controller: controller,
-            controllerAs: 'addCompDCtrl'
+            restrict: 'EA', replace: true, bindToController: {
+                company: '=', showDirective: '&', showSuccess: '@'
+            }, transclude: true, templateUrl: '/common/directives/addCompany.tpl.html', controller: controller, controllerAs: 'addCompDCtrl'
         };
     }
 
