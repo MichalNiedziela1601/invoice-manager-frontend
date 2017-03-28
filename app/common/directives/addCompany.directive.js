@@ -8,13 +8,20 @@
         function controller()
         {
             var ctrl = this;
+            ctrl.addComp = false;
 
             function addCompany()
             {
                 CompanyDAO.addCompany(ctrl.company).then(function ()
                 {
+                    ctrl.addComp = true;
                     ctrl.showDirective();
                 });
+            }
+
+            function closeAddSuccess()
+            {
+                ctrl.addComp = false;
             }
 
             function validateNip()
@@ -32,6 +39,7 @@
 
             ctrl.validateNip = validateNip;
             ctrl.addCompany = addCompany;
+            ctrl.closeAddSuccess = closeAddSuccess;
         }
 
         return {
@@ -39,7 +47,8 @@
             replace: true,
             bindToController: {
                 company: '=',
-                showDirective: '&'
+                showDirective: '&',
+                showSuccess: '@'
             },
             transclude: true,
             templateUrl: '/common/directives/addCompany.tpl.html',
