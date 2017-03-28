@@ -12,6 +12,9 @@
 
             function addCompany()
             {
+                if(undefined !== ctrl.company.regon && ctrl.company.regon.length === 0){
+                    delete ctrl.company.regon;
+                }
                 CompanyDAO.addCompany(ctrl.company).then(function ()
                 {
                     ctrl.addComp = true;
