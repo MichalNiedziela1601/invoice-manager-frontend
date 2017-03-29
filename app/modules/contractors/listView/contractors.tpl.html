@@ -17,8 +17,8 @@
             <tr ng-repeat="company in displayedCollection">
                 <td>{{company.name}}</td>
                 <td>{{company.nip}}</td>
-                <td>{{company.address.street}} {{company.address.build_nr}}<span ng-if="company.address.flat_nr">{{'/'+company.address.flat_nr}}</span>
-                    {{company.address.post_code}} {{company.address.city }}</td>
+                <td>{{company.address.street}} {{company.address.buildNr}}<span ng-if="company.address.flatNr">{{'/'+company.address.flatNr}}</span>
+                    {{company.address.postCode}} {{company.address.city }}</td>
             </tr>
             </tbody>
             <tfoot>
