@@ -19,10 +19,7 @@
                 ctrl.alertMinLength = true;
             } else {
                 ctrl.alertMinLength = false;
-                AuthDAO.registration(ctrl.registrationCredential).then(function ()
-                {
-
-                });
+                AuthDAO.registration(ctrl.registrationCredential);
             }
         };
 
