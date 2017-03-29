@@ -40,10 +40,9 @@
                     CompanyDAO.findByNip(ctrl.company.nip).then(function ()
                     {
                         ctrl.showAlert = true;
-                    }).catch(function (error)
+                    }).catch(function ()
                     {
                         ctrl.showAlert = false;
-                        console.error(error);
                     });
                 }
             }

@@ -19,7 +19,7 @@
                 <label for="nip_comp" class="col-sm-3 control-label">NIP*</label>
                 <div class="col-sm-9">
                     <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="Nip"
-                            ng-model="addCompDCtrl.company.nip" required nip-mask>
+                            ng-model="addCompDCtrl.company.nip" required nip-mask ng-change="addCompDCtrl.validateNip()">
                     <p ng-show="addCompDCtrl.showAlert">Nip already exsist</p>
                     <div ng-messages="companyForm.companyNip.$error" style="color:maroon" role="alert">
                         <div ng-message="pattern">Company's nip required length is 10</div>
@@ -95,7 +95,7 @@
                         <span class="sr-only">Error:</span>
                         Requested fields are not correct!
                     </div>
-                    <button type="submit" class="btn btn-primary">Add new company</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="addCompDCtrl.showAlert">Add new company</button>
                     <ng-transclude></ng-transclude>
                 </div>
             </div>
