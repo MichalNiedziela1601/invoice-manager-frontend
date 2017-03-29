@@ -5,14 +5,12 @@
     {
         var ctrl = this;
         ctrl.message = 'Contractors';
+        ctrl.itemsByPage = 10;
 
         CompanyDAO.query().then(function (data)
         {
             ctrl.companies = data;
         });
-        ctrl.company = {
-
-        };
     }
 
     angular.module('app').controller('ContractorsController', ['CompanyDAO', ContractorsController]);

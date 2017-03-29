@@ -4,10 +4,11 @@
 
     function AddCompanyDirective(CompanyDAO)
     {
-        var ctrl = this;
+
 
         function controller()
         {
+            var ctrl = this;
             ctrl.addComp = false;
             ctrl.invalidFormAlert = false;
 
@@ -44,7 +45,6 @@
                         ctrl.showAlert = false;
                         console.error(error);
                     });
-
                 }
             }
 

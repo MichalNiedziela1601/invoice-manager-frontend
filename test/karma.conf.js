@@ -23,6 +23,8 @@ module.exports = function (config)
             'app/bower_components/angular-route/angular-route.min.js',
             'app/bower_components/angular-sanitize/angular-sanitize.min.js',
             'app/bower_components/ng-file-upload/ng-file-upload.min.js',
+            'app/bower_components/angular-messages/angular-messages.js',
+            'app/bower_components/angular-smart-table/dist/smart-table.min.js',
             'app/app.js',
             'app/app.config.js',
             'app/app.route.js',
