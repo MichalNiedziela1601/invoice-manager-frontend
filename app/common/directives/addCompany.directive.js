@@ -4,8 +4,6 @@
 
     function AddCompanyDirective(CompanyDAO)
     {
-
-
         function controller()
         {
             var ctrl = this;
@@ -26,7 +24,6 @@
                 } else {
                     ctrl.invalidFormAlert = true;
                 }
-
             }
 
             function closeAddSuccess()
