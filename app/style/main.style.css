@@ -1,60 +1,95 @@
-ul {
-    padding-left: 0px;
+#sidebar-wrapper {
+    top: 0;
+    left: -200px;
+    width: 250px;
+    background-color: #5677fc;
+    color: white;
+    position: fixed;
+    height: 100%;
+    z-index: 1;
 }
 
-.sidenav {
-    height: 100%; /* 100% Full-height */
-    position: fixed; /* Stay in place */
-    width: 266px;
+.navbar {
+    width: 100%;
+}
+
+.sidebar-nav {
+    position: absolute;
     top: 0;
-    left: 0;
-    background-color: #4A78C0;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 74px; /* Place content 60px from the top */
-    transition: 0.3s; /* 0.5 second transition effect to slide in the sidenav */
-    z-index: 53;
+    margin: 0;
+    padding: 0;
+    width: 250px;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 50px;
+}
+
+.sidebar-nav li a {
+    color: white;
+    display: block;
+    text-decoration: none;
+}
+
+.sidebar-nav li a:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar-nav li a:active, .sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+#sidebar-wrapper.sidebar-toggle {
+    transition: all 0.3s ease-out;
+    margin-left: -200px;
+}
+
+@media (min-width: 760px) {
+    #sidebar-wrapper.sidebar-toggle {
+        transition: 0s;
+        left: 200px;
+    }
+    .visibleBlock {
+        display: none;
+    }
+    #navbar {
+        display: none !important;
+    }
+
+}
+
+ul {
+    padding-left: 0;
 }
 
 /* The navigation menu links */
-.sidenav a {
-    padding: 12px 50px 12px 31px;
-    text-decoration: none;
-    font-size: 26px;
-    font-weight: 300;
-    font-family: 'Open Sans', sans-serif !important;
-    color: white;
-    display: block;
-    /*transition: 0.3s*/
-}
 
 .menu-1:active, .menu-2:active, .menu-3:active, .menu-1:focus, .menu-2:focus, .menu-3:focus {
     background: white;
     color: #4A78C0;
 }
 
-.sidenav a i {
-    margin-right: 12px;
-    width: 20px;
-}
-
-.menu-3, .menu-2, .menu-2-main, .menu-3-main{
+.menu-3, .menu-2, .menu-2-main, .menu-3-main {
     cursor: pointer;
 }
 
 .menu-toggle {
     margin-left: 12px;
-    font-size: 19px !important;
+
 }
 
 .add-comp-width {
     display: inline-block;
-    width: 100%;
 }
 
-.st-sort-ascent:after{
+.st-sort-ascent:after {
     content: '\25B2';
 }
 
-.st-sort-descent:after{
+.st-sort-descent:after {
     content: '\25BC';
 }
