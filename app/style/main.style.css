@@ -53,9 +53,11 @@
         transition: 0s;
         left: 200px;
     }
+
     .visibleBlock {
         display: none;
     }
+
     #navbar {
         display: none !important;
     }
@@ -92,4 +94,13 @@ ul {
 
 .st-sort-descent:after {
     content: '\25BC';
+}
+
+.logo2 {
+    height: 200px;
+}
+
+.logo {
+    height: 50px;
+    width: 110px
 }
