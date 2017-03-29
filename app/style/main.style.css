@@ -84,6 +84,7 @@ ul {
 
 .add-comp-width {
     display: inline-block;
+    width: 100%;
 }
 
 .st-sort-ascent:after {
