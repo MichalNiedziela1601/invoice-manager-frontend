@@ -2,32 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Manager</title>
     <base href="/"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="style/main.style.css">
-
 </head>
-<body ng-app="app">
-<div class="col-md-2" ng-controller="AppController as appCtrl">
-    <div class='sidenav '>
-        <ul class='sidebar-hide'>
-            <li><a class='menu-1' ng-href="/"><i class="fa fa-home" aria-hidden="true"></i>Start</a></li>
-            <li><a class='menu-2-main' ng-click="appCtrl.toggleCollapsed()"><i class="fa fa-user " aria-hidden="true"></i>Contractors</a></li>
-            <div uib-collapse="appCtrl.isCollapse">
-                <li><a class='menu-2 menu-toggle' ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i>Add contractors</a></li>
-                <li><a class='menu-2 menu-toggle' ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i>List contractors</a></li>
-            </div>
-            <li><a class='menu-3-main' ng-click="appCtrl.toggleCollapse()"><i class="fa fa-arrow-right" aria-hidden="true"></i>Invoice</a></li>
-            <div uib-collapse="appCtrl.isCollapsed">
-                <li><a class='menu-3 menu-toggle' ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i>Add invoice</a></li>
-                <li><a class='menu-3 menu-toggle' ng-href='/invoices'><i class="fa fa-clone" aria-hidden="true"></i>List of Invoices</a></li>
-            </div>
+<body ng-app="app" ng-controller="AppController as appCtrl">
+
+<nav class="navbar navbar-default" id="navbar" role="navigation">
+    <div>
+        <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand">
+            logo
+        </a>
+
+    </div>
+    <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed=true">
+        <ul class="nav nav-pills nav-stacked visibleBlock">
+            <li><a ng-href="/"><i class="fa fa-home" aria-hidden="true"></i> Start</a></li>
+            <li><i class="fa fa-user " aria-hidden="true"></i> Contractors</li>
+            <li><a ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i> Add contractors</a></li>
+            <li><a ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i> List contractors</a></li>
+            <li><i class="fa fa-arrow-right" aria-hidden="true"></i> Invoice</li>
+            <li><a ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i> Add invoice</a></li>
+            <li><a ng-href='/invoices'><i class="fa fa-clone" aria-hidden="true"></i> List of Invoices</a></li>
         </ul>
     </div>
+
+</nav>
+<div id="sidebar-wrapper" class="sidebar-toggle col-md-2">
+    <ul class="sidebar-nav">
+        <li><a class='menu-1' ng-href="/"><i class="fa fa-home" aria-hidden="true"></i>Start</a></li>
+        <li><a class='menu-2-main' ng-click="appCtrl.toggleCollapsed()"><i class="fa fa-user " aria-hidden="true"></i>Contractors</a></li>
+        <div uib-collapse="appCtrl.isCollapse">
+            <li><a class='menu-2 menu-toggle' ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i>Add contractors</a></li>
+            <li><a class='menu-2 menu-toggle' ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i>List contractors</a></li>
+        </div>
+        <li><a class='menu-3-main' ng-click="appCtrl.toggleCollapse()"><i class="fa fa-arrow-right" aria-hidden="true"></i>Invoice</a></li>
+        <div uib-collapse="appCtrl.isCollapsed">
+            <li><a class='menu-3 menu-toggle' ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i>Add invoice</a></li>
+            <li><a class='menu-3 menu-toggle' ng-href='/invoices'><i class="fa fa-clone" aria-hidden="true"></i>List of Invoices</a></li>
+        </div>
+    </ul>
 </div>
-<div class="col-md-10">
+<div class="col-md-10 col-md-offset-2">
     <div ng-view class="container-fluid"></div>
 </div>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
