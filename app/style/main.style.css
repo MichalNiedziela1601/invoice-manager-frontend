@@ -125,3 +125,7 @@ ul {
 .pointer-cursor {
     cursor: pointer;
 }
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
