@@ -2,7 +2,7 @@
     top: 0;
     left: -200px;
     width: 250px;
-    background-color: #5677fc;
+    background-color: #4A78C0;
     color: white;
     position: fixed;
     height: 100%;
@@ -107,7 +107,11 @@ ul {
     height: 45px;
     width: 65px;
     margin-left: 3px;
-    margin-top:  2px ;
+    margin-top: 2px;
+}
+
+.space {
+    margin-right: 3%
 }
 
 .top-margin-2 {
