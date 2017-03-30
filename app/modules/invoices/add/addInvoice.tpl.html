@@ -109,7 +109,7 @@
                         <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()">
 
                             <div class="form-group">
-                                <label class="col-sm-3 col-sm-push-1">Select type of transaction:</label>
+                                <label class="col-sm-3 control-label">Type of transaction</label>
                                 <div class="col-sm-9">
                                     <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell" required>Sell</label>
                                     <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy">Buy</label>
@@ -151,7 +151,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="invoice_expire_date" class="col-sm-3 control-label">Expire end date</label>
+                                <label for="invoice_expire_date" class="col-sm-3 control-label">Expire date</label>
                                 <div class="col-sm-9">
                                     <p class="input-group">
                                         <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.executionDatePicker.date"
@@ -188,7 +188,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 col-sm-push-1">Status</label>
+                                <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-9">
                                     <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="paid" required>Paid</label>
                                     <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="unpaid">Unpaid</label>
@@ -225,7 +225,7 @@
                         <form class="form-horizontal" name="person" ng-submit="addInvoiceCtrl.addInvoicePerson()">
 
                             <div class="form-group">
-                                <label class="col-sm-3 col-sm-push-1">Select type of transaction:</label>
+                                <label class="col-sm-3 control-label">Type of transaction</label>
                                 <div class="col-sm-9">
                                     <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell" required>Sell</label>
                                     <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy">Buy</label>
@@ -251,16 +251,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="invoice_type_per" class="col-sm-3 control-label">Invoice typ</label>
-                                <div class="col-sm-9">
-                                    <input type="text" ng-minlength="3" class="form-control" name="invoiceType" id="invoice_type_per" placeholder="Invoice type"
-                                           ng-model="addInvoiceCtrl.invoicePerson.type" required>
-                                    <div ng-messages="person.invoiceType.$error" style="color:maroon" role="alert">
-                                        <div ng-message="minlength">Transaction type required min. length is 3</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="invoice_create_date_per" class="col-sm-3 control-label">Create date</label>
                                 <div class="col-sm-9">
                                     <p class="input-group">
@@ -276,7 +266,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="invoice_expire_date_per" class="col-sm-3 control-label">Expire end date</label>
+                                <label for="invoice_expire_date_per" class="col-sm-3 control-label">Expire date</label>
                                 <div class="col-sm-9">
                                     <p class="input-group">
                                         <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.executionDatePicker.date"
@@ -306,7 +296,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 col-sm-push-1">Status</label>
+                                <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-9">
                                     <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="paid" required>Paid</label>
                                     <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="unpaid">Unpaid</label>
