@@ -5,6 +5,8 @@
     {
         var ctrl = this;
         ctrl.message = 'Invoices';
+        ctrl.buyByPage = 10;
+        ctrl.sellByPage = 10;
 
         InvoiceDAO.query({type: 'sell'}).then(function (data)
         {
