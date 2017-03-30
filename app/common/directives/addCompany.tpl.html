@@ -18,7 +18,7 @@
             <div class="form-group">
                 <label for="nip_comp" class="col-sm-3 control-label">NIP*</label>
                 <div class="col-sm-9">
-                    <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="Nip"
+                    <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"
                             ng-model="addCompDCtrl.company.nip" required nip-mask ng-change="addCompDCtrl.validateNip()">
                     <p ng-show="addCompDCtrl.showAlert">Nip already exsist</p>
                     <div ng-messages="companyForm.companyNip.$error" style="color:maroon" role="alert">

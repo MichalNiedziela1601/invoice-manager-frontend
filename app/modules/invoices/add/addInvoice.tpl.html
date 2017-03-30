@@ -6,9 +6,9 @@
             <div class="findCompanyInput">
                 <div class="row well">
 
-                    <label class="col-sm-5">Find contractor by nip:</label>
+                    <label class="col-sm-5">Find contractor by NIP:</label>
                     <div class="input-group col-md-6">
-                        <div class="typeahead-demo"><input type="text" ng-model="addInvoiceCtrl.asyncSelected" placeholder="Nip contractors"
+                        <div class="typeahead-demo"><input type="text" ng-model="addInvoiceCtrl.asyncSelected" placeholder="NIP contractors"
                                                            uib-typeahead="companies.nip for companies in addInvoiceCtrl.findCompaniesByNip($viewValue)"
                                                            typeahead-loading="addInvoiceCtrl.loadingLocations" typeahead-no-results="addInvoiceCtrl.noResults"
                                                            class="form-control" typeahead-on-select="onSelect($item,$model,$label)">
