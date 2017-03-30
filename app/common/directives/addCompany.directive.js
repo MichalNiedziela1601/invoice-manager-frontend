@@ -9,7 +9,6 @@
             var ctrl = this;
             ctrl.addComp = false;
             ctrl.invalidFormAlert = false;
-
             function addCompany(form)
             {
                 if (form.$valid) {
@@ -56,9 +55,17 @@
         }
 
         return {
-            restrict: 'EA', replace: true, bindToController: {
-                company: '=', showDirective: '&', showSuccess: '@'
-            }, transclude: true, templateUrl: '/common/directives/addCompany.tpl.html', controller: controller, controllerAs: 'addCompDCtrl'
+            restrict: 'EA',
+            replace: true,
+            bindToController: {
+                company: '=',
+                showDirective: '&',
+                showSuccess: '@'
+            },
+            transclude: true,
+            templateUrl: '/common/directives/addCompany.tpl.html',
+            controller: controller,
+            controllerAs: 'addCompDCtrl'
         };
     }
 

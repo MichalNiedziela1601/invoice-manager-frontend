@@ -9,6 +9,7 @@
             enabled: true, requireBase: false
         });
 
+
     }
 
     angular.module('app').config(config);
