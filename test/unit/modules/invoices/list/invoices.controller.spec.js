@@ -37,6 +37,14 @@ describe('InvoiceListController', function ()
         {
             expect(invoiceCtrl.message).toEqual('Invoices');
         });
+        it('should set sellByPage', function ()
+        {
+            expect(invoiceCtrl.sellByPage).toEqual(10);
+        });
+        it('should set buyByPage', function ()
+        {
+            expect(invoiceCtrl.buyByPage).toEqual(10);
+        });
         it('should call InvoiceDAO.query', function ()
         {
             expect(InvoiceDAOMock.query).toBeDefined();
