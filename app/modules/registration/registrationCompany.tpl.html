@@ -41,7 +41,7 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-                            <input pattern="[0-9]{10}" type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.nip" name="nip" id="nip" placeholder="Enter your NIP" required>
+                            <input pattern="[0-9]{10}" type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.nip" nip-mask name="nip" id="nip" placeholder="Enter your NIP" required>
                         </div>
                         <div ng-messages="registerForm.nip.$error" style="color:maroon" role="alert">
                             <div ng-message="pattern">Company's nip required length is 10</div>
