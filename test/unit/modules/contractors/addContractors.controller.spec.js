@@ -27,10 +27,6 @@ describe('AddContractors.controller', function ()
         {
             addContractor.company = { name: 'Firma test', nip: 1233456788};
         });
-        it('before call company should have some value', function ()
-        {
-            expect(addContractor.company).toEqual({ name: 'Firma test', nip: 1233456788});
-        });
         it('should clear company after call function', function ()
         {
             addContractor.closeAddCompanySuccess();
