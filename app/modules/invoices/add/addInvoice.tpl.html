@@ -42,7 +42,7 @@
             <uib-tabset active="active">
                 <uib-tab index="0" heading="Company invoice">
                     <div class="col-md-12 tabs-top-marg">
-                        <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()">
+                        <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()" novalidate>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Type of transaction</label>
@@ -158,7 +158,7 @@
                 <uib-tab index="1" heading="Person invoice">
 
                     <div class="col-md-12 tabs-top-marg">
-                        <form class="form-horizontal" name="person" ng-submit="addInvoiceCtrl.addInvoicePerson()">
+                        <form class="form-horizontal" name="person" ng-submit="addInvoiceCtrl.addInvoicePerson()" novalidate>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Type of transaction</label>
