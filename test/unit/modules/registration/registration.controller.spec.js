@@ -92,7 +92,6 @@ describe('registration.controller.js', function()
             {
                 registerCtrl.registrationCredential.password = 'olaola';
                 registerCtrl.registrationRepeatPassword.repeatPassword = 'olaola1';
-                // registerCtrl.isPasswordsEqual();
             });
             it('should return true if passwords is not the same ', function ()
             {
