@@ -1,5 +1,5 @@
 'use strict';
-describe('addCompany.directive.js', function ()
+describe('AddCompanyDirective', function ()
 {
     var controller;
     var companyDaoMock;

@@ -1,4 +1,4 @@
-describe('addInvoice.controller.js', function ()
+describe('AddInvoiceController', function ()
 {
     'use strict';
 
