@@ -127,9 +127,13 @@
                             <div class="form-group">
                                 <label for="invoice_nr" class="col-sm-3 control-label">Invoice number</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="invoice_nr" placeholder="Invoice number"
+                                    <input type="text" ng-minlength="5" class="form-control" name="invoiceNumber" id="invoice_nr" placeholder="Invoice number"
                                            ng-model="addInvoiceCtrl.invoiceCompany.invoiceNr" required>
+                                    <div ng-messages="company.invoiceNumber.$error" style="color:maroon" role="alert">
+                                        <div ng-message="minlength">Invoice ID required min. length is 5</div>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="form-group">
                                 <label for="invoice_create_date" class="col-sm-3 control-label">Create date</label>
@@ -239,15 +243,21 @@
                             <div class="form-group">
                                 <label for="invoice_nr_person" class="col-sm-3 control-label">Invoice number</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="invoice_nr_person" placeholder="Invoice number"
+                                    <input type="text" ng-minlength="5" class="form-control" name="invoiceNumberPerson" id="invoice_nr_person" placeholder="Invoice number"
                                            ng-model="addInvoiceCtrl.invoicePerson.invoiceNr" required>
+                                    <div ng-messages="person.invoiceNumberPerson.$error" style="color:maroon" role="alert">
+                                        <div ng-message="minlength">Invoice ID required min. length is 5</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="invoice_type_per" class="col-sm-3 control-label">Invoice typ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="invoice_type_per" placeholder="Invoice type"
+                                    <input type="text" ng-minlength="3" class="form-control" name="invoiceType" id="invoice_type_per" placeholder="Invoice type"
                                            ng-model="addInvoiceCtrl.invoicePerson.type" required>
+                                    <div ng-messages="person.invoiceType.$error" style="color:maroon" role="alert">
+                                        <div ng-message="minlength">Transaction type required min. length is 3</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
