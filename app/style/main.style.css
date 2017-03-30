@@ -49,6 +49,13 @@
     margin-left: -200px;
 }
 
+@media (max-width: 1380px) and (min-width: 1200px) {
+    #sidebar-wrapper.sidebar-toggle {
+        transition: all 0.3s ease-out;
+        margin-left: -230px;
+    }
+}
+
 @media (max-width: 940px) and (min-width: 767px) {
     #sidebar-wrapper.sidebar-toggle {
         transition: all 0.3s ease-out;

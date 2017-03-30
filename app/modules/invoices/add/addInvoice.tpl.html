@@ -25,16 +25,16 @@
         </div>
 
         <div class="col-md-12">
-            <div class="col-md-6 loggedCompany">
+            <div class="col-md-12 col-lg-6 loggedCompany">
                 <h3>Logged Company</h3>
                 <contractor-info company="addInvoiceCtrl.mockedCompany"></contractor-info>
 
             </div>
 
-            <div class="col-md-6 findCompanyDetails" ng-show="addInvoiceCtrl.showBox">
+            <div class="col-md-12 col-lg-6 findCompanyDetails" >
                 <h3>Contractor</h3>
-                <contractor-info company="addInvoiceCtrl.companyDetails"></contractor-info>
-
+                <contractor-info ng-show="addInvoiceCtrl.showBox" company="addInvoiceCtrl.companyDetails"></contractor-info>
+                <div class="well" ng-show="!addInvoiceCtrl.showBox"><strong>Enter NIP to find company</strong></div>
             </div>
         </div>
         <div class="tabs-top-marg col-md-12">
@@ -260,7 +260,7 @@
         </div>
 
         <div class="jumbotron boxBeforeAddPdf" ng-show="!addInvoiceCtrl.file">
-            <p>Click 'add file' and select invoice's file in pdf format to see a preview<br> <i class="fa fa-file-pdf-o" aria-hidden="true"></i></p>
+            <p>Click <strong>add file</strong> and select invoice's file in pdf format to see a preview<br> <i class="fa fa-file-pdf-o" aria-hidden="true"></i></p>
 
         </div>
 
