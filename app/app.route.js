@@ -13,23 +13,31 @@
         });
 
         $routeProvider.when('/contractors', {
-            templateUrl: 'modules/contractors/listView/contractors.tpl.html', controller: 'ContractorsController', controllerAs: 'contractorsCtrl'
+            templateUrl: 'modules/contractors/listView/contractors.tpl.html',
+            controller: 'ContractorsController',
+            controllerAs: 'contractorsCtrl',
+            requireAuth: true
         });
 
         $routeProvider.when('/add/contractors', {
             templateUrl: '/modules/contractors/add/addContractors.tpl.html',
             controller: 'AddContractorsController',
-            controllerAs: 'addContractorsCtrl'
+            controllerAs: 'addContractorsCtrl',
+            requireAuth: true
         });
 
         $routeProvider.when('/invoices', {
             templateUrl: 'modules/invoices/list/invoices.tpl.html',
             controller: 'InvoicesController',
             controllerAs: 'invoicesCtrl',
-            css: '/modules/invoices/list/invoices.css'
+            css: '/modules/invoices/list/invoices.css',
+            requireAuth: true
         });
         $routeProvider.when('/invoices/details/:id', {
-            templateUrl: '/modules/invoices/details/invoiceDetails.tpl.html', controller: 'InvoiceDetailsController', controllerAs: 'InvoiceDetailsCtrl'
+            templateUrl: '/modules/invoices/details/invoiceDetails.tpl.html',
+            controller: 'InvoiceDetailsController',
+            controllerAs: 'InvoiceDetailsCtrl',
+            requireAuth: true
         });
 
         $routeProvider.when('/registration', {
@@ -47,7 +55,8 @@
             templateUrl: '/modules/invoices/add/addInvoice.tpl.html',
             controller: 'AddInvoiceController',
             controllerAs: 'addInvoiceCtrl',
-            css: '/modules/invoices/add/addInvoice.css'
+            css: '/modules/invoices/add/addInvoice.css',
+            requireAuth: true
 
         }).otherwise({redirectTo: '/'});
     }

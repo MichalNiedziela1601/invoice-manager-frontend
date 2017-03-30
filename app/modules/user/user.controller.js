@@ -1,13 +1,15 @@
 (function ()
 {
     'use strict';
-    function UserController(UserDAO)
+    function UserController(UserDAO,jwtHelper,AuthDAO,CompanyDAO)
     {
         var ctrl = this;
 
         ctrl.addressOpen = true;
         ctrl.personalOpen = true;
         ctrl.bankOpen = true;
+        ctrl.showName = false;
+        ctrl.companyName = null;
 
         ctrl.openAddress = function ()
         {
@@ -27,15 +29,12 @@
             ctrl.addressOpen = true;
             ctrl.personalOpen = true;
         };
+        ctrl.token = jwtHelper.decodeToken(AuthDAO.getToken());
 
 
         ctrl.userAddressData =
         {
-            street: '',
-            numberBuilding: '',
-            numberFloat: '',
-            city: '',
-            zipCode: ''
+
         };
         ctrl.userPersonalData =
         {
@@ -48,6 +47,16 @@
             bankName: '',
             accountNumber: ''
         };
+
+        CompanyDAO.findByNip(ctrl.token.nip).then(function(company){
+            ctrl.companyName = company.name;
+            ctrl.userAddressData.street = company.street;
+            ctrl.userAddressData.buildNr = company.buildNr;
+            ctrl.userAddressData.flatNr = company.flatNr;
+            ctrl.userAddressData.postCode = company.postCode;
+            ctrl.userAddressData.city = company.city;
+            ctrl.showName = true;
+        });
 
         ctrl.addAddress = function ()
         {
@@ -73,6 +82,6 @@
 
     }
 
-    angular.module('app').controller('UserController', ['UserDAO', UserController]);
+    angular.module('app').controller('UserController', ['UserDAO','jwtHelper','AuthDAO','CompanyDAO', UserController]);
 
 })();

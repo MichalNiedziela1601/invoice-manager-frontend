@@ -14,7 +14,7 @@
 }
 
 .sidebar-nav {
-    position: absolute;
+
     top: 0;
     margin: 0;
     padding: 0;
@@ -61,6 +61,7 @@
         transition: all 0.3s ease-out;
         margin-left: -230px;
     }
+
 }
 
 @media (min-width: 768px) {
@@ -76,6 +77,8 @@
     #navbar {
         display: none !important;
     }
+
+
 
 }
 
@@ -143,3 +146,28 @@ ul {
 .no-bottom-margin {
     margin-bottom: 0;
 }
+
+.login-info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+@media screen and (max-width: 768px){
+    .login-info {
+        display: none;
+    }
+    .login {
+        display: none;
+    }
+
+}
+
+.nav-login {
+    position: absolute;
+    right: 80px;
+    top: 8px;
+}
+
+

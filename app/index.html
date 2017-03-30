@@ -9,53 +9,65 @@
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="style/main.style.css">
 </head>
-<body ng-app="app" ng-controller="AppController as appCtrl">
+<body ng-app="app">
 
-<nav class="navbar navbar-default" id="navbar" role="navigation">
-    <div>
-        <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a>
-            <img class="logo" src="assets/img/logo.png">
-        </a>
-    </div>
+<div ng-controller="AppController as appCtrl">
+    <nav class="navbar navbar-default" id="navbar" role="navigation">
+        <div>
+            <div ng-if="!appCtrl.isAuth" class="nav-login"><a href="/login"><button class="btn btn-primary">Login</button> </a> </div>
+                <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a>
+                <img class="logo" src="assets/img/logo.png">
+            </a>
 
-    <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed=true">
-        <ul class="nav nav-pills nav-stacked visibleBlock">
-            <li><a ng-href="/"><i class="fa fa-home" aria-hidden="true"></i> Start</a></li>
-            <li><i class="fa fa-user " aria-hidden="true"></i> Contractors</li>
-            <li><a ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i> Add contractors</a></li>
-            <li><a ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i> Contractors list</a></li>
-            <li><i class="fa fa-arrow-right" aria-hidden="true"></i> Invoices</li>
-            <li><a ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i> Add invoice</a></li>
-            <li><a ng-href='/invoices'><i class="fa fa-clone" aria-hidden="true"></i> Invoices list</a></li>
+        </div>
+        <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed=true">
+            <ul class="nav nav-pills nav-stacked visibleBlock">
+                <li><a ng-href="/"><i class="fa fa-home" aria-hidden="true"></i> Start</a></li>
+                <li><i class="fa fa-user " aria-hidden="true"></i> Contractors</li>
+                <li><a ng-href="/add/contractors"><i class="fa fa-plus" aria-hidden="true"></i> Add contractors</a></li>
+                <li><a ng-href='/contractors'><i class="fa fa-list" aria-hidden="true"></i> List contractors</a></li>
+                <li><i class="fa fa-arrow-right" aria-hidden="true"></i> Invoice</li>
+                <li><a ng-href="/add/invoice"><i class="fa fa-file" aria-hidden="true"></i> Add invoice</a></li>
+                <li><a ng-href='/invoices'><i class="fa fa-clone" aria-hidden="true"></i> List of Invoices</a></li>
+            </ul>
+        </div>
+
+    </nav>
+    <div id="sidebar-wrapper" class="sidebar-toggle col-md-2 col-lg-2">
+
+        <ul class="sidebar-nav">
+            <li><img class="logo2" src="assets/img/logo2.png"></li>
+
+            <li><a class='menu-1' ng-href="/"><i class="fa fa-home space" aria-hidden="true"></i>Start</a></li>
+            <li><a class='menu-2-main' ng-click="appCtrl.toggleCollapsed()"><i class="fa fa-user space" aria-hidden="true"></i>Contractors</a></li>
+            <div uib-collapse="appCtrl.isCollapse">
+                <li><a class='menu-2 menu-toggle' ng-href="/add/contractors"><i class="fa fa-plus space" aria-hidden="true"></i>Add contractors</a></li>
+                <li><a class='menu-2 menu-toggle' ng-href='/contractors'><i class="fa fa-list space" aria-hidden="true"></i>List contractors</a></li>
+            </div>
+            <li><a class='menu-3-main' ng-click="appCtrl.toggleCollapse()"><i class="fa fa-arrow-right space" aria-hidden="true"></i>Invoice</a></li>
+            <div uib-collapse="appCtrl.isCollapsed">
+                <li><a class='menu-3 menu-toggle' ng-href="/add/invoice"><i class="fa fa-file space" aria-hidden="true"></i>Add invoice</a></li>
+                <li><a class='menu-3 menu-toggle' ng-href='/invoices'><i class="fa fa-clone space" aria-hidden="true"></i>List of Invoices</a></li>
+            </div>
         </ul>
+
     </div>
 
-</nav>
-<div id="sidebar-wrapper" class="sidebar-toggle col-md-2 col-lg-2">
-
-    <ul class="sidebar-nav">
-        <li><img class="logo2" src="assets/img/logo2.png"></li>
-        <li><a class='menu-1' ng-href="/"><i class="fa fa-home space" aria-hidden="true"></i>Start</a></li>
-        <li><a class='menu-2-main' ng-click="appCtrl.toggleCollapsed()"><i class="fa fa-user space" aria-hidden="true"></i>Contractors</a></li>
-        <div uib-collapse="appCtrl.isCollapse">
-            <li><a class='menu-2 menu-toggle' ng-href="/add/contractors"><i class="fa fa-plus space" aria-hidden="true"></i>Add contractors</a></li>
-            <li><a class='menu-2 menu-toggle' ng-href='/contractors'><i class="fa fa-list space" aria-hidden="true"></i>Contractors list</a></li>
+    <div class="col-lg-10 col-lg-offset-2 col-sm-9 col-sm-offset-3">
+        <div ng-if="appCtrl.isAuth" class="pull-right">
+            <p><a href="/user">{{appCtrl.token.email}}</a>
+            <a href="" ng-click="appCtrl.logout()">
+                <button type="button" class="btn btn-primary btn-sm">Logout</button>
+            </a></p>
         </div>
-        <li><a class='menu-3-main' ng-click="appCtrl.toggleCollapse()"><i class="fa fa-arrow-right space" aria-hidden="true"></i>Invoices</a></li>
-        <div uib-collapse="appCtrl.isCollapsed">
-            <li><a class='menu-3 menu-toggle' ng-href="/add/invoice"><i class="fa fa-file space" aria-hidden="true"></i>Add invoice</a></li>
-            <li><a class='menu-3 menu-toggle' ng-href='/invoices'><i class="fa fa-clone space" aria-hidden="true"></i>Invoices list</a></li>
-        </div>
-    </ul>
-</div>
-<div class="col-lg-10 col-lg-offset-2 col-sm-9 col-sm-offset-3">
-    <div ng-view class="container-fluid"></div>
+        <div ng-view class="container-fluid"></div>
+    </div>
 </div>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
@@ -69,9 +81,11 @@
 <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 <script src="bower_components/angular-messages/angular-messages.js"></script>
 <script src="bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+<script src="bower_components/angular-jwt/dist/angular-jwt.min.js"></script>
 <script src="app.js"></script>
 <script src="app.config.js"></script>
 <script src="app.route.js"></script>
+<script src="app.run.js"></script>
 
 <!-- Controllers-->
 <script src="app.controller.js"></script>

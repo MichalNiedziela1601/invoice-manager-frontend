@@ -11,7 +11,9 @@ describe('RegistrationController', function()
     {
         authDaoMock = AuthDAO;
 
-        spyOn(authDaoMock, 'registration').and.returnValue();
+        spyOn(authDaoMock, 'registration').and.callFake(function(){
+            return successfulPromise();
+        });
 
         registerCtrl = $controller('RegistrationCompanyController', {AuthDAO: authDaoMock});
     }));

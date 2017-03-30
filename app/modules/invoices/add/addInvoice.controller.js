@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $scope)
+    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $scope,AuthDAO)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -102,12 +102,6 @@
             });
         }
 
-        //registration isn't working - mocked user
-        CompanyDAO.findByNip(1224567890).then(function (result)
-        {
-            ctrl.mockedCompany = result;
-        });
-
         ctrl.openAddCompanyModal = function (size)
         {
             ctrl.noResults = !ctrl.noResults;
@@ -153,6 +147,14 @@
             ctrl.findContractor();
         }
 
+        function getUserInfo(){
+            AuthDAO.getUserInfo().then(function(userInfo){
+                ctrl.mockedCompany = userInfo;
+            });
+        }
+
+        getUserInfo();
+
         ////////////////////////////////////
 
         ctrl.addInvoiceCompany = addInvoiceCompany;
@@ -162,8 +164,10 @@
         ctrl.closeAddInvoiceSuccess = closeAddInvoiceSuccess;
         ctrl.findCompaniesByNip = findCompaniesByNip;
         $scope.onSelect = onSelect;
+        ctrl.getUserInfo = getUserInfo;
+
     }
 
-    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$scope', AddInvoiceController]);
+    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$scope','AuthDAO', AddInvoiceController]);
 
 })();

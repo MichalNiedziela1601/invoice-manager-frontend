@@ -12,16 +12,18 @@ describe('AddInvoiceController', function ()
     var baseTime;
     var scope;
     var nips;
+    var authDaoMock;
 
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope)
+    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope,AuthDAO)
     {
         invoiceDaoMock = InvoiceDAO;
         companyDaoMock = CompanyDAO;
         uibModal = $uibModal;
         scope = $rootScope.$new();
+        authDaoMock = AuthDAO;
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
         };
@@ -50,6 +52,10 @@ describe('AddInvoiceController', function ()
             } else {
                 return unsuccessfulPromise();
             }
+        });
+
+        spyOn(authDaoMock, 'getUserInfo').and.callFake(function(){
+            return successfulPromise(mockFoundTestCompany);
         });
 
         spyOn(companyDaoMock, 'getNips').and.callFake(function(nip){

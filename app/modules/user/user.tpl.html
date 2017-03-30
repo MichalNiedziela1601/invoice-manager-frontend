@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-md-10 col-lg-offset-1">
-            <h2 class="page-header text-center">Company Name xgz</h2>
-            <p><strong>Nip: </strong> 123456789 </p>
-            <p><strong>Email: </strong> biel@bkw.pl </p>
+            <h2  class="page-header text-center">{{userCtrl.companyName}}</h2>
+            <p><strong>Nip: </strong> {{userCtrl.token.nip}} </p>
+            <p><strong>Email: </strong> {{userCtrl.token.email}} </p>
 
         <div class="col-xs-12 divider text-center">
             <div class="col-xs-12 col-sm-4 emphasis">
@@ -42,7 +42,7 @@
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa  fa-building fa" aria-hidden="true"></i></span>
-                                    <input type="number" class="form-control" ng-model="userCtrl.userAddressData.buildingNumber" name="building" id="building"
+                                    <input type="text" class="form-control" ng-model="userCtrl.userAddressData.buildNr" name="building" id="building"
                                            placeholder="Number building" required>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa  fa-building fa" aria-hidden="true"></i></span>
-                                    <input type="number" class="form-control" ng-model="userCtrl.userAddressData.floatNumber" name="float" id="float"
+                                    <input type="text" class="form-control" ng-model="userCtrl.userAddressData.flatNr" name="flat" id="float"
                                            placeholder="Number float" required>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa  fa-building fa" aria-hidden="true"></i></span>
-                                    <input type="number" class="form-control" ng-model="userCtrl.userAddressData.zipCode" name="code" id="code"
+                                    <input type="text" class="form-control" ng-model="userCtrl.userAddressData.postCode" name="code" id="code"
                                            placeholder="Zip-Code" required>
                                 </div>
                             </div>

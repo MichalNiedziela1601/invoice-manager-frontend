@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function RegistrationCompanyController(AuthDAO)
+    function RegistrationCompanyController(AuthDAO,$location)
     {
         var ctrl = this;
         ctrl.message = 'Registration';
@@ -19,7 +19,9 @@
                 ctrl.alertMinLength = true;
             } else {
                 ctrl.alertMinLength = false;
-                AuthDAO.registration(ctrl.registrationCredential);
+                AuthDAO.registration(ctrl.registrationCredential).then(function(){
+                    $location.path('/login');
+                });
             }
         };
 
@@ -29,6 +31,6 @@
         };
     }
 
-    angular.module('app').controller('RegistrationCompanyController', ['AuthDAO', RegistrationCompanyController]);
+    angular.module('app').controller('RegistrationCompanyController', ['AuthDAO','$location', RegistrationCompanyController]);
 
 })();
