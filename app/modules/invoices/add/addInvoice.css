@@ -44,6 +44,7 @@
 .pdfView{
     height: 800px;
     width: 730px;
+    margin-top: 25px;
 }
 
 .typeahead-demo .custom-popup-wrapper {
