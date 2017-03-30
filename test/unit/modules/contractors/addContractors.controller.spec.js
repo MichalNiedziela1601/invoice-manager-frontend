@@ -1,4 +1,4 @@
-describe('AddContractors.controller', function ()
+describe('AddContractorsController', function ()
 {
     'use strict';
 

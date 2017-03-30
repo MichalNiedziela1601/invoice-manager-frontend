@@ -1,4 +1,4 @@
-describe('registration.controller.js', function()
+describe('RegistrationController', function()
 {
    'use strict';
 

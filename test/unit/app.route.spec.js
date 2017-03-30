@@ -1,4 +1,4 @@
-describe('app.route.js', function ()
+describe('Routes', function ()
 {
     'use strict';
 
