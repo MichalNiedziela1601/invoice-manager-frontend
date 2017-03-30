@@ -113,3 +113,11 @@ ul {
 .top-margin-2 {
     margin-top: 20px;
 }
+
+.pagination {
+    margin: 0;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
