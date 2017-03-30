@@ -2,13 +2,12 @@
 {
     'use strict';
 
-    function config($locationProvider, $compileProvider)
+    function config($locationProvider)
     {
         $locationProvider.hashPrefix('');
         $locationProvider.html5Mode({
             enabled: true, requireBase: false
         });
-        $compileProvider.preAssignBindingsEnabled(true);
 
 
     }

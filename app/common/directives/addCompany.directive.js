@@ -11,7 +11,6 @@
             var ctrl = this;
             ctrl.addComp = false;
             ctrl.invalidFormAlert = false;
-
             function addCompany(form)
             {
                 if (form.$valid) {
