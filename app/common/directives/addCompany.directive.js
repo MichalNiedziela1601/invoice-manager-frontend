@@ -6,6 +6,7 @@
     {
         function controller()
         {
+            /*jshint validthis:true */
             var ctrl = this;
             ctrl.addComp = false;
             ctrl.invalidFormAlert = false;

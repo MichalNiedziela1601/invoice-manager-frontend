@@ -5,7 +5,6 @@ describe('addCompany.directive.js', function ()
     var companyDaoMock;
     var addCompDir;
     var companyMock;
-    var company;
     var form;
 
     beforeEach(module('app'));
@@ -14,14 +13,14 @@ describe('addCompany.directive.js', function ()
         addCompDir = addCompanyDirective[0];
         companyDaoMock = CompanyDAO;
         companyMock = {
-            name: "dfghjk", nip: 1234567890, regon: 2345678906, address: {
+            name: 'dfghjk', nip: 1234567890, regon: 2345678906, address: {
 
-                buildNr: "4", city: "Tarnów", flatNr: "76", postCode: "33-100", street: "sdfghjk"
+                buildNr: '4', city: 'Tarnów', flatNr: '76', postCode: '33-100', street: 'sdfghjk'
             }
         };
         spyOn(companyDaoMock, 'addCompany').and.callFake(function ()
         {
-            return successfulPromise(companyMock)
+            return successfulPromise(companyMock);
         });
 
         spyOn(companyDaoMock, 'findByNip').and.callFake(function (booleanValue)
