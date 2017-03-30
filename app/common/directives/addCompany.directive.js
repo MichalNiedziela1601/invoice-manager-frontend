@@ -18,17 +18,22 @@
                     }
                     CompanyDAO.addCompany(ctrl.company).then(function ()
                     {
+                        ctrl.invalidFormAlert = false;
                         ctrl.addComp = true;
                         ctrl.showDirective();
                     });
                 } else {
                     ctrl.invalidFormAlert = true;
+                    ctrl.addComp = false;
                 }
             }
 
             function closeAddSuccess()
             {
                 ctrl.addComp = false;
+            }
+            function closeInvalidFormAlert(){
+                ctrl.invalidFormAlert = false;
             }
 
             function validateNip()
@@ -47,6 +52,7 @@
             ctrl.validateNip = validateNip;
             ctrl.addCompany = addCompany;
             ctrl.closeAddSuccess = closeAddSuccess;
+            ctrl.closeInvalidFormAlert = closeInvalidFormAlert;
         }
 
         return {
