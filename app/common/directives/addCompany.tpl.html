@@ -90,7 +90,8 @@
 
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                    <div ng-show="addCompDCtrl.invalidFormAlert" class="alert alert-danger" id="alert" role="alert">
+                    <div ng-show="addCompDCtrl.invalidFormAlert" uib-alert class="alert-danger" id="alert" role="alert"
+                    close="addCompDCtrl.closeInvalidFormAlert()">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Error:</span>
                         Requested fields are not correct!
