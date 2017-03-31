@@ -6,16 +6,17 @@
             </div>
         </div>
         <div class="main-login main-center">
-            <form class="form-horizontal" name="registerForm" ng-submit="registrationCompanyCtrl.registration()">
+            <form class="form-horizontal" name="registerForm" ng-submit="registrationCompanyCtrl.registration()" novalidate>
 
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Company Name*</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" ng-maxlength="30"  ng-minlength="2" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.name" name="name" id="name" placeholder="Enter Company Name" required>
+                            <input type="text" ng-required="true" ng-maxlength="30"  ng-minlength="2" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.name" name="name" id="name" placeholder="Enter Company Name">
                         </div>
                         <div ng-messages="registerForm.name.$error" style="color:maroon" role="alert">
+                            <div ng-if="registerForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                             <div ng-message="minlength">Company's name required min. length is 2</div>
                             <div ng-message="maxlength">Company's name required min. length is 30</div>
                         </div>
@@ -30,6 +31,7 @@
                             <input type="email" ng-maxlength="40" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.email" name="email" id="email" placeholder="Enter your Email" required>
                         </div>
                         <div ng-messages="registerForm.email.$error" style="color:maroon" role="alert">
+                            <div ng-if="registerForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                             <div ng-message="email">This field must be a valid email address.</div>
                             <div ng-message="maxlength">Company's name required min. length is 40</div>
                         </div>
@@ -44,6 +46,7 @@
                             <input pattern="[0-9]{10}" type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.nip" nip-mask name="nip" id="nip" placeholder="Enter your NIP" required>
                         </div>
                         <div ng-messages="registerForm.nip.$error" style="color:maroon" role="alert">
+                            <div ng-if="registerForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                             <div ng-message="pattern">Company's nip required length is 10</div>
                         </div>
                     </div>

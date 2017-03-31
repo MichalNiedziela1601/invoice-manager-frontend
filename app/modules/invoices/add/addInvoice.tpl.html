@@ -31,7 +31,7 @@
 
             </div>
 
-            <div class="col-md-12 col-lg-6 findCompanyDetails" >
+            <div class="col-md-12 col-lg-6 findCompanyDetails">
                 <h3>Contractor</h3>
                 <contractor-info ng-show="addInvoiceCtrl.showBox" company="addInvoiceCtrl.companyDetails"></contractor-info>
                 <div class="well" ng-show="!addInvoiceCtrl.showBox"><strong>Enter NIP to find company</strong></div>
@@ -47,8 +47,15 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Type of transaction</label>
                                 <div class="col-sm-9">
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell" required>Sell</label>
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy">Buy</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell"
+                                                  ng-required="!addInvoiceCtrl.transationType">Sell</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy"
+                                                  ng-required="!addInvoiceCtrl.transationType">Buy</label>
+                                </div>
+                                <div ng-messages="company.transitionType.$error" style="color:maroon" role="alert">
+                                    <div ng-if="company.$submitted" ng-message="required">
+                                        Choose one of the options
+                                    </div>
                                 </div>
                             </div>
 
@@ -57,6 +64,10 @@
                                 <div class="col-sm-9">
                                     <input type="file" ngf-select ng-model="addInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file" accept="/*"
                                            required>
+                                    <div ng-messages="company.file.$error" style="color:maroon" role="alert">
+                                        <div ng-if="company.$submitted" ng-message="required">Please choose a file
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -66,6 +77,7 @@
                                     <input type="text" ng-minlength="5" class="form-control" name="invoiceNumber" id="invoice_nr" placeholder="Invoice number"
                                            ng-model="addInvoiceCtrl.invoiceCompany.invoiceNr" required>
                                     <div ng-messages="company.invoiceNumber.$error" style="color:maroon" role="alert">
+                                        <div ng-if="company.$submitted" ng-message="required">Please enter a value for this field.</div>
                                         <div ng-message="minlength">Invoice ID required min. length is 5</div>
                                     </div>
                                 </div>
@@ -91,8 +103,9 @@
                                 <div class="col-sm-9">
                                     <p class="input-group">
                                         <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.executionDatePicker.date"
-                                               is-open="addInvoiceCtrl.executionDatePicker.opened" datepicker-options="addInvoiceCtrl.executionDatePicker.options"
-                                               ng-required="true" close-text="Close" id="invoice_expire_date" required/>
+                                               is-open="addInvoiceCtrl.executionDatePicker.opened"
+                                               datepicker-options="addInvoiceCtrl.executionDatePicker.options" ng-required="true" close-text="Close"
+                                               id="invoice_expire_date" required/>
                                         <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.executionDatePicker.open()"><i
                     class="glyphicon glyphicon-calendar"></i></button>
@@ -104,14 +117,21 @@
                             <div class="form-group">
                                 <label for="netto" class="col-sm-3 control-label">Netto</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="netto" placeholder="Netto" ng-model="addInvoiceCtrl.invoiceCompany.nettoValue" required>
+                                    <input type="text" class="form-control" id="netto" name="netto" placeholder="Netto"
+                                           ng-model="addInvoiceCtrl.invoiceCompany.nettoValue" required>
+                                    <div ng-messages="company.netto.$error" style="color:maroon" role="alert">
+                                        <div ng-if="company.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="brutto" class="col-sm-3 control-label">Brutto</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="brutto" placeholder="Brutto" ng-model="addInvoiceCtrl.invoiceCompany.bruttoValue"
-                                           required>
+                                    <input type="text" class="form-control" id="brutto" name="brutto" placeholder="Brutto"
+                                           ng-model="addInvoiceCtrl.invoiceCompany.bruttoValue" required>
+                                    <div ng-messages="company.brutto.$error" style="color:maroon" role="alert">
+                                        <div ng-if="company.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -126,8 +146,15 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-9">
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="paid" required>Paid</label>
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="unpaid">Unpaid</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="paid"
+                                                  ng-required="!addInvoiceCtrl.status">Paid</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoiceCompany.status" name="status" value="unpaid"
+                                                  ng-required="!addInvoiceCtrl.status">Unpaid</label>
+                                    <div ng-messages="company.status.$error" style="color:maroon" role="alert">
+                                        <div ng-if="company.$submitted" ng-message="required">
+                                            Choose one of the options
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -163,8 +190,15 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Type of transaction</label>
                                 <div class="col-sm-9">
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell" required>Sell</label>
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy">Buy</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="sell"
+                                                  ng-required="!addInvoiceCtrl.transitionType">Sell</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.transationType" name="transitionType" value="buy"
+                                                  ng-required="!addInvoiceCtrl.transitionType">Buy</label>
+                                    <div ng-messages="person.transitionType.$error" style="color:maroon" role="alert">
+                                        <div ng-if="person.$submitted" ng-message="required">
+                                            Choose one of the options
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -173,15 +207,20 @@
                                 <div class="col-sm-9">
                                     <input type="file" ngf-select ng-model="addInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file" accept="/*"
                                            required>
+                                    <div ng-messages="company.file.$error" style="color:maroon" role="alert">
+                                        <div ng-if="person.$submitted" ng-message="required">Please choose a file
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="invoice_nr_person" class="col-sm-3 control-label">Invoice number</label>
                                 <div class="col-sm-9">
-                                    <input type="text" ng-minlength="5" class="form-control" name="invoiceNumberPerson" id="invoice_nr_person" placeholder="Invoice number"
-                                           ng-model="addInvoiceCtrl.invoicePerson.invoiceNr" required>
+                                    <input type="text" ng-minlength="5" class="form-control" name="invoiceNumberPerson" id="invoice_nr_person"
+                                           placeholder="Invoice number" ng-model="addInvoiceCtrl.invoicePerson.invoiceNr" required>
                                     <div ng-messages="person.invoiceNumberPerson.$error" style="color:maroon" role="alert">
+                                        <div ng-if="person.$submitted" ng-message="required">Please enter a value for this field.</div>
                                         <div ng-message="minlength">Invoice ID required min. length is 5</div>
                                     </div>
                                 </div>
@@ -206,8 +245,9 @@
                                 <div class="col-sm-9">
                                     <p class="input-group">
                                         <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.executionDatePicker.date"
-                                               is-open="addInvoiceCtrl.executionDatePicker.opened" datepicker-options="addInvoiceCtrl.executionDatePicker.options"
-                                               ng-required="true" close-text="Close" id="invoice_expire_date_per" required/>
+                                               is-open="addInvoiceCtrl.executionDatePicker.opened"
+                                               datepicker-options="addInvoiceCtrl.executionDatePicker.options" ng-required="true" close-text="Close"
+                                               id="invoice_expire_date_per" required/>
                                         <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.executionDatePicker.open()"><i
                     class="glyphicon glyphicon-calendar"></i></button>
@@ -219,23 +259,34 @@
                             <div class="form-group">
                                 <label for="netto_per" class="col-sm-3 control-label">Netto</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="netto_per" placeholder="Netto" ng-model="addInvoiceCtrl.invoicePerson.nettoValue"
-                                           required>
+                                    <input type="text" name="netto" class="form-control" id="netto_per" placeholder="Netto"
+                                           ng-model="addInvoiceCtrl.invoicePerson.nettoValue" required>
+                                    <div ng-messages="person.netto.$error" style="color:maroon" role="alert">
+                                        <div ng-if="person.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="brutto_per" class="col-sm-3 control-label">Brutto</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="brutto_per" placeholder="Brutto" ng-model="addInvoiceCtrl.invoicePerson.bruttoValue"
-                                           required>
+                                    <input type="text" name="brutto" class="form-control" id="brutto_per" placeholder="Brutto"
+                                           ng-model="addInvoiceCtrl.invoicePerson.bruttoValue" required>
+                                    <div ng-messages="person.brutto.$error" style="color:maroon" role="alert">
+                                        <div ng-if="person.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-9">
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="paid" required>Paid</label>
-                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="unpaid">Unpaid</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="paid"  ng-required="!addInvoiceCtrl.status">Paid</label>
+                                    <label><input type="radio" ng-model="addInvoiceCtrl.invoicePerson.status" name="status" value="unpaid"  ng-required="!addInvoiceCtrl.status">Unpaid</label>
+                                    <div ng-messages="person.status.$error" style="color:maroon" role="alert">
+                                        <div ng-if="person.$submitted" ng-message="required">
+                                            Choose one of the options
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -260,7 +311,8 @@
         </div>
 
         <div class="jumbotron boxBeforeAddPdf" ng-show="!addInvoiceCtrl.file">
-            <p>Click <strong>add file</strong> and select invoice's file in pdf format to see a preview<br> <i class="fa fa-file-pdf-o" aria-hidden="true"></i></p>
+            <p>Click <strong>add file</strong> and select invoice's file in pdf format to see a preview<br> <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            </p>
 
         </div>
 
