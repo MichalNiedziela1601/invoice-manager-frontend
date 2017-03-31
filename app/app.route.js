@@ -8,6 +8,10 @@
             templateUrl: 'modules/start/start.tpl.html', controller: 'StartController', controllerAs: 'startCtrl'
         });
 
+        $routeProvider.when('/login', {
+            templateUrl: 'modules/login/login.tpl.html', controller: 'LoginController', controllerAs: 'loginCtrl'
+        });
+
         $routeProvider.when('/contractors', {
             templateUrl: 'modules/contractors/listView/contractors.tpl.html', controller: 'ContractorsController', controllerAs: 'contractorsCtrl'
         });

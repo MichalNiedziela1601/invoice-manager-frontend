@@ -29,6 +29,21 @@ describe('Routes', function ()
             expect(route.routes['/'].controllerAs).toBe('startCtrl');
         });
     });
+    describe('/login', function ()
+    {
+        it('should has \'LoginController\' controller ', function ()
+        {
+            expect(route.routes['/login'].controller).toBe('LoginController');
+        });
+        it('should has \'login.html\' template ', function ()
+        {
+            expect(route.routes['/login'].templateUrl).toBe('modules/login/login.tpl.html');
+        });
+        it('should has \'login\' as controller shortcut', function ()
+        {
+            expect(route.routes['/login'].controllerAs).toBe('loginCtrl');
+        });
+    });
     describe('/contractors', function ()
     {
         it('should has \'ContractorsController\' controller ', function ()
