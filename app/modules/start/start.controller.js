@@ -1,23 +1,14 @@
 (function ()
 {
     'use strict';
-    function StartController(AuthDAO)
+    function StartController()
     {
         var ctrl = this;
-        ctrl.message = 'Start';
-        ctrl.loginCredential = {
-            email: '',
-            password: ''
-        };
-        ctrl.login = function ()
-        {
-            AuthDAO.login(ctrl.loginCredential).then(function ()
-            {
+        ctrl.message = 'Invoice Managment';
 
-            });
-        };
+
     }
 
-    angular.module('app').controller('StartController', ['AuthDAO', StartController]);
+    angular.module('app').controller('StartController', [StartController]);
 
 })();
