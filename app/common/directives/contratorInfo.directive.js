@@ -11,14 +11,10 @@
             },
             templateUrl: 'common/directives/contractorInfo.tpl.html',
             replace: true
-
         };
-
-
     }
 
     angular.module('app')
             .directive('contractorInfo', ContractorInfoDirective);
-
 
 })();

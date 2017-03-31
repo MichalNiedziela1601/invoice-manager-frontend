@@ -53,7 +53,6 @@
                 ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
 
                 checkTypeTransaction();
-
                 ctrl.fileToUpload = {
                     url: '/api/invoice',
                     data: {
@@ -63,6 +62,7 @@
                 };
                 Upload.upload(ctrl.fileToUpload).then(function ()
                 {
+                    ctrl.companyNotChosen= false;
                     ctrl.objectURL = URL.createObjectURL(ctrl.file);
                     ctrl.addInvoice = true;
                     ctrl.createDatePicker.date = new Date();
@@ -76,6 +76,11 @@
             } else {
                 ctrl.companyNotChosen= true;
             }
+        }
+
+        function closeNoCompanyAlert()
+        {
+            ctrl.companyNotChosen = false;
         }
 
         function addInvoicePerson()
@@ -93,6 +98,7 @@
                 ctrl.showAlert = false;
                 ctrl.showButton = false;
                 ctrl.companyDetails = result;
+                ctrl.closeNoCompanyAlert();
             }).catch(function ()
             {
                 ctrl.showAlert = true;
@@ -122,11 +128,6 @@
                 });
             });
         };
-
-        function closeNoCompanyAlert()
-        {
-            ctrl.companyNotChosen = false;
-        }
 
         function closeAddInvoiceSuccess()
         {
