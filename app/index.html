@@ -14,8 +14,11 @@
 <div ng-controller="AppController as appCtrl">
     <nav class="navbar navbar-default" id="navbar" role="navigation">
         <div>
-            <div ng-if="!appCtrl.isAuth" class="nav-login"><a href="/login"><button class="btn btn-primary">Login</button> </a> </div>
-                <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+            <div ng-if="!appCtrl.isAuth" class="nav-login">
+                <a href="/login"><button class="btn btn-info btn-sm">Sign In</button></a>
+                <a href="/registration"><button class="btn btn-primary btn-sm">Sign Up</button></a>
+            </div>
+            <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -43,7 +46,6 @@
 
         <ul class="sidebar-nav">
             <li><img class="logo2" src="assets/img/logo2.png"></li>
-
             <li><a class='menu-1' ng-href="/"><i class="fa fa-home space" aria-hidden="true"></i>Start</a></li>
             <li><a class='menu-2-main' ng-click="appCtrl.toggleCollapsed()"><i class="fa fa-user space" aria-hidden="true"></i>Contractors</a></li>
             <div uib-collapse="appCtrl.isCollapse">
@@ -62,9 +64,9 @@
     <div class="col-lg-10 col-lg-offset-2 col-sm-9 col-sm-offset-3">
         <div ng-if="appCtrl.isAuth" class="pull-right">
             <p><a href="/user">{{appCtrl.token.email}}</a>
-            <a href="" ng-click="appCtrl.logout()">
-                <button type="button" class="btn btn-primary btn-sm">Logout</button>
-            </a></p>
+                <a href="" ng-click="appCtrl.logout()">
+                    <button type="button" class="btn btn-primary btn-sm">Logout</button>
+                </a></p>
         </div>
         <div ng-view class="container-fluid"></div>
     </div>
