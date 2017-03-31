@@ -9,6 +9,7 @@
                     <input type="text" class="form-control" id="name_company" name="companyName" placeholder="Company name" ng-model="addCompDCtrl.company.name"
                            required minlength="2">
                     <div ng-messages="companyForm.companyName.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                         <div ng-message="minlength">Company's name required min. length is 2</div>
                     </div>
                 </div>
@@ -21,6 +22,7 @@
                     <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"
                             ng-model="addCompDCtrl.company.nip" required nip-mask ng-change="addCompDCtrl.validateNip()">
                     <div ng-messages="companyForm.companyNip.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                         <div ng-message="pattern">Company's nip required length is 10</div>
                     </div>
                     <div ng-show="companyForm.companyNip.$error" style="color:maroon" role="alert">
@@ -34,6 +36,7 @@
                     <input pattern="[0-9]{10}" class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
                            ng-model="addCompDCtrl.company.regon">
                     <div ng-messages="companyForm.companyRegon.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                         <div ng-message="pattern">Company's regon required length is 10</div>
                     </div>
                 </div>
@@ -45,6 +48,7 @@
                     <input type="text" class="form-control" id="street" name="companyStreet" placeholder="Street" ng-model="addCompDCtrl.company.address.street"
                            required minlength="2">
                     <div ng-messages="companyForm.companyStreet.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                         <div ng-message="minlength">Company's street required min. length is 2</div>
                     </div>
                 </div>
@@ -53,7 +57,10 @@
             <div class="form-group">
                 <label for="build_nr" class="col-sm-3 control-label">Build number*</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="build_nr" placeholder="Build number" ng-model="addCompDCtrl.company.address.buildNr" required>
+                    <input type="text" class="form-control" id="build_nr" name="build_nr" placeholder="Build number" ng-model="addCompDCtrl.company.address.buildNr" required>
+                    <div ng-messages="companyForm.build_nr.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    </div>
                 </div>
             </div>
 
@@ -70,6 +77,7 @@
                     <input type="text" class="form-control" id="post_code" name="companyPostcode" placeholder="Example: 32820"
                            ng-model="addCompDCtrl.company.address.postCode" required pattern="[0-9]{2}-[0-9]{3}" post-code-mask>
                     <div ng-messages="companyForm.companyPostcode.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                         <div ng-message="pattern">Company's post-code required pattern is xx-xxx</div>
                     </div>
                 </div>
@@ -78,7 +86,11 @@
             <div class="form-group">
                 <label for="city" class="col-sm-3 control-label">City*</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="city" placeholder="City" ng-model="addCompDCtrl.company.address.city" required>
+                    <input type="text" class="form-control" id="city" name="city" placeholder="City" ng-model="addCompDCtrl.company.address.city" required>
+                    <div ng-messages="companyForm.city.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                        <div ng-message="minlength">Company's street required min. length is 2</div>
+                    </div>
                 </div>
             </div>
 
