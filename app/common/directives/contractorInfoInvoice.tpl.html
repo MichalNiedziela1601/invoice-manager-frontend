@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title"><span ng-if="company.name">{{company.name}}</span>
+        <span ng-if="company.firstName">{{company.firstName}} {{company.lastName}}</span></div>
+    </div>
+    <div class="panel-body">
+        <table class="table no-bottom-margin">
+            <tr>
+                <td>nip</td>
+                <td>{{company.nip}}</td>
+            </tr>
+            <tr ng-if="company.regon !== null">
+                <td>regon</td>
+                <td>{{company.regon}}</td>
+            </tr>
+            <tr>
+                <td>address</td>
+                <td>{{address.street}} {{address.buildNr}}<span ng-if="address.flatNr">{{'/'+address.flatNr}}</span>
+                    <p>{{address.postCode}} {{address.city }}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

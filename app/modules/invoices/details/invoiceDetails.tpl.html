@@ -2,42 +2,67 @@
 
     <div class="col-md-10 col-md-offset-1">
         <h2 class="page-header text-center">{{InvoiceDetailsCtrl.message}}</h2>
-        <table class="table table-bordered table-condensed" ng-show="InvoiceDetailsCtrl.showDetailsInvoice">
-            <thead>
-            <tr>
-                <th colspan="11">Details invoices</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Number Invoice</td>
-                <td>Dealer NIP</td>
-                <td>Recipent NIP</td>
-                <td>Type</td>
-                <td>Create Date</td>
-                <td>Execution End Date</td>
-                <td>Value Brutto</td>
-                <td>Value Netto</td>
-                <td>Status</td>
-                <td>Url</td>
-                <td>Edit</td>
-            </tr>
+        <div ng-show="InvoiceDetailsCtrl.showDetailsInvoice" class="padding-bottom-3">
 
-            <tr>
-                <td>{{InvoiceDetailsCtrl.details.invoiceNr}}</td>
-                <td>{{InvoiceDetailsCtrl.details.companyDealer.nip}}</td>
-                <td>{{InvoiceDetailsCtrl.details.companyRecipent.nip}}</td>
-                <td>{{InvoiceDetailsCtrl.details.type}}</td>
-                <td>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}}</td>
-                <td>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}}</td>
-                <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
-                <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
-                <td>{{InvoiceDetailsCtrl.details.status}}</td>
-                <td><a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">url</a></td>
-                <td><button ng-click="InvoiceDetailsCtrl.showEdit()" class="btn btn-success">Edit</button> </td>
-            </tr>
-            </tbody>
-        </table>
+            <h2 class="text-center">{{InvoiceDetailsCtrl.details.invoiceNr}}</h2>
+            <div>
+                <p><strong>Create Date: </strong>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}} </p>
+                <p><strong>Execution Date: </strong>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}} </p>
+
+                <p><strong>Type: </strong>{{InvoiceDetailsCtrl.details.type}} </p>
+            </div>
+
+
+            <div class="col-md-5">Dealer
+                <div ng-if="InvoiceDetailsCtrl.details.companyDealer">
+                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyDealer"
+                                             address="InvoiceDetailsCtrl.details.companyDealer.address"></contractor-info-invoice>
+                </div>
+                <div ng-if="InvoiceDetailsCtrl.details.personDealer">
+                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.personDealer"
+                                             address="InvoiceDetailsCtrl.details.personDealer.address"></contractor-info-invoice>
+                </div>
+            </div>
+            <div class="col-md-5 col-md-offset-2">Recipient
+                <div ng-if="InvoiceDetailsCtrl.details.companyRecipent">
+                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyRecipent"
+                                             address="InvoiceDetailsCtrl.details.companyRecipent.address"></contractor-info-invoice>
+                </div>
+                <div ng-if="InvoiceDetailsCtrl.details.personRecipent">
+                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.personRecipent"
+                                             address="InvoiceDetailsCtrl.details.personRecipent.address"></contractor-info-invoice>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <h3>Show invoice: <a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">url</a></h3>
+                <div>
+                    <button ng-click="InvoiceDetailsCtrl.showEdit()" class="btn btn-success">Edit</button>
+                </div>
+            </div>
+
+            <div class="col-md-offset-2 col-md-5">
+                <div class="invoice-cost-box">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Netto</th>
+                            <th>Brutto</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{InvoiceDetailsCtrl.details.status}}</td>
+                            <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
+                            <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
 
         <div ng-show="InvoiceDetailsCtrl.showEditInvoice">
             <form class="form-horizontal" name="invoice" ng-submit="InvoiceDetailsCtrl.editInvoice(invoice)" novalidate>
@@ -90,12 +115,10 @@
                     <div class="col-sm-9">
                         <p class="input-group">
                             <input type="text" class="form-control" uib-datepicker-popup ng-model="InvoiceDetailsCtrl.executionDatePicker.date"
-                                   is-open="InvoiceDetailsCtrl.executionDatePicker.opened"
-                                   datepicker-options="InvoiceDetailsCtrl.executionDatePicker.options" ng-required="true" close-text="Close"
-                                   id="invoice_expire_date" required/>
+                                   is-open="InvoiceDetailsCtrl.executionDatePicker.opened" datepicker-options="InvoiceDetailsCtrl.executionDatePicker.options"
+                                   ng-required="true" close-text="Close" id="invoice_expire_date" required/>
                             <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.executionDatePicker.open()"><i
-                    class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.executionDatePicker.open()"><i class="glyphicon glyphicon-calendar"></i></button>
           </span>
                         </p>
                     </div>
@@ -104,8 +127,8 @@
                 <div class="form-group">
                     <label for="netto" class="col-sm-3 control-label">Netto</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="netto" name="netto" placeholder="Netto"
-                               ng-model="InvoiceDetailsCtrl.details.nettoValue" required>
+                        <input type="text" class="form-control" id="netto" name="netto" placeholder="Netto" ng-model="InvoiceDetailsCtrl.details.nettoValue"
+                               required>
                         <div ng-messages="invoice.netto.$error" style="color:maroon" role="alert">
                             <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
                         </div>
@@ -114,8 +137,8 @@
                 <div class="form-group">
                     <label for="brutto" class="col-sm-3 control-label">Brutto</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="brutto" name="brutto" placeholder="Brutto"
-                               ng-model="InvoiceDetailsCtrl.details.bruttoValue" required>
+                        <input type="text" class="form-control" id="brutto" name="brutto" placeholder="Brutto" ng-model="InvoiceDetailsCtrl.details.bruttoValue"
+                               required>
                         <div ng-messages="invoice.brutto.$error" style="color:maroon" role="alert">
                             <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
                         </div>
