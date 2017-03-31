@@ -10,6 +10,7 @@
         ctrl.bankOpen = true;
         ctrl.showName = false;
         ctrl.companyName = null;
+        ctrl.addressOpen = false;
 
         ctrl.openAddress = function ()
         {
