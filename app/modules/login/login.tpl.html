@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="main-login main-center">
-            <form class="form-horizontal" ng-submit="loginCtrl.login()">
+            <form class="form-horizontal" name="loginForm" ng-submit="loginCtrl.login(loginForm)" novalidate>
 
                 <div class="form-group">
                     <label for="email" class="cols-sm-2 control-label">Email</label>
@@ -14,6 +14,10 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                             <input type="email" class="form-control" ng-model="loginCtrl.loginCredential.email" name="email" id="email" placeholder="Email" required>
+                            <div ng-messages="loginForm.email.$error" style="color:maroon" role="alert">
+                                <div ng-if="loginForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                <div ng-message="email">This field must be a valid email address.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -28,7 +32,13 @@
                     </div>
                 </div>
 
-                <div class="form-group ">
+                <div class="form-group">
+                    <div ng-show="loginCtrl.invalidFormAlert" uib-alert class="alert-danger" id="alert" role="alert"
+                         close="loginCtrl.closeInvalidFormAlert()">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        Requested fields are not correct!
+                    </div>
                     <input type="submit" class="btn btn-primary btn-lg btn-block login-button" value="Login">
                 </div>
                 <div class="login-register">

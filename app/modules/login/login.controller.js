@@ -9,12 +9,26 @@
             email: '',
             password: ''
         };
-        ctrl.login = function ()
+        ctrl.invalidFormAlert = false;
+
+
+        ctrl.login = function (form)
         {
-            AuthDAO.login(ctrl.loginCredential).then(function ()
-            {
-                $location.path('/invoices');
-            });
+            if(form.$valid) {
+                AuthDAO.login(ctrl.loginCredential).then(function ()
+                {
+                    ctrl.invalidFormAlert = false;
+                    $location.path('/invoices');
+                });
+            } else {
+                ctrl.invalidFormAlert = true;
+            }
+
+        };
+
+        ctrl.closeInvalidFormAlert = function()
+        {
+            ctrl.invalidFormAlert = false;
         };
     }
 
