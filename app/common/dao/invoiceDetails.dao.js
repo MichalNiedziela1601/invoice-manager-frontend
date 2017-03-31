@@ -5,12 +5,16 @@
     function InvoiceDetailsDAO($resource)
     {
         var api = $resource('/api/invoice/:id', null, {
-            details: {method: 'GET'}
+            details: {method: 'GET'},
+            update: { method: 'PUT'}
         });
         return {
             query: function (id)
             {
                 return api.details(id).$promise;
+            },
+            update: function (id,invoice){
+                return api.update({id: id},invoice).$promise;
             }
         };
     }
