@@ -62,11 +62,12 @@
                             <div class="form-group">
                                 <label for="url_comp" class="col-sm-3 control-label">Add file</label>
                                 <div class="col-sm-9">
-                                    <input type="file" ngf-select ng-model="addInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file" accept="/*"
+                                    <input type="file" ngf-select ng-model="addInvoiceCtrl.file" accept="application/pdf" ngf-pattern="'application/pdf'" name="file"
                                            required>
                                     <div ng-messages="company.file.$error" style="color:maroon" role="alert">
                                         <div ng-if="company.$submitted" ng-message="required">Please choose a file
                                         </div>
+                                        <div ng-message="pattern">File is not in a pdf format</div>
                                     </div>
                                 </div>
                             </div>
