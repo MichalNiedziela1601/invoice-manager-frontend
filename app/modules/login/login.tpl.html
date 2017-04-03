@@ -37,7 +37,7 @@
                          close="loginCtrl.closeInvalidFormAlert()">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Error:</span>
-                        Requested fields are not correct!
+                        {{loginCtrl.errorMessage}}
                     </div>
                     <input type="submit" class="btn btn-primary btn-lg btn-block login-button" value="Login">
                 </div>

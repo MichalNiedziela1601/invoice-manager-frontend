@@ -19,8 +19,13 @@
                 {
                     ctrl.invalidFormAlert = false;
                     $location.path('/invoices');
+                }).catch(function(error){
+                    form.$setUntouched();
+                    ctrl.errorMessage = error.data;
+                    ctrl.invalidFormAlert = true;
                 });
             } else {
+                ctrl.errorMessage = 'Requested fields are not correct!';
                 ctrl.invalidFormAlert = true;
             }
 
