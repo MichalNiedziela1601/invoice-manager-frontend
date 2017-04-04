@@ -13,6 +13,7 @@ describe('AddInvoiceController', function ()
     var scope;
     var nips;
     var authDaoMock;
+    var form;
 
 
     beforeEach(module('app'));
@@ -24,6 +25,10 @@ describe('AddInvoiceController', function ()
         uibModal = $uibModal;
         scope = $rootScope.$new();
         authDaoMock = AuthDAO;
+        form = {
+            $valid : true,
+            $setPristine: function(){}
+        };
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
         };
@@ -192,8 +197,7 @@ describe('AddInvoiceController', function ()
                 addCtrl.transationType = 'test';
                 addCtrl.createDatePicker.date = new Date('2000-12-15');
                 addCtrl.executionDatePicker.date = new Date('2001-01-23');
-
-                addCtrl.addInvoiceCompany();
+                addCtrl.addInvoiceCompany(form);
             });
             describe('always', function ()
             {
@@ -221,7 +225,8 @@ describe('AddInvoiceController', function ()
                         addCtrl.companyDetails.id = 9;
                         addCtrl.mockedCompany.id = 2;
                         addCtrl.transationType = 'sell';
-                        addCtrl.addInvoiceCompany();
+
+                        addCtrl.addInvoiceCompany(form);
                     });
 
                     it('should set companyDealer variable', function ()
@@ -240,7 +245,7 @@ describe('AddInvoiceController', function ()
                         addCtrl.companyDetails.id = 8;
                         addCtrl.mockedCompany.id = 1;
                         addCtrl.transationType = 'buy';
-                        addCtrl.addInvoiceCompany();
+                        addCtrl.addInvoiceCompany(form);
                     });
 
                     it('should set companyDealer variable', function ()
