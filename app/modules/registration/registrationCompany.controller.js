@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function RegistrationCompanyController(AuthDAO,$location)
+    function RegistrationCompanyController(AuthDAO, $location)
     {
         var ctrl = this;
         ctrl.message = 'Registration';
@@ -13,16 +13,28 @@
             repeatPassword: ''
         };
 
+        ctrl.erorMessage = '';
+        ctrl.invalidFormAlert = false;
+
         ctrl.registration = function ()
         {
-            if(ctrl.registrationCredential.password.length < 4){
+            if (ctrl.registrationCredential.password.length < 4) {
                 ctrl.alertMinLength = true;
             } else {
                 ctrl.alertMinLength = false;
-                AuthDAO.registration(ctrl.registrationCredential).then(function(){
+                AuthDAO.registration(ctrl.registrationCredential).then(function ()
+                {
                     $location.path('/login');
+                }).catch(function (error)
+                {
+                    ctrl.errorMessage = error.data;
+                    ctrl.invalidFormAlert  =true;
                 });
             }
+        };
+
+        ctrl.closeInvalidFormAlert = function(){
+            ctrl.invalidFormAlert = !ctrl.invalidFormAlert;
         };
 
         ctrl.isPasswordsEqual = function ()
@@ -31,6 +43,6 @@
         };
     }
 
-    angular.module('app').controller('RegistrationCompanyController', ['AuthDAO','$location', RegistrationCompanyController]);
+    angular.module('app').controller('RegistrationCompanyController', ['AuthDAO', '$location', RegistrationCompanyController]);
 
 })();
