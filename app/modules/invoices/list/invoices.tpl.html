@@ -11,15 +11,17 @@
                                 <th st-sort="invoiceNr">Number Invoice's</th>
                                 <th st-sort="createDate">Create Date</th>
                                 <th st-sort="executionEndDate">Expire Date</th>
+                                <th st-sort="status">Status</th>
                             </tr>
                             <tr>
-                                <th colspan="3"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
+                                <th colspan="4"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
                             </tr>
                             <tr ng-repeat="sell in sellInvoices">
                                 <td>
                                     <a ng-href="/invoices/details/{{sell.id}}">{{sell.invoiceNr}}</a></td>
                                 <td>{{sell.createDate | date:'dd-MM-yyyy'}}</td>
                                 <td>{{sell.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{sell.status}}</td>
                             </tr>
                             </tbody>
                             <tfoot>
@@ -54,15 +56,17 @@
                                 <th st-sort="invoiceNr">Number Invoice's</th>
                                 <th st-sort="createDate">Create Date</th>
                                 <th st-sort="executionEndDate">Expire Date</th>
+                                <th st-sort="status">Status</th>
                             </tr>
                             <tr>
-                                <th colspan="3"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
+                                <th colspan="4"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
                             </tr>
                             <tr ng-repeat="buy in buyInvoices">
                                 <td>
                                     <a ng-href="/invoices/details/{{buy.id}}">{{buy.invoiceNr}}</a></td>
                                 <td>{{buy.createDate | date:'dd-MM-yyyy'}}</td>
                                 <td>{{buy.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{buy.status}}</td>
                             </tr>
                             </tbody>
                             <tfoot>
