@@ -24,6 +24,7 @@
     "angular-messages": "1.6.0",
     "angular-smart-table": "2.1.8",
     "angular-jwt": "0.1.9",
-    "ngstorage": "ng-storage#0.4.2"
+    "ngstorage": "ng-storage#0.4.2",
+    "ng-table-bundle": "^4.0.0"
   }
 }

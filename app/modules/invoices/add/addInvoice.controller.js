@@ -65,7 +65,6 @@
                 if(form.$valid) {
                     if(!ctrl.formSubmitted) {
                         ctrl.formSubmitted = true;
-                        console.log(ctrl.invoiceCompany);
                         Upload.upload(ctrl.fileToUpload).then(function ()
                         {
                             ctrl.companyNotChosen = false;
