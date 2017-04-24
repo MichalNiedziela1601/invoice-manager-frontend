@@ -10,8 +10,11 @@
                     <div class="input-group col-md-6">
                         <div class="typeahead-demo"><input type="text" ng-model="addInvoiceCtrl.asyncSelected" placeholder="NIP contractors"
                                                            uib-typeahead="companies.nip for companies in addInvoiceCtrl.findCompaniesByNip($viewValue)"
-                                                           typeahead-loading="addInvoiceCtrl.loadingLocations" typeahead-no-results="addInvoiceCtrl.noResults"
-                                                           class="form-control" typeahead-on-select="onSelect($item,$model,$label)">
+                                                           typeahead-loading="addInvoiceCtrl.loadingLocations"
+                                                           typeahead-no-results="addInvoiceCtrl.noResults"
+                                                           class="form-control" typeahead-on-select="onSelect($item,$model,$label)"
+                                                           typeahead-template-url="modules/invoices/add/getNips.tpl.html"
+                                                           >
                             <i ng-show="addInvoiceCtrl.loadingLocations" class="glyphicon glyphicon-refresh"></i>
                             <div ng-show="addInvoiceCtrl.noResults">
                                 <i class="glyphicon glyphicon-remove"></i>
@@ -42,7 +45,7 @@
             <uib-tabset active="active">
                 <uib-tab index="0" heading="Company invoice">
                     <div class="col-md-12 tabs-top-marg">
-                        <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany()" novalidate>
+                        <form class="form-horizontal" name="company" ng-submit="addInvoiceCtrl.addInvoiceCompany(company)" novalidate>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Type of transaction</label>
@@ -164,6 +167,12 @@
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 <span class="sr-only">Error:</span>
                                 Company has not been chosen!
+                            </div>
+
+                            <div ng-show="addInvoiceCtrl.formInvalidAlert" uib-alert class="alert-danger" close="addInvoiceCtrl.closeFormInvalidAlert()">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                {{addInvoiceCtrl.errorMessage}}
                             </div>
 
                             <div ng-show="addInvoiceCtrl.addInvoice" uib-alert class="alert-success" close="addInvoiceCtrl.closeAddInvoiceSuccess()">

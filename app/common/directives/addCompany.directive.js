@@ -19,6 +19,7 @@
                     CompanyDAO.addCompany(ctrl.company).then(function ()
                     {
                         ctrl.invalidFormAlert = false;
+                        form.$setPristine();
                         ctrl.addComp = true;
                         ctrl.showDirective();
                     });

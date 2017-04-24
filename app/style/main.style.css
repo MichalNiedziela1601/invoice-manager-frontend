@@ -74,10 +74,6 @@
         display: none;
     }
 
-    #navbar {
-        display: none !important;
-    }
-
 }
 
 ul {
@@ -121,8 +117,9 @@ ul {
 .logo {
     height: 45px;
     width: 55px;
-    margin-left: 3px;
+    margin-left: 30px;
     margin-top: 2px;
+    float: left;
 }
 
 .space {
@@ -161,6 +158,10 @@ ul {
         display: none;
     }
 
+    .logo {
+        margin-left: 3px;
+    }
+
 }
 
 .nav-login {
@@ -180,4 +181,32 @@ ul {
 .padding-bottom-3 {
     padding-bottom: 30px;
 }
+
+.animate-show-hide {
+    position: absolute;
+    left: 0;
+}
+
+.animate-show-hide.ng-hide {
+
+    opacity: 0;
+}
+
+.animate-show-hide.ng-hide-add,
+.animate-show-hide.ng-hide-remove {
+    transition: all linear 0.5s;
+}
+
+.invoice-detail-wrapper {
+    position: relative;
+}
+
+.ng-table th {
+    text-align: left;
+}
+
+.user-info {
+    margin-top: 6px;
+}
+
 

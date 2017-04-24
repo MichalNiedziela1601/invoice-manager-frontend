@@ -60,6 +60,8 @@ describe('AddCompanyDirective', function ()
                 {
                     form = {};
                     form.$valid= true;
+                    form.$setPristine = function () { };
+                    spyOn(form,'$setPristine');
                     controller.company = {name: 'Jakub', regon : '',nip: 1234567890};
                     controller.addCompany(form);
                 });
@@ -72,6 +74,14 @@ describe('AddCompanyDirective', function ()
                     it('should be called with controller.company', function ()
                     {
                          expect(companyDaoMock.addCompany).toHaveBeenCalledWith({name: 'Jakub', nip: 1234567890});
+                    });
+                    it('should set invalidFormAlert to false', function ()
+                    {
+                        expect(controller.invalidFormAlert).toBe(false);
+                    });
+                    it('should call form $setPristine', function ()
+                    {
+                        expect(form.$setPristine).toHaveBeenCalled();
                     });
                     it('controller addComp to be true', function ()
                     {
