@@ -1,172 +1,177 @@
 <div class="row">
 
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-offset-0 col-xs-12">
         <h2 class="page-header text-center">{{InvoiceDetailsCtrl.message}}</h2>
-        <div ng-show="InvoiceDetailsCtrl.showDetailsInvoice" class="padding-bottom-3">
+        <div class="invoice-detail-wrapper">
+            <div ng-show="InvoiceDetailsCtrl.showDetailsInvoice" class="padding-bottom-3 animate-show-hide">
 
-            <h2 class="text-center">{{InvoiceDetailsCtrl.details.invoiceNr}}</h2>
-            <div>
-                <p><strong>Create Date: </strong>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}} </p>
-                <p><strong>Execution Date: </strong>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}} </p>
-
-                <p><strong>Type: </strong>{{InvoiceDetailsCtrl.details.type}} </p>
-            </div>
-
-
-            <div class="col-md-5">Dealer
-                <div ng-if="InvoiceDetailsCtrl.details.companyDealer">
-                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyDealer"
-                                             address="InvoiceDetailsCtrl.details.companyDealer.address"></contractor-info-invoice>
-                </div>
-                <div ng-if="InvoiceDetailsCtrl.details.personDealer">
-                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.personDealer"
-                                             address="InvoiceDetailsCtrl.details.personDealer.address"></contractor-info-invoice>
-                </div>
-            </div>
-            <div class="col-md-5 col-md-offset-2">Recipient
-                <div ng-if="InvoiceDetailsCtrl.details.companyRecipent">
-                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyRecipent"
-                                             address="InvoiceDetailsCtrl.details.companyRecipent.address"></contractor-info-invoice>
-                </div>
-                <div ng-if="InvoiceDetailsCtrl.details.personRecipent">
-                    <contractor-info-invoice company="InvoiceDetailsCtrl.details.personRecipent"
-                                             address="InvoiceDetailsCtrl.details.personRecipent.address"></contractor-info-invoice>
-                </div>
-            </div>
-           <div class="col-md-12"> <div class="col-md-6">
-                <h3>Show invoice: <a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">url</a></h3>
+                <h2 class="text-center">{{InvoiceDetailsCtrl.details.invoiceNr}}</h2>
                 <div>
-                    <button ng-click="InvoiceDetailsCtrl.showEdit()" class="btn btn-success">Edit</button>
+                    <p><strong>Create Date: </strong>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}} </p>
+                    <p><strong>Execution Date: </strong>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}} </p>
+
+                    <p><strong>Type: </strong>{{InvoiceDetailsCtrl.details.type}} </p>
                 </div>
+
+
+                <div class="col-md-5 col-xs-12">Dealer
+                    <div ng-if="InvoiceDetailsCtrl.details.companyDealer">
+                        <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyDealer"
+                                                 address="InvoiceDetailsCtrl.details.companyDealer.address"></contractor-info-invoice>
+                    </div>
+                    <div ng-if="InvoiceDetailsCtrl.details.personDealer">
+                        <contractor-info-invoice company="InvoiceDetailsCtrl.details.personDealer"
+                                                 address="InvoiceDetailsCtrl.details.personDealer.address"></contractor-info-invoice>
+                    </div>
+                </div>
+                <div class="col-md-5 col-md-offset-2 col-xs-12 col-xs-offset-0">Recipient
+                    <div ng-if="InvoiceDetailsCtrl.details.companyRecipent">
+                        <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyRecipent"
+                                                 address="InvoiceDetailsCtrl.details.companyRecipent.address"></contractor-info-invoice>
+                    </div>
+                    <div ng-if="InvoiceDetailsCtrl.details.personRecipent">
+                        <contractor-info-invoice company="InvoiceDetailsCtrl.details.personRecipent"
+                                                 address="InvoiceDetailsCtrl.details.personRecipent.address"></contractor-info-invoice>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <h3>Show invoice: <a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">url</a></h3>
+                        <div>
+                            <button ng-click="InvoiceDetailsCtrl.showEdit()" class="btn btn-success">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="invoice-cost-box">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Netto</th>
+                                    <th>Brutto</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{InvoiceDetailsCtrl.details.status}}</td>
+                                    <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
+                                    <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="col-md-6">
-                <div class="invoice-cost-box">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Status</th>
-                            <th>Netto</th>
-                            <th>Brutto</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>{{InvoiceDetailsCtrl.details.status}}</td>
-                            <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
-                            <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
-                        </tr>
-                        </tbody>
+            <div ng-hide="InvoiceDetailsCtrl.showDetailsInvoice" class="animate-show-hide">
+                <form class="form-horizontal" name="invoice" ng-submit="InvoiceDetailsCtrl.editInvoice(invoice)" novalidate>
 
-                    </table>
-                </div>
-            </div></div>
-
-        </div>
-
-        <div ng-show="InvoiceDetailsCtrl.showEditInvoice">
-            <form class="form-horizontal" name="invoice" ng-submit="InvoiceDetailsCtrl.editInvoice(invoice)" novalidate>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Type of transaction</label>
-                    <div class="col-sm-9">
-                        <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.type" name="transitionType" value="sell"
-                                      ng-required="!InvoiceDetailsCtrl.details.type">Sell</label>
-                        <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.type" name="transitionType" value="buy"
-                                      ng-required="!InvoiceDetailsCtrl.details.type">Buy</label>
-                    </div>
-                    <div ng-messages="invoice.transitionType.$error" style="color:maroon" role="alert">
-                        <div ng-if="invoice.$submitted" ng-message="required">
-                            Choose one of the options
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Type of transaction</label>
+                        <div class="col-sm-9">
+                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.type" name="transitionType" value="sell"
+                                          ng-required="!InvoiceDetailsCtrl.details.type">Sell</label>
+                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.type" name="transitionType" value="buy"
+                                          ng-required="!InvoiceDetailsCtrl.details.type">Buy</label>
                         </div>
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="invoice_nr" class="col-sm-3 control-label">Invoice number</label>
-                    <div class="col-sm-9">
-                        <input type="text" ng-minlength="5" class="form-control" name="invoiceNumber" id="invoice_nr" placeholder="Invoice number"
-                               ng-model="InvoiceDetailsCtrl.details.invoiceNr" required>
-                        <div ng-messages="invoice.invoiceNumber.$error" style="color:maroon" role="alert">
-                            <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
-                            <div ng-message="minlength">Invoice ID required min. length is 5</div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="form-group">
-                    <label for="invoice_create_date" class="col-sm-3 control-label">Create date</label>
-                    <div class="col-sm-9">
-                        <p class="input-group">
-                            <input type="text" class="form-control" uib-datepicker-popup ng-model="InvoiceDetailsCtrl.createDatePicker.date"
-                                   is-open="InvoiceDetailsCtrl.createDatePicker.opened" datepicker-options="InvoiceDetailsCtrl.createDatePicker.options"
-                                   ng-required="true" close-text="Close" id="invoice_create_date" required/>
-                            <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.createDatePicker.open()"><i
-                    class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="invoice_expire_date" class="col-sm-3 control-label">Expire date</label>
-                    <div class="col-sm-9">
-                        <p class="input-group">
-                            <input type="text" class="form-control" uib-datepicker-popup ng-model="InvoiceDetailsCtrl.executionDatePicker.date"
-                                   is-open="InvoiceDetailsCtrl.executionDatePicker.opened" datepicker-options="InvoiceDetailsCtrl.executionDatePicker.options"
-                                   ng-required="true" close-text="Close" id="invoice_expire_date" required/>
-                            <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.executionDatePicker.open()"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="netto" class="col-sm-3 control-label">Netto</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="netto" name="netto" placeholder="Netto" ng-model="InvoiceDetailsCtrl.details.nettoValue"
-                               required>
-                        <div ng-messages="invoice.netto.$error" style="color:maroon" role="alert">
-                            <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="brutto" class="col-sm-3 control-label">Brutto</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="brutto" name="brutto" placeholder="Brutto" ng-model="InvoiceDetailsCtrl.details.bruttoValue"
-                               required>
-                        <div ng-messages="invoice.brutto.$error" style="color:maroon" role="alert">
-                            <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Status</label>
-                    <div class="col-sm-9">
-                        <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.status" name="status" value="paid"
-                                      ng-required="!InvoiceDetailsCtrl.details.status">Paid</label>
-                        <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.status" name="status" value="unpaid"
-                                      ng-required="!InvoiceDetailsCtrl.details.status">Unpaid</label>
-                        <div ng-messages="invoice.status.$error" style="color:maroon" role="alert">
+                        <div ng-messages="invoice.transitionType.$error" style="color:maroon" role="alert">
                             <div ng-if="invoice.$submitted" ng-message="required">
                                 Choose one of the options
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <button type="submit" class="btn btn-default">Edit</button>
+
+                    <div class="form-group">
+                        <label for="invoice_nr" class="col-sm-3 control-label">Invoice number</label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-minlength="5" class="form-control" name="invoiceNumber" id="invoice_nr" placeholder="Invoice number"
+                                   ng-model="InvoiceDetailsCtrl.details.invoiceNr" required>
+                            <div ng-messages="invoice.invoiceNumber.$error" style="color:maroon" role="alert">
+                                <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                <div ng-message="minlength">Invoice ID required min. length is 5</div>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="invoice_create_date" class="col-sm-3 control-label">Create date</label>
+                        <div class="col-sm-9">
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup ng-model="InvoiceDetailsCtrl.createDatePicker.date"
+                                       is-open="InvoiceDetailsCtrl.createDatePicker.opened" datepicker-options="InvoiceDetailsCtrl.createDatePicker.options"
+                                       ng-required="true" close-text="Close" id="invoice_create_date" required/>
+                                <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.createDatePicker.open()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="invoice_expire_date" class="col-sm-3 control-label">Expire date</label>
+                        <div class="col-sm-9">
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup ng-model="InvoiceDetailsCtrl.executionDatePicker.date"
+                                       is-open="InvoiceDetailsCtrl.executionDatePicker.opened"
+                                       datepicker-options="InvoiceDetailsCtrl.executionDatePicker.options" ng-required="true" close-text="Close"
+                                       id="invoice_expire_date" required/>
+                                <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.executionDatePicker.open()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="netto" class="col-sm-3 control-label">Netto</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="netto" name="netto" placeholder="Netto" ng-model="InvoiceDetailsCtrl.details.nettoValue"
+                                   required>
+                            <div ng-messages="invoice.netto.$error" style="color:maroon" role="alert">
+                                <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="brutto" class="col-sm-3 control-label">Brutto</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="brutto" name="brutto" placeholder="Brutto"
+                                   ng-model="InvoiceDetailsCtrl.details.bruttoValue" required>
+                            <div ng-messages="invoice.brutto.$error" style="color:maroon" role="alert">
+                                <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Status</label>
+                        <div class="col-sm-9">
+                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.status" name="status" value="paid"
+                                          ng-required="!InvoiceDetailsCtrl.details.status">Paid</label>
+                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.status" name="status" value="unpaid"
+                                          ng-required="!InvoiceDetailsCtrl.details.status">Unpaid</label>
+                            <div ng-messages="invoice.status.$error" style="color:maroon" role="alert">
+                                <div ng-if="invoice.$submitted" ng-message="required">
+                                    Choose one of the options
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" class="btn btn-default">Edit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

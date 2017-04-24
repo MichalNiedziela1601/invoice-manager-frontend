@@ -14,6 +14,8 @@
         ctrl.url = true;
         ctrl.companyNotChosen = false;
         ctrl.noResults = false;
+        ctrl.formInvalidAlert = false;
+        ctrl.formSubmitted = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -45,7 +47,7 @@
             }
         }
 
-        function addInvoiceCompany()
+        function addInvoiceCompany(form)
         {
             if (ctrl.companyDetails) {
                 ctrl.invoiceCompany.type = ctrl.transationType;
@@ -60,19 +62,27 @@
                         file: ctrl.file
                     }
                 };
-                Upload.upload(ctrl.fileToUpload).then(function ()
-                {
-                    ctrl.companyNotChosen= false;
-                    ctrl.objectURL = URL.createObjectURL(ctrl.file);
-                    ctrl.addInvoice = true;
-                    ctrl.createDatePicker.date = new Date();
-                    ctrl.executionDatePicker.date = new Date();
-                    ctrl.transationType = null;
-                    ctrl.invoiceCompany = {};
-                }).catch(function (error)
-                {
-                    console.error(error);
-                });
+                if(form.$valid) {
+                    if(!ctrl.formSubmitted) {
+                        ctrl.formSubmitted = true;
+                        Upload.upload(ctrl.fileToUpload).then(function ()
+                        {
+                            ctrl.companyNotChosen = false;
+                            ctrl.objectURL = URL.createObjectURL(ctrl.file);
+                            ctrl.addInvoice = true;
+                            ctrl.createDatePicker.date = new Date();
+                            ctrl.executionDatePicker.date = new Date();
+                            ctrl.transationType = null;
+                            ctrl.invoiceCompany = {};
+                            form.$setPristine();
+                            ctrl.formSubmitted = false;
+                        }).catch(function (error)
+                        {
+                            ctrl.errorMessage = error.data;
+                            ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
+                        });
+                    }
+                }
             } else {
                 ctrl.companyNotChosen= true;
             }
@@ -134,6 +144,10 @@
             ctrl.addInvoice = false;
         }
 
+        function closeFormInvalidAlert(){
+            ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
+        }
+
         function findCompaniesByNip(nip)
         {
             return CompanyDAO.getNips(nip).then(function (response)
@@ -166,6 +180,7 @@
         ctrl.findCompaniesByNip = findCompaniesByNip;
         $scope.onSelect = onSelect;
         ctrl.getUserInfo = getUserInfo;
+        ctrl.closeFormInvalidAlert = closeFormInvalidAlert;
 
     }
 

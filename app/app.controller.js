@@ -28,7 +28,7 @@
         function getToken(){
             return ctrl.token;
         }
-        $rootScope.$on('$routeChangeStart', function(next, current)
+        $rootScope.$on('$routeChangeStart', function()
         {
 
             if (AuthDAO.isAuthenticated()) {

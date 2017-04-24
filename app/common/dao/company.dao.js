@@ -3,13 +3,26 @@
     'use strict';
     function CompanyDAO($resource)
     {
-        var api = $resource('/api/company/:a', null, {
+        function setAddress(address){
+            return address.street + ' '+address.buildNr +''+ (address.flatNr ? '/'+address.flatNr : '') + ' '+address.postCode + ' '+address.city;
+        }
+        var api = $resource('/api/company/:a/:b', null, {
             get: {
                 isArray: false
-            }, query: {method: 'GET', isArray: true}, addCompany: {
+            }, query: {method: 'GET', isArray: true,
+            transformResponse: function (data)
+            {
+                data = JSON.parse(data);
+                angular.forEach(data,function(obj){
+                    obj.address = setAddress(obj.address);
+                });
+                return data;
+            }}, addCompany: {
                 method: 'POST', isArray: false
             }
         });
+
+
 
         var nips = $resource('/api/companies/:a',null);
 
