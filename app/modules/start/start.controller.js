@@ -1,13 +1,13 @@
 (function ()
 {
     'use strict';
-    function StartController(AuthDAO)
+    function StartController(UserDAO)
     {
         var ctrl = this;
         ctrl.message = 'Invoice Managment';
-        ctrl.isAuth = AuthDAO.isAuthenticated();
+        ctrl.isAuth = UserDAO.isAuthenticated();
     }
 
-    angular.module('app').controller('StartController', ['AuthDAO',StartController]);
+    angular.module('app').controller('StartController', ['UserDAO',StartController]);
 
 })();

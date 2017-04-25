@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $scope,AuthDAO)
+    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $scope,UserDAO)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -163,7 +163,7 @@
         }
 
         function getUserInfo(){
-            AuthDAO.getUserInfo().then(function(userInfo){
+            UserDAO.getUserInfo().then(function(userInfo){
                 ctrl.mockedCompany = userInfo;
             });
         }
@@ -184,6 +184,6 @@
 
     }
 
-    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$scope','AuthDAO', AddInvoiceController]);
+    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$scope','UserDAO', AddInvoiceController]);
 
 })();
