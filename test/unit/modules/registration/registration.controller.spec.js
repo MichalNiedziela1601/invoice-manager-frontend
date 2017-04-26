@@ -3,19 +3,19 @@ describe('RegistrationController', function()
    'use strict';
 
     var registerCtrl;
-    var authDaoMock;
+    var userDaoMock;
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, AuthDAO)
+    beforeEach(inject(function ($controller, UserDAO)
     {
-        authDaoMock = AuthDAO;
+        userDaoMock = UserDAO;
 
-        spyOn(authDaoMock, 'registration').and.callFake(function(){
+        spyOn(userDaoMock, 'registration').and.callFake(function(){
             return successfulPromise();
         });
 
-        registerCtrl = $controller('RegistrationCompanyController', {AuthDAO: authDaoMock});
+        registerCtrl = $controller('RegistrationCompanyController', {AuthDAO: userDaoMock});
     }));
 
     describe('initialization', function()
@@ -80,9 +80,9 @@ describe('RegistrationController', function()
             {
                 expect(registerCtrl.alertMinLength).toEqual(false);
             });
-            it('should call authDAO.registration function', function ()
+            it('should call userDAO.registration function', function ()
             {
-                expect(authDaoMock.registration).toHaveBeenCalledWith({
+                expect(userDaoMock.registration).toHaveBeenCalledWith({
                     name: 'ola', nip: '1111111111', email: 'ola@wp.pl', password: 'olaola'
                 });
             });

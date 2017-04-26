@@ -12,19 +12,19 @@ describe('AddInvoiceController', function ()
     var baseTime;
     var scope;
     var nips;
-    var authDaoMock;
     var form;
+    var UserDAOMock;
 
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope,AuthDAO)
+    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope,UserDAO)
     {
         invoiceDaoMock = InvoiceDAO;
         companyDaoMock = CompanyDAO;
         uibModal = $uibModal;
         scope = $rootScope.$new();
-        authDaoMock = AuthDAO;
+        UserDAOMock = UserDAO;
         form = {
             $valid : true,
             $setPristine: function(){}
@@ -59,7 +59,7 @@ describe('AddInvoiceController', function ()
             }
         });
 
-        spyOn(authDaoMock, 'getUserInfo').and.callFake(function(){
+        spyOn(UserDAO, 'getUserInfo').and.callFake(function(){
             return successfulPromise(mockFoundTestCompany);
         });
 

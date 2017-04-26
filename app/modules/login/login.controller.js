@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function LoginController($location, AuthDAO)
+    function LoginController($location, UserDAO)
     {
         var ctrl = this;
         ctrl.message = 'Start';
@@ -15,7 +15,7 @@
         ctrl.login = function (form)
         {
             if(form.$valid) {
-                AuthDAO.login(ctrl.loginCredential).then(function ()
+                UserDAO.login(ctrl.loginCredential).then(function ()
                 {
                     ctrl.invalidFormAlert = false;
                     $location.path('/invoices');
@@ -37,6 +37,6 @@
         };
     }
 
-    angular.module('app').controller('LoginController', ['$location', 'AuthDAO', LoginController]);
+    angular.module('app').controller('LoginController', ['$location', 'UserDAO', LoginController]);
 
 })();

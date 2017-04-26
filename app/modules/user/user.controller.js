@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function UserController(UserDAO,jwtHelper,AuthDAO,CompanyDAO)
+    function UserController(UserDAO,jwtHelper,CompanyDAO)
     {
         var ctrl = this;
 
@@ -30,7 +30,7 @@
             ctrl.addressOpen = true;
             ctrl.personalOpen = true;
         };
-        ctrl.token = jwtHelper.decodeToken(AuthDAO.getToken());
+        ctrl.token = jwtHelper.decodeToken(UserDAO.getToken());
 
 
         ctrl.userAddressData =
@@ -83,6 +83,6 @@
 
     }
 
-    angular.module('app').controller('UserController', ['UserDAO','jwtHelper','AuthDAO','CompanyDAO', UserController]);
+    angular.module('app').controller('UserController', ['UserDAO','jwtHelper','CompanyDAO', UserController]);
 
 })();

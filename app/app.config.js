@@ -11,8 +11,8 @@
 
         jwtOptionsProvider.config({
             whiteListedDomains: ['localhost'],
-            tokenGetter: ['AuthDAO',function(AuthDAO){
-                return AuthDAO.getToken();
+            tokenGetter: ['UserDAO',function(UserDAO){
+                return UserDAO.getToken();
             }],
             unauthenticatedRedirectPath: '/login'
         });

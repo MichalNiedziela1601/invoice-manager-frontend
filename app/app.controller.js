@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function AppController($rootScope,$location,authManager, jwtHelper,AuthDAO)
+    function AppController($rootScope,$location,authManager, jwtHelper,UserDAO)
     {
         var ctrl = this;
         ctrl.isCollapse = true;
@@ -31,14 +31,14 @@
         $rootScope.$on('$routeChangeStart', function()
         {
 
-            if (AuthDAO.isAuthenticated()) {
-                ctrl.token = jwtHelper.decodeToken(AuthDAO.getToken());
+            if (UserDAO.isAuthenticated()) {
+                ctrl.token = jwtHelper.decodeToken(UserDAO.getToken());
             }
             ctrl.isAuth = authManager.isAuthenticated();
 
         });
         function logout() {
-            AuthDAO.logout();
+            UserDAO.logout();
             $location.path('/');
 
         }
@@ -47,6 +47,6 @@
         ctrl.logout = logout;
     }
 
-    angular.module('app').controller('AppController', ['$rootScope','$location','authManager','jwtHelper','AuthDAO',AppController]);
+    angular.module('app').controller('AppController', ['$rootScope','$location','authManager','jwtHelper','UserDAO',AppController]);
 
 })();
