@@ -32,7 +32,6 @@
         };
         ctrl.token = jwtHelper.decodeToken(UserDAO.getToken());
 
-
         ctrl.userAddressData =
         {
 

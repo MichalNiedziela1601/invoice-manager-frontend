@@ -3,10 +3,11 @@
     'use strict';
     function InvoiceDAO($resource)
     {
-        var api = $resource('/api/invoice', null, {
+        var api = $resource('/api/invoice/:a', null, {
             get: {
                 isArray: true
-            }
+            },
+            query: { isArray: false}
         });
 
         return {
@@ -17,6 +18,10 @@
             add: function (invoice)
             {
                 return api.save(invoice).$promise;
+            },
+            number: function(year,month)
+            {
+                return api.query({a: 'number', year: year, month: month}).$promise;
             }
         };
     }

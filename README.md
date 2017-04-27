@@ -6,6 +6,7 @@
 ### 1.Run backend
 ```sh
 - docker-compose up
+- npm install
 - npm run seed
 - npm start
 ```
@@ -14,6 +15,8 @@
 ### 2.Run frontend
 
 ```sh
+- npm install
+- bower install
 - grunt serve
 ```
 
