@@ -209,4 +209,126 @@ ul {
     margin-top: 6px;
 }
 
+.buttonLarge {
+    width: 75%;
+    height: 125px;
+}
+
+.footer {
+
+    padding-top:4em;
+}
+
+.tabs-top-marg {
+    margin-top: 2em;
+}
+.findCompanyInput, .boxBeforeAddPdf {
+    margin-top: 25px;
+}
+.findCompanyInput label {
+    margin-top: 5px;
+}
+.findComapnyInput input {
+
+}
+.invoice-checkboxes, .form-inline {
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+#inputNip {
+    margin-right: 10px;
+}
+.glyphicon-remove {
+    margin-top: 5px;
+}
+.text-justify {
+    display: inline-table;
+}
+.companyBtn {
+    width: 120px;
+}
+.companyBtn:nth-child(2){
+    margin-top: 10px;
+}
+.invoice-checkboxes .form-inline label:nth-child(3){
+    margin-left: 20px;
+}
+#showAlert {
+    position: absolute;
+    top: 132px;
+    left: 295px;
+    font-size: 18px;
+}
+.findCompanyDetails{
+    margin-bottom: -38px;
+}
+.pdfView{
+    height: 800px;
+    width: 730px;
+    margin-top: 25px;
+}
+
+.typeahead-demo .custom-popup-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    background-color: #f9f9f9;
+}
+.typeahead-demo input {
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+}
+
+.typeahead-demo .custom-popup-wrapper > .message {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    color: #868686;
+}
+
+.typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+    position: static;
+    float: none;
+    display: block;
+    min-width: 160px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+.boxBeforeAddPdf {
+    height: 800px;
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(82,57,78,0.75);
+    -moz-box-shadow: 0px 0px 5px 5px rgba(82,57,78,0.75);
+    box-shadow: 0px 0px 5px 5px rgba(82,57,78,0.75);
+}
+.boxBeforeAddPdf p {
+    position: relative;
+    top: 40%;
+    transform: translateY(-50%)
+}
+.boxBeforeAddPdf p i {
+    font-size: 200px;
+    padding-top: 50px;
+}
+
+@media (max-width: 992px) {
+    .boxBeforeAddPdf {
+        height: 560px;
+    }
+    .tabs-top-marg {
+        margin-top: 5em;
+    }
+
+}
+
+.input-error {
+    color: maroon;
+}
+
+
+
+
 

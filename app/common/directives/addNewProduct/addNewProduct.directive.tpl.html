@@ -1,0 +1,66 @@
+<div class="add-comp-width">
+    <h2 class="page-header text-center">Add new product</h2>
+
+    <div class="col-md-10 col-xs-12">
+        <form name="productForm" class="form-horizontal" ng-submit="addNewProductCtrl.add(productForm)" novalidate>
+            <div class="form-group">
+                <label for="productName" class="col-md-3 control-label">Name:</label>
+                <div class="col-md-9">
+                    <input type="text" id="productName" name="name" class="form-control" ng-model="addNewProductCtrl.product.name" required>
+                    <div ng-messages="productForm.name.$error" class="input-error" role="alert">
+                        <div ng-if="productForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="productNetto" class="col-md-3 control-label">Netto:</label>
+                <div class="col-md-9">
+                    <input type="text" id="productNetto" name="netto" class="form-control" ng-model="addNewProductCtrl.product.netto"
+                           ng-change="addNewProductCtrl.calculateBrutto()" required>
+                    <div ng-messages="productForm.netto.$error" class="input-error" role="alert">
+                        <div ng-if="productForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="productQuantity" class="col-md-3 control-label">Amount:</label>
+                <div class="col-md-9"><input type="number" name="amount" id="productQuantity" class="form-control" ng-model="addNewProductCtrl.product.amount"
+                                             ng-change="addNewProductCtrl.calculateBrutto()" required>
+                    <div ng-messages="productForm.amount.$error" class="input-error" role="alert">
+                        <div ng-if="productForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group"><label for="vat" class="col-sm-3 control-label">VAT</label>
+                <div class="col-sm-9">
+                    <select id="vat" class="form-control" name="vat" ng-options="vat.vat as vat.vat for vat in addNewProductCtrl.vats"
+                            ng-model="addNewProductCtrl.product.vat" ng-change="addNewProductCtrl.calculateBrutto()" required>
+
+                    </select>
+                    <div ng-messages="productForm.vat.$error" class="input-error" role="alert">
+                        <div ng-if="productForm.$submitted" ng-message="required">Choose one of the options</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="productBrutto" class="col-md-3 control-label">Brutto:</label>
+                <div class="col-md-9"><input type="text" name="brutto" id="productBrutto" class="form-control" ng-model="addNewProductCtrl.product.brutto" required>
+                    <div ng-messages="productForm.brutto.$error" class="input-error" role="alert">
+                        <div ng-if="productForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9 top-margin-2">
+                    <button type="submit" class="btn btn-primary">Add new product</button>
+                    <ng-transclude></ng-transclude>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

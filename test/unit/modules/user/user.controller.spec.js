@@ -23,7 +23,8 @@ describe('UserController', function ()
             postCode: '33-100',
             city: 'Gdzieś na krańcu świata'
         };
-        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJuaXAiOjEyMjQ1Njc4OTAsImNvbXBhbnlJZCI6MiwiaWF0IjoxNDkzMzI0OTA2LCJleHA' +
+        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJuaXAiOjEyMjQ1Njc4OTAsImNvb' +
+                'XBhbnlJZCI6MiwiaWF0IjoxNDkzMzI0OTA2LCJleHA' +
                 'iOjE0OTMzMjg1MDZ9.TVFz4SGCENSk5lf-fxoIoFFNl_rQG1Gl-1ZNLA_m9-0';
         tokenDecode = {
             companyId: 2,
@@ -190,6 +191,7 @@ describe('UserController', function ()
         it('should call userDao.addAddress', function ()
         {
             expect(userDaoMock.addAddress).toHaveBeenCalled();
+            expect(userDaoMock.addAddress).toHaveBeenCalledTimes(1);
         });
         it('should call userDao.addAddress with userAddressData', function ()
         {
@@ -205,6 +207,7 @@ describe('UserController', function ()
         it('should call userDao.addPersonalData', function ()
         {
             expect(userDaoMock.addPersonalData).toHaveBeenCalled();
+            expect(userDaoMock.addPersonalData).toHaveBeenCalledTimes(1);
         });
         it('should call userDao.addPersonalData with userAddressData', function ()
         {
@@ -220,6 +223,7 @@ describe('UserController', function ()
         it('should call userDao.addAccountData', function ()
         {
             expect(userDaoMock.addAccountData).toHaveBeenCalled();
+            expect(userDaoMock.addAccountData).toHaveBeenCalledTimes(1);
         });
         it('should call userDao.addAddress with userAddressData', function ()
         {

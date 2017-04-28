@@ -1,28 +1,27 @@
 (function ()
 {
     'use strict';
-    function CompanyDAO($resource)
+    function CompanyDAO($resource,$http)
     {
         function setAddress(address){
             return address.street + ' '+address.buildNr +''+ (address.flatNr ? '/'+address.flatNr : '') + ' '+address.postCode + ' '+address.city;
+        }
+
+        function queryTransformResponse(data){
+            angular.forEach(data,function(obj){
+                obj.address = setAddress(obj.address);
+            });
+            return data;
         }
         var api = $resource('/api/company/:a/:b', null, {
             get: {
                 isArray: false
             }, query: {method: 'GET', isArray: true,
-            transformResponse: function (data)
-            {
-                data = JSON.parse(data);
-                angular.forEach(data,function(obj){
-                    obj.address = setAddress(obj.address);
-                });
-                return data;
-            }}, addCompany: {
+            transformResponse:  $http.defaults.transformResponse.concat(queryTransformResponse)
+                }, addCompany: {
                 method: 'POST', isArray: false
             }
         });
-
-
 
         var nips = $resource('/api/companies/:a',null);
 
@@ -43,6 +42,6 @@
         };
     }
 
-    angular.module('app').factory('CompanyDAO', ['$resource', CompanyDAO]);
+    angular.module('app').factory('CompanyDAO', ['$resource','$http', CompanyDAO]);
 
 })();

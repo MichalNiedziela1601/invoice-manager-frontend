@@ -19,6 +19,10 @@
             {
                 return api.save(invoice).$promise;
             },
+            issue: function(invoice)
+            {
+                return api.save({a: 'issues'},invoice).$promise;
+            },
             number: function(year,month)
             {
                 return api.query({a: 'number', year: year, month: month}).$promise;
