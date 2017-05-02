@@ -14,20 +14,24 @@ describe('AddInvoiceController', function ()
     var nips;
     var form;
     var UserDAOMock;
+    var UploadMock;
 
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope,UserDAO)
+    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope, UserDAO,Upload)
     {
         invoiceDaoMock = InvoiceDAO;
         companyDaoMock = CompanyDAO;
         uibModal = $uibModal;
         scope = $rootScope.$new();
         UserDAOMock = UserDAO;
+        UploadMock = Upload;
         form = {
-            $valid : true,
-            $setPristine: function(){}
+            $valid: true,
+            $setPristine: function ()
+            {
+            }
         };
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
@@ -48,6 +52,20 @@ describe('AddInvoiceController', function ()
             return successfulPromise('new invoice');
         });
 
+        spyOn(invoiceDaoMock, 'number').and.callFake(function (year, month)
+        {
+            var number = {};
+            if (2012 === year && 2 === month) {
+                number.number = 3;
+                return successfulPromise(number);
+            } else if (2013 === year && 4 === month) {
+                number.number = 1;
+                return successfulPromise(number);
+            }
+            else {
+                return unsuccessfulPromise();
+            }
+        });
         spyOn(companyDaoMock, 'findByNip').and.callFake(function (booleanValue)
         {
             if (booleanValue === 1234567890) {
@@ -59,17 +77,19 @@ describe('AddInvoiceController', function ()
             }
         });
 
-        spyOn(UserDAO, 'getUserInfo').and.callFake(function(){
+        spyOn(UserDAO, 'getUserInfo').and.callFake(function ()
+        {
             return successfulPromise(mockFoundTestCompany);
         });
 
-        spyOn(companyDaoMock, 'getNips').and.callFake(function(nip){
-            if(nip === 12){
+        spyOn(companyDaoMock, 'getNips').and.callFake(function (nip)
+        {
+            if (nip === 12) {
                 return successfulPromise(nips);
-            } else if (nip === 1233){
+            } else if (nip === 1233) {
                 return successfulPromise([]);
             } else {
-                return unsuccessfulPromise();
+                return unsuccessfulPromise('Error with something');
             }
         });
 
@@ -92,7 +112,10 @@ describe('AddInvoiceController', function ()
             }
         };
 
-        addCtrl = $controller('AddInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal, $scope: scope });
+        baseTime = new Date();
+        jasmine.clock().mockDate(baseTime);
+
+        addCtrl = $controller('AddInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal, $scope: scope, Upload: UploadMock});
 
     }));
 
@@ -101,8 +124,9 @@ describe('AddInvoiceController', function ()
     {
         beforeEach(function ()
         {
-            baseTime = new Date();
-            spyOn(window, 'Date').and.callFake(function() {
+            addCtrl.createDatePicker.date = new Date();
+            spyOn(window, 'Date').and.callFake(function ()
+            {
                 return baseTime;
             });
         });
@@ -136,6 +160,7 @@ describe('AddInvoiceController', function ()
         {
             expect(addCtrl.mockedCompany).toEqual(mockFoundTestCompany);
         });
+
 
         describe('createDatePicker', function ()
         {
@@ -389,7 +414,8 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.findCompaniesByNip(12).then(function(result){
+                addCtrl.findCompaniesByNip(12).then(function (result)
+                {
                     nipsResult = result;
                 });
             });
@@ -429,7 +455,7 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                spyOn(addCtrl,'findContractor');
+                spyOn(addCtrl, 'findContractor');
                 scope.onSelect(nips[0]);
             });
             it('should set nipContractor', function ()
@@ -439,6 +465,56 @@ describe('AddInvoiceController', function ()
             it('should call findContractor', function ()
             {
                 expect(addCtrl.findContractor).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('closeAddInvoiceSuccess', function ()
+    {
+        beforeEach(function ()
+        {
+            addCtrl.closeAddInvoiceSuccess();
+        });
+        it('should set addInvoice', function ()
+        {
+            expect(addCtrl.addInvoice).toBeFalsy();
+        });
+    });
+
+    describe('closeFormInvalidAlert', function ()
+    {
+        it('should set formInvalidAlert', function ()
+        {
+            addCtrl.closeFormInvalidAlert();
+            expect(addCtrl.formInvalidAlert).toBeTruthy();
+        });
+    });
+
+    describe('getInvoiceNumber', function ()
+    {
+
+        describe('when find number', function ()
+        {
+            beforeEach(function ()
+            {
+                addCtrl.createDatePicker.date = new Date('2012,2,2');
+                addCtrl.getInvoiceNumber();
+            });
+            it('should set invoiceNumber with new number', function ()
+            {
+                expect(addCtrl.invoiceCompany.invoiceNr).toEqual('FV 2012/2/3');
+            });
+        });
+        describe('when not find number', function ()
+        {
+            beforeEach(function ()
+            {
+                addCtrl.createDatePicker.date = new Date('2013,4,3');
+                addCtrl.getInvoiceNumber();
+            });
+            it('should set invoiceNumber with new number', function ()
+            {
+                expect(addCtrl.invoiceCompany.invoiceNr).toEqual('FV 2013/4/1');
             });
         });
     });

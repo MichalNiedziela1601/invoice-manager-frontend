@@ -47,6 +47,16 @@
             }
         }
 
+        function getInvoiceNumber(){
+            var year = ctrl.createDatePicker.date.getFullYear();
+            var month = ctrl.createDatePicker.date.getMonth()+1;
+            InvoiceDAO.number(year,month).then(function(number){
+                ctrl.invoiceCompany.invoiceNr = 'FV '+year + '/'+month +'/'+number.number;
+            }).catch(function(error){
+                console.log('error',error);
+            });
+        }
+
         function addInvoiceCompany(form)
         {
             if (ctrl.companyDetails) {
@@ -76,10 +86,12 @@
                             ctrl.invoiceCompany = {};
                             form.$setPristine();
                             ctrl.formSubmitted = false;
+                            ctrl.getInvoiceNumber();
                         }).catch(function (error)
                         {
                             ctrl.errorMessage = error.data;
                             ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
+                            ctrl.formSubmitted = false;
                         });
                     }
                 }
@@ -168,6 +180,9 @@
             });
         }
 
+
+        getInvoiceNumber();
+
         getUserInfo();
 
         ////////////////////////////////////
@@ -181,6 +196,7 @@
         $scope.onSelect = onSelect;
         ctrl.getUserInfo = getUserInfo;
         ctrl.closeFormInvalidAlert = closeFormInvalidAlert;
+        ctrl.getInvoiceNumber = getInvoiceNumber;
 
     }
 

@@ -93,7 +93,7 @@
                                     <p class="input-group">
                                         <input type="text" class="form-control" uib-datepicker-popup ng-model="addInvoiceCtrl.createDatePicker.date"
                                                is-open="addInvoiceCtrl.createDatePicker.opened" datepicker-options="addInvoiceCtrl.createDatePicker.options"
-                                               ng-required="true" close-text="Close" id="invoice_create_date" required/>
+                                               ng-required="true" close-text="Close" id="invoice_create_date" ng-change="addInvoiceCtrl.getInvoiceNumber()" required/>
                                         <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="addInvoiceCtrl.createDatePicker.open()"><i
                     class="glyphicon glyphicon-calendar"></i></button>
