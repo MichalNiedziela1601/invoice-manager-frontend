@@ -23,7 +23,8 @@ describe('AddNewProductDirective', function ()
             expect(controller.vats).toEqual([
                 { vat: 5},
                 { vat: 8},
-                { vat: 23}
+                { vat: 23},
+                { vat: 'N/A'}
             ]);
         });
     });
