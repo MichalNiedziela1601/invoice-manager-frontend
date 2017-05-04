@@ -146,19 +146,15 @@ describe('Routes', function ()
     {
         it('should has \'addInvoice\' controller ', function ()
         {
-            expect(route.routes['/add/invoice'].controller).toBe('AddInvoiceController');
+            expect(route.routes['/add/invoice/upload'].controller).toBe('UploadInvoiceController');
         });
-        it('should has \'addInvoice.html\' template ', function ()
+        it('should has \'uploadInvoice.html\' template ', function ()
         {
-            expect(route.routes['/add/invoice'].templateUrl).toBe('/modules/invoices/add/addInvoice.tpl.html');
+            expect(route.routes['/add/invoice/upload'].templateUrl).toBe('/modules/invoices/add/upload/uploadInvoice.tpl.html');
         });
-        it('should has \'addInvoice\' as controller shortcut', function ()
+        it('should has \'uploadInvoice\' as controller shortcut', function ()
         {
-            expect(route.routes['/add/invoice'].controllerAs).toBe('addInvoiceCtrl');
-        });
-        it('should has \'addInvoice\' as css ', function ()
-        {
-            expect(route.routes['/add/invoice'].css).toBe('/modules/invoices/add/addInvoice.css');
+            expect(route.routes['/add/invoice/upload'].controllerAs).toBe('uploadInvoiceCtrl');
         });
     });
     describe('otherwise', function ()

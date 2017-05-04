@@ -2,7 +2,7 @@ describe('AddInvoiceController', function ()
 {
     'use strict';
 
-    var addCtrl;
+    var uploadCtrl;
     var invoiceDaoMock;
     var companyDaoMock;
     var uibModal;
@@ -10,7 +10,6 @@ describe('AddInvoiceController', function ()
     var mockFoundTestCompany;
     var fakeModal;
     var baseTime;
-    var scope;
     var nips;
     var form;
     var UserDAOMock;
@@ -19,19 +18,16 @@ describe('AddInvoiceController', function ()
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, $rootScope, UserDAO,Upload)
+    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, UserDAO,Upload)
     {
         invoiceDaoMock = InvoiceDAO;
         companyDaoMock = CompanyDAO;
         uibModal = $uibModal;
-        scope = $rootScope.$new();
         UserDAOMock = UserDAO;
         UploadMock = Upload;
         form = {
-            $valid: true,
-            $setPristine: function ()
-            {
-            }
+            $valid : true,
+            $setPristine: function(){}
         };
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
@@ -115,7 +111,7 @@ describe('AddInvoiceController', function ()
         baseTime = new Date();
         jasmine.clock().mockDate(baseTime);
 
-        addCtrl = $controller('AddInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal, $scope: scope, Upload: UploadMock});
+        uploadCtrl = $controller('UploadInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal });
 
     }));
 
@@ -124,7 +120,6 @@ describe('AddInvoiceController', function ()
     {
         beforeEach(function ()
         {
-            addCtrl.createDatePicker.date = new Date();
             spyOn(window, 'Date').and.callFake(function ()
             {
                 return baseTime;
@@ -133,81 +128,80 @@ describe('AddInvoiceController', function ()
 
         it('should set transactionType variable to null', function ()
         {
-            expect(addCtrl.transationType).toEqual(null);
+            expect(uploadCtrl.transationType).toEqual(null);
         });
         it('should set showAddInvoice variable to false', function ()
         {
-            expect(addCtrl.showAddInvoice).toEqual(false);
+            expect(uploadCtrl.showAddInvoice).toEqual(false);
         });
         it('should set nipContractor variable to null', function ()
         {
-            expect(addCtrl.nipContractor).toEqual(null);
+            expect(uploadCtrl.nipContractor).toEqual(null);
         });
         it('should set invoiceCompany variable to empty object', function ()
         {
-            expect(addCtrl.invoiceCompany).toEqual({});
+            expect(uploadCtrl.invoiceCompany).toEqual({});
         });
         it('should set invoicePerson variable to empty object', function ()
         {
-            expect(addCtrl.invoicePerson).toEqual({});
+            expect(uploadCtrl.invoicePerson).toEqual({});
         });
         it('should set companyDetails variable to empty object', function ()
         {
-            expect(addCtrl.companyDetails).toEqual(null);
+            expect(uploadCtrl.companyDetails).toEqual(null);
         });
 
         it('should set mockedCompany variable to result from company dao', function ()
         {
-            expect(addCtrl.mockedCompany).toEqual(mockFoundTestCompany);
+            expect(uploadCtrl.mockedCompany).toEqual(mockFoundTestCompany);
         });
-
 
         describe('createDatePicker', function ()
         {
             it('should set new date', function ()
             {
-                expect(addCtrl.createDatePicker.opened).toEqual(false);
+                expect(uploadCtrl.createDatePicker.opened).toEqual(false);
             });
             it('should set createDatePicker.options.formatYear property', function ()
             {
-                expect(addCtrl.createDatePicker.options.formatYear).toEqual('yy');
+                expect(uploadCtrl.createDatePicker.options.formatYear).toEqual('yy');
             });
             it('should set createDatePicker.options.maxDate property', function ()
             {
-                expect(addCtrl.createDatePicker.options.maxDate).toEqual(baseTime);
+                expect(uploadCtrl.createDatePicker.options.maxDate).toEqual(baseTime);
             });
             it('should set createDatePicker.options.maxDate property', function ()
             {
-                expect(addCtrl.createDatePicker.options.startingDay).toEqual(1);
+                expect(uploadCtrl.createDatePicker.options.startingDay).toEqual(1);
             });
             it('should change createDatePicker.opened property boolean value', function ()
             {
-                addCtrl.createDatePicker.open();
-                expect(addCtrl.createDatePicker.opened).toEqual(true);
+                uploadCtrl.createDatePicker.open();
+                expect(uploadCtrl.createDatePicker.opened).toEqual(true);
             });
         });
         describe('executionDatePicker', function ()
         {
             it('should set new date', function ()
             {
-                expect(addCtrl.executionDatePicker.date).toEqual(baseTime);
+                expect(uploadCtrl.executionDatePicker.date).toEqual(baseTime);
             });
             it('should set executionDatePicker.opened property', function ()
             {
-                expect(addCtrl.executionDatePicker.opened).toEqual(false);
+                expect(uploadCtrl.executionDatePicker.opened).toEqual(false);
             });
             it('should set executionDatePicker.options.formatYear property', function ()
             {
-                expect(addCtrl.executionDatePicker.options.formatYear).toEqual('yy');
+                expect(uploadCtrl.executionDatePicker.options.formatYear).toEqual('yy');
             });
             it('should set executionDatePicker.options.maxDate property', function ()
             {
-                expect(addCtrl.executionDatePicker.options.startingDay).toEqual(1);
+                expect(uploadCtrl.executionDatePicker.options.startingDay).toEqual(1);
             });
             it('should change executionDatePicker.opened property boolean value', function ()
             {
-                addCtrl.executionDatePicker.open();
-                expect(addCtrl.executionDatePicker.opened).toEqual(true);
+                uploadCtrl.executionDatePicker.open();
+                expect(uploadCtrl.executionDatePicker.opened).toEqual(true);
             });
         });
     });
@@ -218,26 +212,26 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.companyDetails = mockTestCompany;
-                addCtrl.transationType = 'test';
-                addCtrl.createDatePicker.date = new Date('2000-12-15');
-                addCtrl.executionDatePicker.date = new Date('2001-01-23');
-                addCtrl.addInvoiceCompany(form);
+                uploadCtrl.companyDetails = mockTestCompany;
+                uploadCtrl.transationType = 'test';
+                uploadCtrl.createDatePicker.date = new Date('2000-12-15');
+                uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
+                uploadCtrl.addInvoiceCompany(form);
             });
             describe('always', function ()
             {
 
                 it('should set invoiceCompany.type to transactionType', function ()
                 {
-                    expect(addCtrl.invoiceCompany.type).toEqual('test');
+                    expect(uploadCtrl.invoiceCompany.type).toEqual('test');
                 });
                 it('should set invoiceCompany.createDate', function ()
                 {
-                    expect(addCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
+                    expect(uploadCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
                 });
                 it('should set invoiceCompany.executionEndDate', function ()
                 {
-                    expect(addCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
+                    expect(uploadCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
                 });
             });
 
@@ -247,39 +241,39 @@ describe('AddInvoiceController', function ()
                 {
                     beforeEach(function ()
                     {
-                        addCtrl.companyDetails.id = 9;
-                        addCtrl.mockedCompany.id = 2;
-                        addCtrl.transationType = 'sell';
+                        uploadCtrl.companyDetails.id = 9;
+                        uploadCtrl.mockedCompany.id = 2;
+                        uploadCtrl.transationType = 'sell';
 
-                        addCtrl.addInvoiceCompany(form);
+                        uploadCtrl.addInvoiceCompany(form);
                     });
 
                     it('should set companyDealer variable', function ()
                     {
-                        expect(addCtrl.invoiceCompany.companyDealer).toEqual(2);
+                        expect(uploadCtrl.invoiceCompany.companyDealer).toEqual(2);
                     });
                     it('should set companyRecipent variable', function ()
                     {
-                        expect(addCtrl.invoiceCompany.companyRecipent).toEqual(9);
+                        expect(uploadCtrl.invoiceCompany.companyRecipent).toEqual(9);
                     });
                 });
                 describe('buy type', function ()
                 {
                     beforeEach(function ()
                     {
-                        addCtrl.companyDetails.id = 8;
-                        addCtrl.mockedCompany.id = 1;
-                        addCtrl.transationType = 'buy';
-                        addCtrl.addInvoiceCompany(form);
+                        uploadCtrl.companyDetails.id = 8;
+                        uploadCtrl.mockedCompany.id = 1;
+                        uploadCtrl.transationType = 'buy';
+                        uploadCtrl.addInvoiceCompany(form);
                     });
 
                     it('should set companyDealer variable', function ()
                     {
-                        expect(addCtrl.invoiceCompany.companyDealer).toEqual(8);
+                        expect(uploadCtrl.invoiceCompany.companyDealer).toEqual(8);
                     });
                     it('should set companyRecipent variable', function ()
                     {
-                        expect(addCtrl.invoiceCompany.companyRecipent).toEqual(1);
+                        expect(uploadCtrl.invoiceCompany.companyRecipent).toEqual(1);
                     });
                 });
 
@@ -289,12 +283,12 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.companyDetails = null;
-                addCtrl.addInvoiceCompany();
+                uploadCtrl.companyDetails = null;
+                uploadCtrl.addInvoiceCompany();
             });
             it('should companyNotChosen to true', function ()
             {
-                expect(addCtrl.companyNotChosen).toEqual(true);
+                expect(uploadCtrl.companyNotChosen).toEqual(true);
             });
         });
     });
@@ -303,22 +297,22 @@ describe('AddInvoiceController', function ()
     {
         beforeEach(function ()
         {
-            addCtrl.transationType = 'test';
-            addCtrl.createDatePicker.date = new Date('2007-12-15');
-            addCtrl.executionDatePicker.date = new Date('2009-01-23');
-            addCtrl.addInvoicePerson();
+            uploadCtrl.transationType = 'test';
+            uploadCtrl.createDatePicker.date = new Date('2007-12-15');
+            uploadCtrl.executionDatePicker.date = new Date('2009-01-23');
+            uploadCtrl.addInvoicePerson();
         });
         it('should set invoicePerson.type', function ()
         {
-            expect(addCtrl.invoicePerson.type).toEqual('test');
+            expect(uploadCtrl.invoicePerson.type).toEqual('test');
         });
         it('should set invoicePerson.createDate', function ()
         {
-            expect(addCtrl.invoicePerson.createDate).toEqual('2007-12-15');
+            expect(uploadCtrl.invoicePerson.createDate).toEqual('2007-12-15');
         });
         it('should set invoicePerson.type', function ()
         {
-            expect(addCtrl.invoicePerson.executionEndDate).toEqual('2009-01-23');
+            expect(uploadCtrl.invoicePerson.executionEndDate).toEqual('2009-01-23');
         });
     });
 
@@ -328,8 +322,8 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.nipContractor = 1234567890;
-                addCtrl.findContractor();
+                uploadCtrl.nipContractor = 1234567890;
+                uploadCtrl.findContractor();
             });
 
             it('should call findByNip function', function ()
@@ -338,19 +332,19 @@ describe('AddInvoiceController', function ()
             });
             it('should set showBox to false', function ()
             {
-                expect(addCtrl.showBox).toEqual(true);
+                expect(uploadCtrl.showBox).toEqual(true);
             });
             it('should set showAlert to false', function ()
             {
-                expect(addCtrl.showAlert).toEqual(false);
+                expect(uploadCtrl.showAlert).toEqual(false);
             });
             it('should set showButton to false', function ()
             {
-                expect(addCtrl.showButton).toEqual(false);
+                expect(uploadCtrl.showButton).toEqual(false);
             });
             it('should set companyDetails to proper values from database', function ()
             {
-                expect(addCtrl.companyDetails).toEqual(mockTestCompany);
+                expect(uploadCtrl.companyDetails).toEqual(mockTestCompany);
             });
         });
 
@@ -358,8 +352,8 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.nipContractor = 9999999999;
-                addCtrl.findContractor();
+                uploadCtrl.nipContractor = 9999999999;
+                uploadCtrl.findContractor();
             });
 
             it('should call findByNip function', function ()
@@ -368,15 +362,15 @@ describe('AddInvoiceController', function ()
             });
             it('should set showBox to false', function ()
             {
-                expect(addCtrl.showBox).toEqual(false);
+                expect(uploadCtrl.showBox).toEqual(false);
             });
             it('should set showAlert to false', function ()
             {
-                expect(addCtrl.showAlert).toEqual(true);
+                expect(uploadCtrl.showAlert).toEqual(true);
             });
             it('should set showButton to false', function ()
             {
-                expect(addCtrl.showButton).toEqual(true);
+                expect(uploadCtrl.showButton).toEqual(true);
             });
         });
     });
@@ -389,8 +383,8 @@ describe('AddInvoiceController', function ()
             {
                 spyOn(uibModal, 'open').and.returnValue(fakeModal);
                 var compDetails = {nip: 1234567890};
-                addCtrl.openAddCompanyModal();
-                addCtrl.modalInstance.close(compDetails);
+                uploadCtrl.openAddCompanyModal();
+                uploadCtrl.modalInstance.close(compDetails);
             });
             it('should call findByNip function', function ()
             {
@@ -398,11 +392,11 @@ describe('AddInvoiceController', function ()
             });
             it('should set result from findByNip function to companyDetails variable', function ()
             {
-                expect(addCtrl.companyDetails).toEqual(mockTestCompany);
+                expect(uploadCtrl.companyDetails).toEqual(mockTestCompany);
             });
             it('should set variable showBox to true', function ()
             {
-                expect(addCtrl.showBox).toEqual(true);
+                expect(uploadCtrl.showBox).toEqual(true);
             });
         });
     });
@@ -414,8 +408,7 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.findCompaniesByNip(12).then(function (result)
-                {
+                uploadCtrl.findCompaniesByNip(12).then(function(result){
                     nipsResult = result;
                 });
             });
@@ -437,7 +430,7 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.findCompaniesByNip(1233).then(function (result)
+                uploadCtrl.findCompaniesByNip(1233).then(function (result)
                 {
                     nipsResult = result;
                 });
@@ -455,16 +448,16 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                spyOn(addCtrl, 'findContractor');
-                scope.onSelect(nips[0]);
+                spyOn(uploadCtrl,'findContractor');
+                uploadCtrl.onSelect(nips[0]);
             });
             it('should set nipContractor', function ()
             {
-                expect(addCtrl.nipContractor).toBe(nips[0].nip);
+                expect(uploadCtrl.nipContractor).toBe(nips[0].nip);
             });
             it('should call findContractor', function ()
             {
-                expect(addCtrl.findContractor).toHaveBeenCalled();
+                expect(uploadCtrl.findContractor).toHaveBeenCalled();
             });
         });
     });
@@ -473,11 +466,11 @@ describe('AddInvoiceController', function ()
     {
         beforeEach(function ()
         {
-            addCtrl.closeAddInvoiceSuccess();
+            uploadCtrl.closeAddInvoiceSuccess();
         });
         it('should set addInvoice', function ()
         {
-            expect(addCtrl.addInvoice).toBeFalsy();
+            expect(uploadCtrl.addInvoice).toBeFalsy();
         });
     });
 
@@ -485,8 +478,8 @@ describe('AddInvoiceController', function ()
     {
         it('should set formInvalidAlert', function ()
         {
-            addCtrl.closeFormInvalidAlert();
-            expect(addCtrl.formInvalidAlert).toBeTruthy();
+            uploadCtrl.closeFormInvalidAlert();
+            expect(uploadCtrl.formInvalidAlert).toBeTruthy();
         });
     });
 
@@ -497,24 +490,24 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.createDatePicker.date = new Date('2012,2,2');
-                addCtrl.getInvoiceNumber();
+                uploadCtrl.createDatePicker.date = new Date('2012,2,2');
+                uploadCtrl.getInvoiceNumber();
             });
             it('should set invoiceNumber with new number', function ()
             {
-                expect(addCtrl.invoiceCompany.invoiceNr).toEqual('FV 2012/2/3');
+                expect(uploadCtrl.invoiceCompany.invoiceNr).toEqual('FV 2012/2/3');
             });
         });
         describe('when not find number', function ()
         {
             beforeEach(function ()
             {
-                addCtrl.createDatePicker.date = new Date('2013,4,3');
-                addCtrl.getInvoiceNumber();
+                uploadCtrl.createDatePicker.date = new Date('2013,4,3');
+                uploadCtrl.getInvoiceNumber();
             });
             it('should set invoiceNumber with new number', function ()
             {
-                expect(addCtrl.invoiceCompany.invoiceNr).toEqual('FV 2013/4/1');
+                expect(uploadCtrl.invoiceCompany.invoiceNr).toEqual('FV 2013/4/1');
             });
         });
     });

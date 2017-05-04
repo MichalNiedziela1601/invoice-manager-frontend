@@ -70,6 +70,8 @@
 
         <div ng-view class="container-fluid"></div>
     </div>
+
+    <div class="footer"></div>
 </div>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
@@ -96,12 +98,14 @@
 <script src="modules/login/login.controller.js"></script>
 <script src="modules/contractors/listView/contractors.controller.js"></script>
 <script src="modules/invoices/list/invoices.controller.js"></script>
-<script src="modules/invoices/add/addInvoice.controller.js"></script>
+<script src="modules/invoices/add/upload/uploadInvoice.controller.js"></script>
 <script src="modules/registration/registrationCompany.controller.js"></script>
 <script src="modules/invoices/add/addCompanyModal/addCompanyModal.controller.js"></script>
 <script src="modules/user/user.controller.js"></script>
 <script src="modules/invoices/details/invoiceDetails.controller.js"></script>
 <script src="modules/contractors/add/addContractors.controller.js"></script>
+<script src="modules/invoices/add/issue/issueInvoice.controller.js"></script>
+<script src="modules/invoices/add/addProductModal/addProductModal.controller.js"></script>
 
 <!-- Services -->
 <script src="common/dao/company.dao.js"></script>
@@ -116,6 +120,7 @@
 <script src="common/directives/nipMask.directive.js"></script>
 <script src="common/directives/contratorInfo.directive.js"></script>
 <script src="common/directives/contractorInfoInvoice.directive.js"></script>
+<script src="common/directives/addNewProduct/addNewProduct.directive.js"></script>
 
 </body>
 </html>

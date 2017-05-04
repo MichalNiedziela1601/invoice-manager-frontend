@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function AddInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $scope,UserDAO)
+    function UploadInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal,UserDAO)
     {
         var ctrl = this;
         ctrl.transationType = null;
@@ -35,7 +35,6 @@
             }
         };
 
-        ////////////////////////////
         function checkTypeTransaction()
         {
             if ('sell' === ctrl.transationType) {
@@ -185,7 +184,6 @@
 
         getUserInfo();
 
-        ////////////////////////////////////
 
         ctrl.addInvoiceCompany = addInvoiceCompany;
         ctrl.addInvoicePerson = addInvoicePerson;
@@ -193,13 +191,13 @@
         ctrl.closeNoCompanyAlert = closeNoCompanyAlert;
         ctrl.closeAddInvoiceSuccess = closeAddInvoiceSuccess;
         ctrl.findCompaniesByNip = findCompaniesByNip;
-        $scope.onSelect = onSelect;
+        ctrl.onSelect = onSelect;
         ctrl.getUserInfo = getUserInfo;
         ctrl.closeFormInvalidAlert = closeFormInvalidAlert;
         ctrl.getInvoiceNumber = getInvoiceNumber;
 
     }
 
-    angular.module('app').controller('AddInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$scope','UserDAO', AddInvoiceController]);
+    angular.module('app').controller('UploadInvoiceController',['Upload','InvoiceDAO','CompanyDAO','$uibModal','UserDAO',UploadInvoiceController]);
 
 })();

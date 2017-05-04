@@ -51,11 +51,22 @@
             templateUrl: 'modules/user/user.tpl.html', controller: 'UserController', controllerAs: 'userCtrl'
         });
 
-        $routeProvider.when('/add/invoice', {
+        $routeProvider.when('/add/invoice',{
             templateUrl: '/modules/invoices/add/addInvoice.tpl.html',
-            controller: 'AddInvoiceController',
-            controllerAs: 'addInvoiceCtrl',
-            css: '/modules/invoices/add/addInvoice.css',
+            requireAuth: true
+        });
+
+        $routeProvider.when('/add/invoice/issue',{
+            templateUrl: '/modules/invoices/add/issue/issueInvoice.tpl.html',
+            controller: 'IssueInvoiceController',
+            controllerAs: 'issueInvoiceCtrl',
+            requireAuth: true
+        });
+
+        $routeProvider.when('/add/invoice/upload', {
+            templateUrl: '/modules/invoices/add/upload/uploadInvoice.tpl.html',
+            controller: 'UploadInvoiceController',
+            controllerAs: 'uploadInvoiceCtrl',
             requireAuth: true
 
         }).otherwise({redirectTo: '/'});
