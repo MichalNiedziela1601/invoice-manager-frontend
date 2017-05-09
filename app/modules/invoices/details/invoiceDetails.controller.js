@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function InvoiceDetailsController(InvoiceDetailsDAO, $routeParams, lodash)
+    function InvoiceDetailsController(InvoiceDetailsDAO, $routeParams)
     {
         var ctrl = this;
         ctrl.message = 'Details Invoice';
@@ -23,13 +23,13 @@
 
         function createSummary(details)
         {
-            var subTotal = lodash.reduce(details.products, function (result, value)
+            var subTotal = _.reduce(details.products, function (result, value)
             {
                 (result[value.vat] || (result[value.vat] = [])).push(value);
                 return result;
             }, {});
 
-            lodash.each(subTotal, function (value, key)
+            _.each(subTotal, function (value, key)
             {
                 var sum = {
                     vat: key,
@@ -37,7 +37,7 @@
                     vatValue: 0,
                     bruttoValue: 0
                 };
-                lodash.forEach(value, function (val)
+                _.forEach(value, function (val)
                 {
                     sum.nettoValue += val.netto * (val.amount || 1);
                     sum.vatValue += val.brutto - val.netto * (val.amount || 1);
@@ -56,7 +56,7 @@
                 data.advance = Number(data.advance);
                 ctrl.details = data;
 
-                if (lodash.some(ctrl.details.products, ['vat', 'N/A'])) {
+                if (_.some(ctrl.details.products, ['vat', 'N/A'])) {
                     ctrl.reverseCharge = true;
                 }
                 else {
@@ -142,10 +142,10 @@
             if (form.$valid) {
                 ctrl.details.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
                 ctrl.details.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-                ctrl.details.companyDealer = lodash.get(ctrl.details, 'companyDealer.id');
-                ctrl.details.companyRecipent = lodash.get(ctrl.details, 'companyRecipent.id');
-                ctrl.details.personDealer = lodash.get(ctrl.details, 'personDealer.id');
-                ctrl.details.personRecipent = lodash.get(ctrl.details, 'personRecipent.id');
+                ctrl.details.companyDealer = _.get(ctrl.details, 'companyDealer.id');
+                ctrl.details.companyRecipent = _.get(ctrl.details, 'companyRecipent.id');
+                ctrl.details.personDealer = _.get(ctrl.details, 'personDealer.id');
+                ctrl.details.personRecipent = _.get(ctrl.details, 'personRecipent.id');
 
                 InvoiceDetailsDAO.update(ctrl.id, ctrl.details).then(function ()
                 {
@@ -231,5 +231,5 @@
         ctrl.deleteProduct = deleteProduct;
     }
 
-    angular.module('app').controller('InvoiceDetailsController', ['InvoiceDetailsDAO', '$routeParams', 'lodash', InvoiceDetailsController]);
+    angular.module('app').controller('InvoiceDetailsController', ['InvoiceDetailsDAO', '$routeParams', InvoiceDetailsController]);
 })();

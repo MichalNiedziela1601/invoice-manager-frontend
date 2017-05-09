@@ -13,7 +13,7 @@ module.exports = function (config)
         frameworks: ['jasmine'],
 
         // list of files / patterns to load in the browser
-        files: ['app/bower_components/lodash/dist/lodash.core.min.js',
+        files: ['app/bower_components/lodash/dist/lodash.min.js',
                 'app/bower_components/angular/angular.js',
                 'app/bower_components/angular-animate/angular-animate.min.js',
                 'app/bower_components/angular-bootstrap/ui-bootstrap.min.js',
@@ -27,7 +27,6 @@ module.exports = function (config)
                 'app/bower_components/angular-messages/angular-messages.js',
                 'app/bower_components/angular-jwt/dist/angular-jwt.min.js',
                 'app/bower_components/ng-table-bundle/ng-table.min.js',
-                'app/bower_components/ng-lodash/build/ng-lodash.min.js',
                 'app/app.js',
                 'app/app.config.js',
                 'app/app.route.js',
