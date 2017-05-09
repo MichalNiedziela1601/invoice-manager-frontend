@@ -31,13 +31,45 @@ describe('AddNewProductDirective', function ()
 
     describe('calculateBrutto', function ()
     {
-        beforeEach(function ()
+        describe('when amount exists and vat is not N/A', function ()
         {
-            controller.calculateBrutto();
+            beforeEach(function ()
+            {
+                controller.calculateBrutto();
+            });
+            it('should set brutto', function ()
+            {
+                expect(controller.product.brutto).toEqual(parseFloat((productMock.netto * (1 +productMock.vat/100) * productMock.amount).toFixed(2),10));
+            });
         });
-        it('should set brutto', function ()
+        describe('when vat is N/A', function ()
         {
-            expect(controller.product.brutto).toEqual(parseFloat((productMock.netto * (1 +productMock.vat/100) * productMock.amount).toFixed(2),10));
+            describe('when amount is undefined', function ()
+            {
+                beforeEach(function ()
+                {
+                    productMock = { name: 'Product 1', netto: 3000.00, vat: 'N/A'};
+                    controller.product = productMock;
+                    controller.calculateBrutto();
+                });
+                it('should set brutto', function ()
+                {
+                    expect(controller.product.brutto).toEqual(parseFloat(productMock.netto));
+                });
+            });
+            describe('wehn amount is defined', function ()
+            {
+                beforeEach(function ()
+                {
+                    productMock = { name: 'Product 1', netto: 3000.00, vat: 'N/A', amount: 2};
+                    controller.product = productMock;
+                    controller.calculateBrutto();
+                });
+                it('should set brutto', function ()
+                {
+                    expect(controller.product.brutto).toEqual(parseFloat(productMock.netto * productMock.amount));
+                });
+            });
         });
     });
     describe('add', function ()

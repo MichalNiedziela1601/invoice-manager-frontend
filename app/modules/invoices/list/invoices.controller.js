@@ -13,7 +13,7 @@
         {
             ctrl.invoicesListSale = data;
             ctrl.sellTable = new NgTableParams({
-                sorting: { invoiceNr: 'asc'}
+                sorting: { invoiceNr: 'desc'}
 
             }, {
                 dataset: ctrl.invoicesListSale
@@ -23,7 +23,7 @@
         {
             ctrl.invoicesListBuy = data;
             ctrl.buyTable = new NgTableParams({
-                sorting: { invoiceNr: 'asc'}
+                sorting: { invoiceNr: 'desc'}
 
             }, {
                 dataset: ctrl.invoicesListBuy

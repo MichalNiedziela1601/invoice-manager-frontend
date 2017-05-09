@@ -1,20 +1,32 @@
 <div class="row">
 
-    <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-offset-0 col-xs-12">
-        <h2 class="page-header text-center">{{InvoiceDetailsCtrl.message}}</h2>
-        <div class="invoice-detail-wrapper">
-            <div ng-show="InvoiceDetailsCtrl.showDetailsInvoice" class="padding-bottom-3 animate-show-hide">
+    <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12 ">
+        <div><h2 class="page-header text-center">{{InvoiceDetailsCtrl.message}}</h2></div>
+        <div class="invoice-detail-wrapper ">
+            <div ng-show="InvoiceDetailsCtrl.showDetailsInvoice" class="padding-bottom-3 animate-show-hide col-xs-12">
 
                 <h2 class="text-center">{{InvoiceDetailsCtrl.details.invoiceNr}}</h2>
-                <div>
-                    <p><strong>Create Date: </strong>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}} </p>
-                    <p><strong>Execution Date: </strong>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}} </p>
+                <div class="col-sm-12 no-padding">
+                    <div class="col-md-6">
+                        <p><strong>Create Date: </strong>{{InvoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}} </p>
+                        <p><strong>Execution Date: </strong>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}} </p>
 
-                    <p><strong>Type: </strong>{{InvoiceDetailsCtrl.details.type}} </p>
+                        <p><strong>Type: </strong>{{InvoiceDetailsCtrl.details.type}} </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pull-right">
+                            <button ng-click="InvoiceDetailsCtrl.showEdit()" class="btn btn-success">Edit</button>
+                            <a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">
+                                <button class="btn btn-info">Show</button>
+                            </a>
+                            <button class="btn btn-primary" ng-click="InvoiceDetailsCtrl.changeStatus()">{{InvoiceDetailsCtrl.details.status}}</button>
+                        </div>
+
+                    </div>
                 </div>
 
 
-                <div class="col-md-5 col-xs-12">Dealer
+                <div class="col-md-5 col-xs-12">Seller
                     <div ng-if="InvoiceDetailsCtrl.details.companyDealer">
                         <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyDealer"
                                                  address="InvoiceDetailsCtrl.details.companyDealer.address"></contractor-info-invoice>
@@ -24,7 +36,7 @@
                                                  address="InvoiceDetailsCtrl.details.personDealer.address"></contractor-info-invoice>
                     </div>
                 </div>
-                <div class="col-md-5 col-md-offset-2 col-xs-12 col-xs-offset-0">Recipient
+                <div class="col-md-5 col-md-offset-2 col-xs-12 col-xs-offset-0">Buyer
                     <div ng-if="InvoiceDetailsCtrl.details.companyRecipent">
                         <contractor-info-invoice company="InvoiceDetailsCtrl.details.companyRecipent"
                                                  address="InvoiceDetailsCtrl.details.companyRecipent.address"></contractor-info-invoice>
@@ -34,34 +46,119 @@
                                                  address="InvoiceDetailsCtrl.details.personRecipent.address"></contractor-info-invoice>
                     </div>
                 </div>
+                <div class="col-xs-12" ng-if="InvoiceDetailsCtrl.details.description" ><b>Notes:</b> {{InvoiceDetailsCtrl.details.description}}</div>
+                <div class="col-xs-12">
+                    <table class="table table-responsive">
+                        <thead class="gray" ng-switch="InvoiceDetailsCtrl.reverseCharge">
+                        <tr ng-switch-when="false">
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Unit</th>
+                            <th>Vat [%]</th>
+                            <th>Unit price</th>
+                            <th>Netto Value</th>
+                        </tr>
+                        <tr ng-switch-when="true">
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Unit</th>
+                            <th>Unit price</th>
+                            <th>Netto Value</th>
+                        </tr>
+
+                        </thead>
+                        <tbody ng-switch="InvoiceDetailsCtrl.reverseCharge">
+                        <tr ng-switch-when="false" ng-repeat="(key,value) in InvoiceDetailsCtrl.details.products">
+                            <td>{{value.name}}</td>
+                            <td>{{value.amount}}</td>
+                            <td>{{value.unit}}</td>
+                            <td>{{value.vat}}</td>
+                            <td>{{value.netto | number:2}}</td>
+                            <td>{{value.netto * value.amount | number:2}}</td>
+                        </tr>
+
+                        <tr ng-switch-when="true" ng-repeat="(key,value) in InvoiceDetailsCtrl.details.products">
+                            <td>{{value.name}}</td>
+                            <td>{{value.amount}}</td>
+                            <td>{{value.unit}}</td>
+                            <td>{{value.netto | number:2}}</td>
+                            <td>{{value.netto * (value.amount || 1) | number:2}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="col-md-12">
-                    <div class="col-md-6">
-                        <h3>Show invoice: <a ng-href="{{InvoiceDetailsCtrl.details.url}}" target="_blank">url</a></h3>
-                        <div>
-                            <button ng-click="InvoiceDetailsCtrl.showEdit()" class="btn btn-success">Edit</button>
-                        </div>
+                    <div class="col-md-5 no-padding">
+                        <table class="table">
+
+                            <tbody>
+                            <tr>
+                                <td class="gray">Payment Method</td>
+                                <td>{{InvoiceDetailsCtrl.details.paymentMethod}}</td>
+                            </tr>
+                            <tr>
+                                <td class="gray">Pay Due</td>
+                                <td>{{InvoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <td class="gray">Bank Account</td>
+                                <td>{{InvoiceDetailsCtrl.details.companyDealer.bankAccount}}</td>
+                            </tr>
+                            <tr>
+                                <td class="gray">SWIFT</td>
+                                <td>{{InvoiceDetailsCtrl.details.companyDealer.swift}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="invoice-cost-box">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Netto</th>
-                                    <th>Brutto</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>{{InvoiceDetailsCtrl.details.status}}</td>
-                                    <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
-                                    <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
-                                </tr>
-                                </tbody>
+                    <div class="col-md-7">
 
-                            </table>
-                        </div>
+                        <table class="table">
+                            <thead class="gray" ng-switch="InvoiceDetailsCtrl.reverseCharge">
+                            <tr ng-switch-when="false">
+                                <th></th>
+                                <th>Vat [%]</th>
+                                <th>Netto</th>
+                                <th>Vat value</th>
+                                <th>Brutto</th>
+                            </tr>
+
+                            </thead>
+                            <tbody ng-switch="InvoiceDetailsCtrl.reverseCharge">
+                            <tr ng-switch-when="false" class="bottom-border">
+                                <td class="gray"><b>Total</b></td>
+                                <td></td>
+                                <td>{{InvoiceDetailsCtrl.details.nettoValue}}</td>
+                                <td>{{InvoiceDetailsCtrl.details.bruttoValue - InvoiceDetailsCtrl.details.nettoValue | number:2}}</td>
+                                <td>{{InvoiceDetailsCtrl.details.bruttoValue}}</td>
+                            </tr>
+                            <tr ng-switch-when="false" ng-repeat="subtotal in InvoiceDetailsCtrl.summary track by $index">
+                                <td class="gray">including</td>
+                                <td>{{subtotal.vat}}</td>
+                                <td>{{subtotal.nettoValue | number:2}}</td>
+                                <td>{{subtotal.vatValue | number:2}}</td>
+                                <td>{{subtotal.bruttoValue | number:2}}</td>
+                            </tr>
+
+                            <tr ng-switch-when="true" class="bottom-border">
+                                <td class="gray"><b>Total</b></td>
+                                <td><b class="pull-right">{{InvoiceDetailsCtrl.details.bruttoValue | number:2}}
+                                    {{(InvoiceDetailsCtrl.details.currency)}}</b></td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                    <div class="col-xs-12 no-padding">
+                        <div class="col-xs-6 gray"><h4><b>Total:</b></h4></div>
+                        <div class="col-xs-6 gray"><span class="pull-right"><h4><b>{{InvoiceDetailsCtrl.details.bruttoValue | number:2}}
+                        {{(InvoiceDetailsCtrl.details.currency)}}</b></h4></span></div>
+                        <div class="col-xs-6"><b>Advance: </b>{{(InvoiceDetailsCtrl.details.advance || 0.00) | number:2}} {{InvoiceDetailsCtrl.details.currency}}</div>
+                        <div class="col-xs-6"><span class="pull-right"><b>Amount due: </b>
+                            {{(InvoiceDetailsCtrl.details.bruttoValue - InvoiceDetailsCtrl.details.advance) | number:2}} {{InvoiceDetailsCtrl.details.currency}}</span></div>
                     </div>
                 </div>
 
@@ -71,93 +168,183 @@
                 <form class="form-horizontal" name="invoice" ng-submit="InvoiceDetailsCtrl.editInvoice(invoice)" novalidate>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Type of transaction</label>
-                        <div class="col-sm-9">
-                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.type" name="transitionType" value="sell"
-                                          ng-required="!InvoiceDetailsCtrl.details.type">Sell</label>
-                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.type" name="transitionType" value="buy"
-                                          ng-required="!InvoiceDetailsCtrl.details.type">Buy</label>
-                        </div>
-                        <div ng-messages="invoice.transitionType.$error" style="color:maroon" role="alert">
-                            <div ng-if="invoice.$submitted" ng-message="required">
-                                Choose one of the options
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="invoice_nr" class="col-sm-3 control-label">Invoice number</label>
-                        <div class="col-sm-9">
+                        <label for="invoice_nr" class="col-lg-2 col-md-2 col-sm-3 control-label">Invoice number</label>
+                        <div class="col-lg-2 col-md-2 col-sm-3">
                             <input type="text" ng-minlength="5" class="form-control" name="invoiceNumber" id="invoice_nr" placeholder="Invoice number"
                                    ng-model="InvoiceDetailsCtrl.details.invoiceNr" required>
-                            <div ng-messages="invoice.invoiceNumber.$error" style="color:maroon" role="alert">
+                            <div ng-messages="invoice.invoiceNumber.$error" class="input-error" role="alert">
                                 <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
                                 <div ng-message="minlength">Invoice ID required min. length is 5</div>
                             </div>
                         </div>
 
-                    </div>
-                    <div class="form-group">
-                        <label for="invoice_create_date" class="col-sm-3 control-label">Create date</label>
-                        <div class="col-sm-9">
+                        <label for="invoice_create_date" class="col-lg-2 col-md-2 col-sm-2 control-label">Create date</label>
+                        <div class="col-lg-2 col-sm-3">
                             <p class="input-group">
                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="InvoiceDetailsCtrl.createDatePicker.date"
                                        is-open="InvoiceDetailsCtrl.createDatePicker.opened" datepicker-options="InvoiceDetailsCtrl.createDatePicker.options"
-                                       ng-required="true" close-text="Close" id="invoice_create_date" required/>
+                                       ng-required="true" close-text="Close" id="invoice_create_date" required
+                                       ng-change="InvoiceDetailsCtrl.getInvoiceNumber()"/>
                                 <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.createDatePicker.open()"><i
-                    class="glyphicon glyphicon-calendar"></i></button>
-          </span>
+                                        <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.createDatePicker.open()"><i
+                                                class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
                             </p>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="invoice_expire_date" class="col-sm-3 control-label">Expire date</label>
-                        <div class="col-sm-9">
+                        <label for="invoice_expire_date" class="col-lg-2 col-sm-3 control-label">Expire date</label>
+                        <div class="col-lg-2 col-sm-3">
                             <p class="input-group">
                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="InvoiceDetailsCtrl.executionDatePicker.date"
                                        is-open="InvoiceDetailsCtrl.executionDatePicker.opened"
                                        datepicker-options="InvoiceDetailsCtrl.executionDatePicker.options" ng-required="true" close-text="Close"
                                        id="invoice_expire_date" required/>
                                 <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.executionDatePicker.open()"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
+                                            <button type="button" class="btn btn-default" ng-click="InvoiceDetailsCtrl.executionDatePicker.open()"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
                             </p>
                         </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <table class="table table-responsive" id="tableProduct">
+                                <tr ng-repeat="(key,value) in InvoiceDetailsCtrl.details.products track by $index">
+                                    <td>
+                                        <ng-form name="productForm" class="form-inline no-margin">
+                                            <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b>Name:</b> <p>{{value.name}}</p></span>
+                                                <div ng-class="{'has-error' : productForm.name.$invalid}" ng-show="value.editMode">
+                                                    <label class="sr-only">Name</label>
+                                                    <input type="text" class="form-control" name="name" ng-model="value.name" required
+                                                           placeholder="Name"></div>
+                                            </div>
+
+                                            <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b ng-show="value.amount">Amount:</b>
+                                                        <p>{{value.amount}}</p></span>
+                                                <label class="sr-only">Amount</label>
+                                                <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.amount"
+                                                       ng-change="InvoiceDetailsCtrl.calculateBrutto(value)" placeholder="Amount">
+                                            </div>
+
+                                            <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b ng-if="value.unit">Unit:</b><p>{{value.unit}}</p></span>
+                                                <input type="text" class="form-control" ng-show="value.editMode" ng-model="value.unit"
+                                                       placeholder="Unit">
+                                            </div>
+
+                                            <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Netto: </b>
+                                                            <p>{{value.netto}}</p></span>
+                                                <div ng-class="{'has-error' : productForm.netto.$invalid}" ng-show="value.editMode">
+                                                    <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.netto"
+                                                           ng-change="InvoiceDetailsCtrl.calculateBrutto(value)" name="netto" required min="0"
+                                                           placeholder="Netto"></div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Vat: </b>
+                                                            <p>{{value.vat}}</p></span>
+                                                <div ng-class="{'has-error' : productForm.vat.$invalid}" ng-show="value.editMode">
+                                                    <select class="form-control" ng-show="value.editMode"
+                                                            ng-options="v as v for v in InvoiceDetailsCtrl.vats" ng-model="value.vat"
+                                                            ng-change="InvoiceDetailsCtrl.calculateBrutto(value)" required name="vat"></select></div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Brutto: </b>
+                                                            <p>{{value.brutto}}</p></span>
+                                                <div ng-class="{'has-error' : productForm.brutto.$invalid}" ng-show="value.editMode">
+                                                    <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.brutto" required
+                                                           name="brutto"></div>
+                                            </div>
+
+
+                                            <div class="form-group"><button type="button" data-ng-hide="value.editMode" data-ng-click="InvoiceDetailsCtrl.edit(value)"
+                                                                            class="btn btn-primary">Edit
+                                            </button>
+                                                <button type="button" data-ng-hide="value.editMode" data-ng-click="InvoiceDetailsCtrl.deleteProduct(key)"
+                                                        class="btn btn-danger">Delete
+                                                </button>
+                                                <button type="button" ng-disabled="productForm.$invalid" data-ng-show="value.editMode"
+                                                        data-ng-click="InvoiceDetailsCtrl.save(value)" class="btn btn-success">Save
+                                                </button>
+                                                <button type="button" data-ng-show="value.editMode" data-ng-click="InvoiceDetailsCtrl.cancel(value, key)"
+                                                        class="btn btn-warning">Cancel
+                                                </button></div>
+                                        </ng-form>
+
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <button type="button" class="btn btn-info" ng-click="InvoiceDetailsCtrl.addNew()">Add new product/service</button>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="netto" class="col-sm-3 control-label">Netto</label>
-                        <div class="col-sm-9">
+                        <label class="control-label col-lg-2 col-md-2 col-sm-3">Advance</label>
+                        <div class="col-lg-2 col-md-2 col-sm-3">
+                            <input type="number" step="0.01" ng-model="InvoiceDetailsCtrl.details.advance"
+                                   class="form-control">
+                        </div>
+
+
+                        <label class="control-label col-lg-2 col-sm-3">Payment method </label>
+                        <div class="col-lg-2 col-sm-3">
+                            <select id="payment" class="form-control" name="payment" ng-options="type.type as type.type for type in InvoiceDetailsCtrl.payment"
+                                    ng-model="InvoiceDetailsCtrl.details.paymentMethod" required>
+                            </select></div>
+
+                        <div class="col-lg-1  col-sm-3">
+                            <div class="checkbox">
+                                <label><input type="checkbox" ng-model="InvoiceDetailsCtrl.details.status" name="status" ng-true-value="'paid'"
+                                              ng-false-value="'nopaid'"> Paid</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-sm-2"><label><input type="radio" ng-model="InvoiceDetailsCtrl.details.language" name="language"
+                                                                     value="en" ng-required="!InvoiceDetailsCtrl.details.language">EN</label>
+                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.language" name="language" value="pl"
+                                          ng-required="!InvoiceDetailsCtrl.details.language">PL</label>
+                            <div ng-messages="invoice.language.$error" class="input-error" role="alert">
+                                <div ng-if="invoice.$submitted" ng-message="required">
+                                    Choose one of the options
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="netto" class="col-lg-2 col-sm-3 control-label">Netto</label>
+                        <div class="col-lg-2 col-sm-3">
                             <input type="text" class="form-control" id="netto" name="netto" placeholder="Netto" ng-model="InvoiceDetailsCtrl.details.nettoValue"
-                                   required>
-                            <div ng-messages="invoice.netto.$error" style="color:maroon" role="alert">
+                                   required disabled>
+                            <div ng-messages="invoice.netto.$error" class="input-error" role="alert">
                                 <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="brutto" class="col-sm-3 control-label">Brutto</label>
-                        <div class="col-sm-9">
+                        <label for="brutto" class="col-lg-2 col-sm-3 control-label">Brutto</label>
+                        <div class="col-lg-2 col-sm-3">
                             <input type="text" class="form-control" id="brutto" name="brutto" placeholder="Brutto"
-                                   ng-model="InvoiceDetailsCtrl.details.bruttoValue" required>
-                            <div ng-messages="invoice.brutto.$error" style="color:maroon" role="alert">
+                                   ng-model="InvoiceDetailsCtrl.details.bruttoValue" required disabled>
+                            <div ng-messages="invoice.brutto.$error" class="input-error" role="alert">
                                 <div ng-if="invoice.$submitted" ng-message="required">Please enter a value for this field.</div>
                             </div>
                         </div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Status</label>
-                        <div class="col-sm-9">
-                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.status" name="status" value="paid"
-                                          ng-required="!InvoiceDetailsCtrl.details.status">Paid</label>
-                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.status" name="status" value="unpaid"
-                                          ng-required="!InvoiceDetailsCtrl.details.status">Unpaid</label>
-                            <div ng-messages="invoice.status.$error" style="color:maroon" role="alert">
+                        <div class="col-lg-2 col-sm-2"><label><input type="radio" ng-model="InvoiceDetailsCtrl.details.currency" name="currency"
+                                                                     value="USD" ng-required="!InvoiceDetailsCtrl.details.currency">USD</label>
+                            <label><input type="radio" ng-model="InvoiceDetailsCtrl.details.currency" name="currency" value="PLN"
+                                          ng-required="!InvoiceDetailsCtrl.details.currency">PLN</label>
+                            <div ng-messages="invoice.currency.$error" class="input-error" role="alert">
                                 <div ng-if="invoice.$submitted" ng-message="required">
                                     Choose one of the options
                                 </div>
@@ -165,8 +352,37 @@
                         </div>
                     </div>
 
+
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
+                        <label class="col-lg-2 col-sm-3 control-label">Description</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" ng-model="InvoiceDetailsCtrl.details.description"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-offset-2 col-lg-9 col-sm-offset-3 col-sm-9">
+
+                        <div ng-show="InvoiceDetailsCtrl.issueProductNotAdded" uib-alert class="alert-danger" close="InvoiceDetailsCtrl.closeProductNotAdded()">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            Not added product/service!
+                        </div>
+
+                        <div ng-show="InvoiceDetailsCtrl.formInvalidAlert" uib-alert class="alert-danger" close="InvoiceDetailsCtrl.closeFormInvalidAlert()">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            {{InvoiceDetailsCtrl.errorMessage}}
+                        </div>
+
+                        <div ng-show="InvoiceDetailsCtrl.addInvoice" uib-alert class="alert-success" close="InvoiceDetailsCtrl.closeAddInvoiceSuccess()">
+                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Success:</span>
+                            Invoice Added
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-sm-offset-3 col-lg-9 col-sm-9">
                             <button type="submit" class="btn btn-default">Edit</button>
                         </div>
                     </div>

@@ -4,8 +4,8 @@
         <span ng-if="company.firstName">{{company.firstName}} {{company.lastName}}</span></div>
     </div>
     <div class="panel-body">
-        <table class="table no-bottom-margin">
-            <tr>
+        <table class="table table-condensed no-bottom-margin">
+            <tbody><tr>
                 <td>nip</td>
                 <td>{{company.nip}}</td>
             </tr>
@@ -18,7 +18,7 @@
                 <td>{{address.street}} {{address.buildNr}}<span ng-if="address.flatNr">{{'/'+address.flatNr}}</span>
                     <p>{{address.postCode}} {{address.city }}</p>
                 </td>
-            </tr>
+            </tr></tbody>
         </table>
     </div>
 </div>

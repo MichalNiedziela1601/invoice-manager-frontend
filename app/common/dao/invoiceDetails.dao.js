@@ -4,7 +4,7 @@
 
     function InvoiceDetailsDAO($resource)
     {
-        var api = $resource('/api/invoice/:id', null, {
+        var api = $resource('/api/invoice/:id/:b', null, {
             details: {method: 'GET'},
             update: { method: 'PUT'}
         });
@@ -15,6 +15,10 @@
             },
             update: function (id,invoice){
                 return api.update({id: id},invoice).$promise;
+            },
+            changeStatus: function (id,status)
+            {
+                return api.update({id: id, b: 'status'}, {status: status}).$promise;
             }
         };
     }
