@@ -39,7 +39,7 @@ describe('IssueInvoiceController', function ()
 
         nips = [
             {nip: 1234567890},
-            {nip: 1223456789}
+            {nip: 1224567890}
         ];
 
         productsMock = { name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
@@ -127,7 +127,7 @@ describe('IssueInvoiceController', function ()
 
         it('should set transactionType variable to null', function ()
         {
-            expect(issueCtrl.transationType).toEqual('sale');
+            expect(issueCtrl.transationType).toEqual('sell');
         });
         it('should set showAddInvoice variable to false', function ()
         {
@@ -139,7 +139,7 @@ describe('IssueInvoiceController', function ()
         });
         it('should set invoiceCompany variable to empty object', function ()
         {
-            expect(issueCtrl.invoiceCompany).toEqual({ products: {}});
+            expect(issueCtrl.invoiceCompany).toEqual({ products: {}, status: 'nopaid', paymentMethod: 'transfer'});
         });
         it('should set invoicePerson variable to empty object', function ()
         {
@@ -223,7 +223,7 @@ describe('IssueInvoiceController', function ()
             {
                 it('should set invoiceCompany.type to transactionType', function ()
                 {
-                    expect(issueCtrl.invoiceCompany.type).toEqual('sale');
+                    expect(issueCtrl.invoiceCompany.type).toEqual('sell');
                 });
                 it('should set invoiceCompany.createDate', function ()
                 {
@@ -300,7 +300,7 @@ describe('IssueInvoiceController', function ()
                     });
                     it('should reset invoiceCompany', function ()
                     {
-                        expect(issueCtrl.invoiceCompany).toEqual({products: {}});
+                        expect(issueCtrl.invoiceCompany).toEqual({products: {}, status: 'nopaid', paymentMethod: 'transfer'});
                     });
                     it('should call InvoiceDAO.number', function ()
                     {
@@ -334,6 +334,7 @@ describe('IssueInvoiceController', function ()
                     });
                 });
             });
+
 
         });
         describe('company invoicesDetails doesn\'t exists', function ()
@@ -586,7 +587,7 @@ describe('IssueInvoiceController', function ()
                 issueCtrl.openAddEditProductModal();
                 issueCtrl.modalAddInstance.close(productsMock);
             });
-            it('should corrctly show modal', function ()
+            it('should correctly show modal', function ()
             {
                 expect(actualOptions.resolve.product()).toBe(null);
             });

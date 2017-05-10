@@ -6,10 +6,13 @@
     {
         var ctrl = this;
 
-        ctrl.transationType = 'sale';
+        ctrl.transationType = 'sell';
         ctrl.showAddInvoice = false;
         ctrl.nipContractor = null;
-        ctrl.invoiceCompany = {};
+        ctrl.invoiceCompany = {
+            products: {},
+            status: 'nopaid'
+        };
         ctrl.invoicePerson = {};
         ctrl.companyDetails = null;
         ctrl.issueCompanyNotChosen = false;
@@ -17,7 +20,11 @@
         ctrl.formInvalidAlert = false;
         ctrl.formSubmitted = false;
         ctrl.issueProductNotAdded = false;
-        ctrl.invoiceCompany.products = {};
+        ctrl.payment = [
+            {type: 'cash'},
+            {type: 'transfer'}
+        ];
+        ctrl.invoiceCompany.paymentMethod = ctrl.payment[1].type;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -36,7 +43,6 @@
                 this.opened = !this.opened;
             }
         };
-
 
 
         function closeNoCompanyAlert()
@@ -93,7 +99,7 @@
                     ctrl.companyDetails = result;
                     ctrl.showBox = true;
                 });
-            },function (error)
+            }, function (error)
             {
                 console.error('ERROR: ' + error);
             });
@@ -113,6 +119,12 @@
         {
             return CompanyDAO.getNips(nip).then(function (response)
             {
+                angular.forEach(response, function (value, key)
+                {
+                    if (value.nip === ctrl.mockedCompany.nip) {
+                        response.splice(key, 1);
+                    }
+                });
                 return response;
             });
         }
@@ -219,7 +231,6 @@
                 ctrl.invoiceCompany.companyRecipent = ctrl.companyDetails.id;
                 ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
                 ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-                ctrl.invoiceCompany.url = 'asdfgsdjkfhs';
 
                 if (Object.keys(ctrl.invoiceCompany.products).length > 0) {
                     if (form.$valid) {
@@ -232,8 +243,10 @@
                                 ctrl.createDatePicker.date = new Date();
                                 ctrl.executionDatePicker.date = new Date();
                                 ctrl.invoiceCompany = {
-                                    products: {}
+                                    products: {},
+                                    status: 'nopaid'
                                 };
+                                ctrl.invoiceCompany.paymentMethod = ctrl.payment[1].type;
                                 form.$setPristine();
                                 ctrl.formSubmitted = false;
                                 getInvoiceNumber();
@@ -243,6 +256,7 @@
                                 ctrl.errorMessage = error.data;
                                 ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
                             });
+
                         }
                     }
                 } else {
@@ -257,6 +271,7 @@
         {
             ctrl.issueProductNotAdded = false;
         }
+
 
         getInvoiceNumber();
         getUserInfo();

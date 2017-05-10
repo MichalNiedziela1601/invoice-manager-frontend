@@ -65,7 +65,7 @@
 
                 checkTypeTransaction();
                 ctrl.fileToUpload = {
-                    url: '/api/invoice',
+                    url: '/api/invoice/upload',
                     data: {
                         invoice: ctrl.invoiceCompany,
                         file: ctrl.file

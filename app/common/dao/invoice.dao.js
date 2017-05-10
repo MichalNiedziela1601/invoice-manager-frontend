@@ -17,15 +17,19 @@
             },
             add: function (invoice)
             {
-                return api.save(invoice).$promise;
+                return api.save({a: 'upload'},invoice).$promise;
             },
             issue: function(invoice)
             {
-                return api.save({a: 'issues'},invoice).$promise;
+                return api.save({a: 'issue'},invoice).$promise;
             },
             number: function(year,month)
             {
                 return api.query({a: 'number', year: year, month: month}).$promise;
+            },
+            pdf: function(base)
+            {
+                return api.save({a: 'pdf'},{file: base}).$promise;
             }
         };
     }

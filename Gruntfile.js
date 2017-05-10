@@ -9,6 +9,7 @@ module.exports = function (grunt)
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-karma');
 
 
@@ -27,7 +28,12 @@ module.exports = function (grunt)
                 },
                 files: ['<%= config.app %>/index.html', '<%= config.app %>/*.js', '<%= config.app %>/modules/**/*', '<%= config.app %>/common/**/*',
                     '<%= config.app %>/style/**/*']
+            },
+            styles: {
+                files: ['<%= config.app %>/style/*.less'], // which files to watch
+                tasks: ['less']
             }
+
         }, connect: {
             options: {
                 port: 9000, livereload: 35729, hostname: 'localhost'
@@ -65,11 +71,21 @@ module.exports = function (grunt)
                     jshintrc: true, reporter: 'checkstyle', reporterOutput: 'target/jshint.xml'
                 }, files: {src: ['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*.js']}
             }
+        },
+        less: {
+            development: {
+                options: {
+                    paths: ['app/style']
+                },
+                files: {
+                    'app/style/main.style.css': 'app/style/main.style.less'
+                }
+            }
         }
 
     });
 
-    grunt.registerTask('serve', ['configureProxies', 'connect:livereload', 'watch']);
+    grunt.registerTask('serve', ['configureProxies', 'connect:livereload','less', 'watch']);
 
     grunt.registerTask('default', ['serve']);
 
