@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function LoginController($location, UserDAO)
+    function LoginController($location, $window, UserDAO)
     {
         var ctrl = this;
         ctrl.message = 'Start';
@@ -18,7 +18,12 @@
                 UserDAO.login(ctrl.loginCredential).then(function ()
                 {
                     ctrl.invalidFormAlert = false;
-                    $location.path('/invoices');
+                }).then(function()
+                {
+                    UserDAO.getUserInfo().then(function(data){
+                        $window.sessionStorage.setItem('userInfo', angular.toJson(data));
+                        $location.path('/invoices');
+                    });
                 }).catch(function(error){
                     form.$setUntouched();
                     ctrl.errorMessage = error.data;
@@ -37,6 +42,6 @@
         };
     }
 
-    angular.module('app').controller('LoginController', ['$location', 'UserDAO', LoginController]);
+    angular.module('app').controller('LoginController', ['$location','$window', 'UserDAO', LoginController]);
 
 })();

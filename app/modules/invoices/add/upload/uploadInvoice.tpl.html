@@ -11,10 +11,9 @@
                         <div class="typeahead-demo"><input type="text" ng-model="uploadInvoiceCtrl.asyncSelected" placeholder="NIP contractors"
                                                            uib-typeahead="companies.nip for companies in uploadInvoiceCtrl.findCompaniesByNip($viewValue)"
                                                            typeahead-loading="uploadInvoiceCtrl.loadingLocations"
-                                                           typeahead-no-results="uploadInvoiceCtrl.noResults"
-                                                           class="form-control" typeahead-on-select="uploadInvoiceCtrl.onSelect($item,$model,$label)"
-                                                           typeahead-template-url="modules/invoices/add/getNips.tpl.html"
-                                                           >
+                                                           typeahead-no-results="uploadInvoiceCtrl.noResults" class="form-control"
+                                                           typeahead-on-select="uploadInvoiceCtrl.onSelect($item,$model,$label)"
+                                                           typeahead-template-url="modules/invoices/add/getNips.tpl.html">
                             <i ng-show="uploadInvoiceCtrl.loadingLocations" class="glyphicon glyphicon-refresh"></i>
                             <div ng-show="uploadInvoiceCtrl.noResults">
                                 <i class="glyphicon glyphicon-remove"></i>
@@ -28,13 +27,8 @@
         </div>
 
         <div class="col-md-12">
-            <div class="col-md-12 col-lg-6 loggedCompany">
-                <h3>Logged Company</h3>
-                <contractor-info company="uploadInvoiceCtrl.mockedCompany"></contractor-info>
 
-            </div>
-
-            <div class="col-md-12 col-lg-6 findCompanyDetails">
+            <div class=" findCompanyDetails">
                 <h3>Contractor</h3>
                 <contractor-info ng-show="uploadInvoiceCtrl.showBox" company="uploadInvoiceCtrl.companyDetails"></contractor-info>
                 <div class="well" ng-show="!uploadInvoiceCtrl.showBox"><strong>Enter NIP to find company</strong></div>
@@ -48,25 +42,10 @@
                         <form class="form-horizontal" name="company" ng-submit="uploadInvoiceCtrl.addInvoiceCompany(company)" novalidate>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Type of transaction</label>
+                                <label class="col-sm-3 control-label">Add file</label>
                                 <div class="col-sm-9">
-                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.transationType" name="transitionType" value="sell"
-                                                  ng-required="!uploadInvoiceCtrl.transationType">Sell</label>
-                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.transationType" name="transitionType" value="buy"
-                                                  ng-required="!uploadInvoiceCtrl.transationType">Buy</label>
-                                </div>
-                                <div ng-messages="company.transitionType.$error" style="color:maroon" role="alert">
-                                    <div ng-if="company.$submitted" ng-message="required">
-                                        Choose one of the options
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="url_comp" class="col-sm-3 control-label">Add file</label>
-                                <div class="col-sm-9">
-                                    <input type="file" ngf-select ng-model="uploadInvoiceCtrl.file" accept="application/pdf" ngf-pattern="'application/pdf'" name="file"
-                                           required>
+                                    <input type="file" ngf-select ng-model="uploadInvoiceCtrl.file" accept="application/pdf" ngf-pattern="'application/pdf'"
+                                           name="file" required>
                                     <div ng-messages="company.file.$error" style="color:maroon" role="alert">
                                         <div ng-if="company.$submitted" ng-message="required">Please choose a file
                                         </div>
@@ -92,8 +71,9 @@
                                 <div class="col-sm-9">
                                     <p class="input-group">
                                         <input type="text" class="form-control" uib-datepicker-popup ng-model="uploadInvoiceCtrl.createDatePicker.date"
-                                               is-open="uploadInvoiceCtrl.createDatePicker.opened" datepicker-options="uploadInvoiceCtrl.createDatePicker.options"
-                                               ng-required="true" close-text="Close" id="invoice_create_date" required/>
+                                               is-open="uploadInvoiceCtrl.createDatePicker.opened"
+                                               datepicker-options="uploadInvoiceCtrl.createDatePicker.options" ng-required="true" close-text="Close"
+                                               id="invoice_create_date" required/>
                                         <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="uploadInvoiceCtrl.createDatePicker.open()"><i
                     class="glyphicon glyphicon-calendar"></i></button>
@@ -140,45 +120,40 @@
                             </div>
 
 
-                            <div class="form-group" ng-hide="uploadInvoiceCtrl.url">
-                                <label for="url_comp" class="col-sm-3 control-label">URL</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="url_comp" placeholder="URL" ng-model="uploadInvoiceCtrl.invoiceCompany.url">
-                                </div>
-                            </div>
-
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-9">
-                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.invoiceCompany.status" name="status" value="paid"
-                                                  ng-required="!uploadInvoiceCtrl.status">Paid</label>
-                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.invoiceCompany.status" name="status" value="unpaid"
-                                                  ng-required="!uploadInvoiceCtrl.status">Unpaid</label>
-                                    <div ng-messages="company.status.$error" style="color:maroon" role="alert">
-                                        <div ng-if="company.$submitted" ng-message="required">
-                                            Choose one of the options
-                                        </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" ng-model="uploadInvoiceCtrl.invoiceCompany.status" name="status" ng-true-value="'paid'"
+                                                      ng-false-value="'nopaid'"> Paid</label>
                                     </div>
                                 </div>
                             </div>
 
 
-                            <div ng-show="uploadInvoiceCtrl.companyNotChosen" uib-alert class="alert-danger" close="uploadInvoiceCtrl.closeNoCompanyAlert()">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Error:</span>
-                                Company has not been chosen!
-                            </div>
+                            <div class="form-group">
+                                <div ng-show="uploadInvoiceCtrl.companyNotChosen" uib-alert class="alert-danger"
+                                     close="uploadInvoiceCtrl.closeNoCompanyAlert()">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    Company has not been chosen!
+                                </div>
 
-                            <div ng-show="uploadInvoiceCtrl.formInvalidAlert" uib-alert class="alert-danger" close="uploadInvoiceCtrl.closeFormInvalidAlert()">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Error:</span>
-                                {{uploadInvoiceCtrl.errorMessage}}
-                            </div>
+                                <div ng-show="uploadInvoiceCtrl.formInvalidAlert" uib-alert class="alert-danger"
+                                     close="uploadInvoiceCtrl.closeFormInvalidAlert()">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    {{uploadInvoiceCtrl.errorMessage}}
+                                </div>
 
-                            <div ng-show="uploadInvoiceCtrl.addInvoice" uib-alert class="alert-success" close="uploadInvoiceCtrl.closeAddInvoiceSuccess()">
-                                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Success:</span>
-                                Invoice Added
+                                <div ng-show="uploadInvoiceCtrl.addInvoice" uib-alert class="alert-success" close="uploadInvoiceCtrl.closeAddInvoiceSuccess()">
+                                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Success:</span>
+                                    Invoice Added
+                                </div>
+                                <div ng-show="uploadInvoiceCtrl.showLoader">
+                                    <div class="loader"></div>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -215,8 +190,8 @@
                             <div class="form-group">
                                 <label for="url_comp" class="col-sm-3 control-label">Add file</label>
                                 <div class="col-sm-9">
-                                    <input type="file" ngf-select ng-model="uploadInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file" accept="/*"
-                                           required>
+                                    <input type="file" ngf-select ng-model="uploadInvoiceCtrl.file" ngf-pattern="'image/*,application/pdf'" name="file"
+                                           accept="/*" required>
                                     <div ng-messages="company.file.$error" style="color:maroon" role="alert">
                                         <div ng-if="person.$submitted" ng-message="required">Please choose a file
                                         </div>
@@ -240,8 +215,9 @@
                                 <div class="col-sm-9">
                                     <p class="input-group">
                                         <input type="text" class="form-control" uib-datepicker-popup ng-model="uploadInvoiceCtrl.createDatePicker.date"
-                                               is-open="uploadInvoiceCtrl.createDatePicker.opened" datepicker-options="uploadInvoiceCtrl.createDatePicker.options"
-                                               ng-required="true" close-text="Close" id="invoice_create_date_per" required/>
+                                               is-open="uploadInvoiceCtrl.createDatePicker.opened"
+                                               datepicker-options="uploadInvoiceCtrl.createDatePicker.options" ng-required="true" close-text="Close"
+                                               id="invoice_create_date_per" required/>
                                         <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="uploadInvoiceCtrl.createDatePicker.open()"><i
                     class="glyphicon glyphicon-calendar"></i></button>
@@ -290,8 +266,10 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-9">
-                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.invoicePerson.status" name="status" value="paid"  ng-required="!uploadInvoiceCtrl.status">Paid</label>
-                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.invoicePerson.status" name="status" value="unpaid"  ng-required="!uploadInvoiceCtrl.status">Unpaid</label>
+                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.invoicePerson.status" name="status" value="paid"
+                                                  ng-required="!uploadInvoiceCtrl.status">Paid</label>
+                                    <label><input type="radio" ng-model="uploadInvoiceCtrl.invoicePerson.status" name="status" value="unpaid"
+                                                  ng-required="!uploadInvoiceCtrl.status">Unpaid</label>
                                     <div ng-messages="person.status.$error" style="color:maroon" role="alert">
                                         <div ng-if="person.$submitted" ng-message="required">
                                             Choose one of the options

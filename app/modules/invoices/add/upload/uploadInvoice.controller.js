@@ -2,13 +2,14 @@
 {
     'use strict';
 
-    function UploadInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal,UserDAO)
+    function UploadInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal,$window)
     {
         var ctrl = this;
-        ctrl.transationType = null;
         ctrl.showAddInvoice = false;
         ctrl.nipContractor = null;
-        ctrl.invoiceCompany = {};
+        ctrl.invoiceCompany = {
+            status: 'unpaid'
+        };
         ctrl.invoicePerson = {};
         ctrl.companyDetails = null;
         ctrl.url = true;
@@ -16,6 +17,7 @@
         ctrl.noResults = false;
         ctrl.formInvalidAlert = false;
         ctrl.formSubmitted = false;
+        ctrl.showLoader = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -35,16 +37,6 @@
             }
         };
 
-        function checkTypeTransaction()
-        {
-            if ('sell' === ctrl.transationType) {
-                ctrl.invoiceCompany.companyDealer = ctrl.mockedCompany.id;
-                ctrl.invoiceCompany.companyRecipent = ctrl.companyDetails.id;
-            } else if ('buy' === ctrl.transationType) {
-                ctrl.invoiceCompany.companyDealer = ctrl.companyDetails.id;
-                ctrl.invoiceCompany.companyRecipent = ctrl.mockedCompany.id;
-            }
-        }
 
         function getInvoiceNumber(){
             var year = ctrl.createDatePicker.date.getFullYear();
@@ -59,11 +51,12 @@
         function addInvoiceCompany(form)
         {
             if (ctrl.companyDetails) {
-                ctrl.invoiceCompany.type = ctrl.transationType;
+                ctrl.invoiceCompany.type = 'buy';
                 ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
                 ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
+                ctrl.invoiceCompany.companyDealer = ctrl.companyDetails.id;
+                ctrl.invoiceCompany.companyRecipent = ctrl.mockedCompany.id;
 
-                checkTypeTransaction();
                 ctrl.fileToUpload = {
                     url: '/api/invoice/upload',
                     data: {
@@ -74,15 +67,18 @@
                 if(form.$valid) {
                     if(!ctrl.formSubmitted) {
                         ctrl.formSubmitted = true;
+                        ctrl.showLoader = true;
                         Upload.upload(ctrl.fileToUpload).then(function ()
                         {
+                            ctrl.showLoader = false;
                             ctrl.companyNotChosen = false;
-                            ctrl.objectURL = URL.createObjectURL(ctrl.file);
                             ctrl.addInvoice = true;
                             ctrl.createDatePicker.date = new Date();
                             ctrl.executionDatePicker.date = new Date();
-                            ctrl.transationType = null;
-                            ctrl.invoiceCompany = {};
+                            ctrl.invoiceCompany = {
+                                status: 'unpaid'
+                            };
+                            ctrl.file = null;
                             form.$setPristine();
                             ctrl.formSubmitted = false;
                             ctrl.getInvoiceNumber();
@@ -174,16 +170,12 @@
         }
 
         function getUserInfo(){
-            UserDAO.getUserInfo().then(function(userInfo){
-                ctrl.mockedCompany = userInfo;
-            });
+            ctrl.mockedCompany = angular.fromJson($window.sessionStorage.getItem('userInfo') || {});
         }
-
 
         getInvoiceNumber();
 
         getUserInfo();
-
 
         ctrl.addInvoiceCompany = addInvoiceCompany;
         ctrl.addInvoicePerson = addInvoicePerson;
@@ -198,6 +190,6 @@
 
     }
 
-    angular.module('app').controller('UploadInvoiceController',['Upload','InvoiceDAO','CompanyDAO','$uibModal','UserDAO',UploadInvoiceController]);
+    angular.module('app').controller('UploadInvoiceController',['Upload','InvoiceDAO','CompanyDAO','$uibModal','$window',UploadInvoiceController]);
 
 })();

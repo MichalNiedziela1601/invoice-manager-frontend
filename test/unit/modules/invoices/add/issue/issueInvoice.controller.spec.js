@@ -11,35 +11,40 @@ describe('IssueInvoiceController', function ()
     var baseTime;
     var nips;
     var form;
-    var UserDAOMock;
     var productsMock;
+    var $window;
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, UserDAO)
+    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, _$window_)
     {
         invoiceDaoMock = InvoiceDAO;
         companyDaoMock = CompanyDAO;
         uibModal = $uibModal;
-        UserDAOMock = UserDAO;
+        $window = _$window_;
+
+        $window.sessionStorage.setItem('userInfo', angular.toJson({
+            id: 2, name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: '33-120', city: 'City 1'
+        }));
+
+        mockFoundTestCompany = angular.fromJson($window.sessionStorage.getItem('userInfo'));
+
         form = {
-            $valid : true,
-            $setPristine: function(){}
+            $valid: true,
+            $setPristine: angular.noop
         };
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
         };
 
-        mockFoundTestCompany = {
-            id: 2, name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: 33 - 120, city: 'City 1'
-        };
+
 
         nips = [
             {nip: 1234567890},
             {nip: 1224567890}
         ];
 
-        productsMock = { name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
+        productsMock = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
 
         spyOn(invoiceDaoMock, 'number').and.callFake(function (year, month)
         {
@@ -66,10 +71,6 @@ describe('IssueInvoiceController', function ()
             }
         });
 
-        spyOn(UserDAO, 'getUserInfo').and.callFake(function ()
-        {
-            return successfulPromise(mockFoundTestCompany);
-        });
 
         spyOn(companyDaoMock, 'getNips').and.callFake(function (nip)
         {
@@ -81,7 +82,6 @@ describe('IssueInvoiceController', function ()
                 return unsuccessfulPromise('Error with something');
             }
         });
-
 
 
         fakeModal = {
@@ -106,8 +106,10 @@ describe('IssueInvoiceController', function ()
         baseTime = new Date();
         jasmine.clock().mockDate(baseTime);
 
-        issueCtrl = $controller('IssueInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal,
-            UserDAO: UserDAOMock });
+        issueCtrl = $controller('IssueInvoiceController', {
+            InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal,
+            $window: $window
+        });
 
     }));
 
@@ -136,7 +138,7 @@ describe('IssueInvoiceController', function ()
         });
         it('should set invoiceCompany variable to empty object', function ()
         {
-            expect(issueCtrl.invoiceCompany).toEqual({ products: {}, status: 'unpaid', paymentMethod: 'bank transfer'});
+            expect(issueCtrl.invoiceCompany).toEqual({products: {}, status: 'unpaid', paymentMethod: 'bank transfer'});
         });
         it('should set invoicePerson variable to empty object', function ()
         {
@@ -173,7 +175,7 @@ describe('IssueInvoiceController', function ()
         });
         it('should set payment', function ()
         {
-            expect(issueCtrl.payment).toEqual([{type: 'cash'},{type: 'bank transfer'}]);
+            expect(issueCtrl.payment).toEqual([{type: 'cash'}, {type: 'bank transfer'}]);
         });
         it('should set deleteCount', function ()
         {
@@ -181,7 +183,7 @@ describe('IssueInvoiceController', function ()
         });
         it('should set vats', function ()
         {
-            expect(issueCtrl.vats).toEqual([5,8,23,'N/A']);
+            expect(issueCtrl.vats).toEqual([5, 8, 23, 'N/A']);
         });
         it('should set editEntry', function ()
         {
@@ -333,7 +335,7 @@ describe('IssueInvoiceController', function ()
             beforeEach(function ()
             {
                 spyOn(uibModal, 'open').and.returnValue(fakeModal);
-                spyOn(console,'error');
+                spyOn(console, 'error');
                 var compDetails = {nip: 1234567890};
                 issueCtrl.openAddCompanyModal('lg');
                 issueCtrl.modalInstance.dismiss(compDetails);
@@ -396,7 +398,8 @@ describe('IssueInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                issueCtrl.findCompaniesByNip(12).then(function(result){
+                issueCtrl.findCompaniesByNip(12).then(function (result)
+                {
                     nipsResult = result;
                 });
             });
@@ -436,7 +439,7 @@ describe('IssueInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                spyOn(issueCtrl,'findContractor');
+                spyOn(issueCtrl, 'findContractor');
                 issueCtrl.onSelect(nips[0]);
             });
             it('should set nipContractor', function ()
@@ -456,12 +459,12 @@ describe('IssueInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                productsMock = { netto: 500, vat: 8, amount: 2};
+                productsMock = {netto: 500, vat: 8, amount: 2};
                 issueCtrl.calculateBrutto(productsMock);
             });
             it('should set brutto', function ()
             {
-                expect(productsMock.brutto).toEqual(Number((productsMock.netto * productsMock.amount * (1 + productsMock.vat/100)).toFixed(2)));
+                expect(productsMock.brutto).toEqual(Number((productsMock.netto * productsMock.amount * (1 + productsMock.vat / 100)).toFixed(2)));
             });
         });
 
@@ -471,7 +474,7 @@ describe('IssueInvoiceController', function ()
             {
                 beforeEach(function ()
                 {
-                    productsMock = { netto: 6000, vat: 'N/A'};
+                    productsMock = {netto: 6000, vat: 'N/A'};
                     issueCtrl.calculateBrutto(productsMock);
                 });
                 it('should set brutto', function ()
@@ -483,7 +486,7 @@ describe('IssueInvoiceController', function ()
             {
                 beforeEach(function ()
                 {
-                    productsMock = { netto: 6000.56 , vat: 'N/A', amount: 4};
+                    productsMock = {netto: 6000.56, vat: 'N/A', amount: 4};
                     issueCtrl.calculateBrutto(productsMock);
                 });
                 it('should set brutto', function ()
@@ -502,14 +505,14 @@ describe('IssueInvoiceController', function ()
             beforeEach(function ()
             {
                 issueCtrl.addNew();
-                var editEntry = { name: 'Product 1', netto: 345.45, vat: 23, amount: 1};
+                var editEntry = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1};
                 issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0],editEntry);
+                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
                 issueCtrl.save(editEntry);
                 issueCtrl.addNew();
-                editEntry = { name: 'Product 2', netto: 456.78, vat: 5, amount: 2};
+                editEntry = {name: 'Product 2', netto: 456.78, vat: 5, amount: 2};
                 issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[1],editEntry);
+                Object.assign(issueCtrl.invoiceCompany.products[1], editEntry);
                 issueCtrl.save(editEntry);
                 issueCtrl.calculateNettoBrutto();
             });
@@ -528,14 +531,14 @@ describe('IssueInvoiceController', function ()
             beforeEach(function ()
             {
                 issueCtrl.addNew();
-                var editEntry = { name: 'Product 1', netto: 345.45, vat: 'N/A'};
+                var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
                 issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0],editEntry);
+                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
                 issueCtrl.save(editEntry);
                 issueCtrl.addNew();
-                editEntry = { name: 'Product 2', netto: 456.78, vat: 'N/A'};
+                editEntry = {name: 'Product 2', netto: 456.78, vat: 'N/A'};
                 issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[1],editEntry);
+                Object.assign(issueCtrl.invoiceCompany.products[1], editEntry);
                 issueCtrl.save(editEntry);
                 issueCtrl.calculateNettoBrutto();
             });
@@ -561,7 +564,7 @@ describe('IssueInvoiceController', function ()
         });
         it('should delete product', function ()
         {
-            expect(issueCtrl.invoiceCompany.products).toEqual({'1':productsMock});
+            expect(issueCtrl.invoiceCompany.products).toEqual({'1': productsMock});
         });
     });
 
@@ -627,11 +630,11 @@ describe('IssueInvoiceController', function ()
                         {
                             return successfulPromise();
                         });
-                        spyOn(form,'$setPristine');
-                        spyOn(issueCtrl,'getInvoiceNumber');
+                        spyOn(form, '$setPristine');
+                        spyOn(issueCtrl, 'getInvoiceNumber');
                         issueCtrl.addNew();
-                        var editEntry = { name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
-                        Object.assign(issueCtrl.invoiceCompany.products[0],editEntry);
+                        var editEntry = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
+                        Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
                         issueCtrl.save(editEntry);
                         issueCtrl.addInvoiceCompany(form);
                     });
@@ -677,8 +680,8 @@ describe('IssueInvoiceController', function ()
                             return unsuccessfulPromise({data: 'Unknow Error'});
                         });
                         issueCtrl.addNew();
-                        var editEntry = { name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
-                        Object.assign(issueCtrl.invoiceCompany.products[0],editEntry);
+                        var editEntry = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
+                        Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
                         issueCtrl.save(editEntry);
                         issueCtrl.addInvoiceCompany(form);
                     });
@@ -729,9 +732,9 @@ describe('IssueInvoiceController', function ()
         beforeEach(function ()
         {
             issueCtrl.addNew();
-            var editEntry = { name: 'Product 1', netto: 345.45, vat: 'N/A'};
+            var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
             issueCtrl.calculateBrutto(editEntry);
-            Object.assign(issueCtrl.invoiceCompany.products[0],editEntry);
+            Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
             issueCtrl.save(editEntry);
             issueCtrl.edit(issueCtrl.invoiceCompany.products[0]);
         });
@@ -758,10 +761,10 @@ describe('IssueInvoiceController', function ()
             beforeEach(function ()
             {
                 issueCtrl.addNew();
-                var editEntry = { name: 'Product 1', netto: 345.45, vat: 'N/A'};
+                var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
                 issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0],editEntry);
-                issueCtrl.cancel(editEntry,0);
+                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
+                issueCtrl.cancel(editEntry, 0);
             });
             it('should delete product', function ()
             {
@@ -773,16 +776,16 @@ describe('IssueInvoiceController', function ()
             beforeEach(function ()
             {
                 issueCtrl.addNew();
-                var editEntry = { name: 'Product 1', netto: 345.45, vat: 'N/A'};
+                var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
                 issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0],editEntry);
+                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
                 issueCtrl.save(editEntry);
                 issueCtrl.edit(issueCtrl.invoiceCompany.products[0]);
 
             });
             it('should set editEntry to null', function ()
             {
-                issueCtrl.cancel(issueCtrl.invoiceCompany.products[0],0);
+                issueCtrl.cancel(issueCtrl.invoiceCompany.products[0], 0);
                 expect(issueCtrl.editEntry).toBeNull();
             });
         });
