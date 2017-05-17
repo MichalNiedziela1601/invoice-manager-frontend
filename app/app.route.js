@@ -48,7 +48,7 @@
         });
 
         $routeProvider.when('/user', {
-            templateUrl: 'modules/user/user.tpl.html', controller: 'UserController', controllerAs: 'userCtrl'
+            templateUrl: 'modules/user/user.tpl.html', controller: 'UserController', controllerAs: 'userCtrl', requireAuth: true
         });
 
         $routeProvider.when('/add/invoice',{
