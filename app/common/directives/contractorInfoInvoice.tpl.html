@@ -5,11 +5,11 @@
     </div>
     <div class="panel-body">
         <table class="table table-condensed no-bottom-margin">
-            <tbody><tr>
+            <tbody><tr ng-if="company.nip">
                 <td>nip</td>
                 <td>{{company.nip}}</td>
             </tr>
-            <tr ng-if="company.regon !== null">
+            <tr ng-if="company.regon">
                 <td>regon</td>
                 <td>{{company.regon}}</td>
             </tr>

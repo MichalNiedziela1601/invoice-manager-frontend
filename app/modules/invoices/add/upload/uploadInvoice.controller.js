@@ -2,13 +2,20 @@
 {
     'use strict';
 
-    function UploadInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal,$window)
+    function UploadInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $window)
     {
         var ctrl = this;
         ctrl.showAddInvoice = false;
         ctrl.nipContractor = null;
+        ctrl.payment = [
+            {type: 'cash'},
+            {type: 'bank transfer'}
+        ];
         ctrl.invoiceCompany = {
-            status: 'unpaid'
+            status: 'unpaid',
+            products: {},
+            reverseCharge: false,
+            paymentMethod: ctrl.payment[1].type
         };
         ctrl.invoicePerson = {};
         ctrl.companyDetails = null;
@@ -18,6 +25,7 @@
         ctrl.formInvalidAlert = false;
         ctrl.formSubmitted = false;
         ctrl.showLoader = false;
+        ctrl.showBox = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -38,15 +46,38 @@
         };
 
 
-        function getInvoiceNumber(){
+        function getInvoiceNumber()
+        {
             var year = ctrl.createDatePicker.date.getFullYear();
-            var month = ctrl.createDatePicker.date.getMonth()+1;
-            InvoiceDAO.number(year,month).then(function(number){
-                ctrl.invoiceCompany.invoiceNr = 'FV '+year + '/'+month +'/'+number.number;
-            }).catch(function(error){
-                console.log('error',error);
+            var month = ctrl.createDatePicker.date.getMonth() + 1;
+            InvoiceDAO.number(year, month).then(function (number)
+            {
+                ctrl.invoiceCompany.invoiceNr = 'FV ' + year + '/' + month + '/' + number.number;
+            }).catch(function (error)
+            {
+                console.log('error', error);
             });
         }
+
+        ctrl.calculateNettoBrutto = function ()
+        {
+            var len = Object.keys(ctrl.invoiceCompany.products).length;
+            var netto = 0, brutto = 0;
+            if (len > 0) {
+                angular.forEach(ctrl.invoiceCompany.products, function (product)
+                {
+                    if (product.amount) {
+                        netto += product.netto * product.amount;
+                        brutto += product.brutto;
+                    } else {
+                        netto += product.netto;
+                        brutto += product.brutto;
+                    }
+                });
+                ctrl.invoiceCompany.nettoValue = Number(netto);
+                ctrl.invoiceCompany.bruttoValue = Number(Math.round(brutto + 'e2') + 'e-2');
+            }
+        };
 
         function addInvoiceCompany(form)
         {
@@ -54,8 +85,12 @@
                 ctrl.invoiceCompany.type = 'buy';
                 ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
                 ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-                ctrl.invoiceCompany.companyDealer = ctrl.companyDetails.id;
                 ctrl.invoiceCompany.companyRecipent = ctrl.mockedCompany.id;
+                if ('company' === ctrl.invoiceCompany.contractorType) {
+                    ctrl.invoiceCompany.companyDealer = ctrl.companyDetails.id;
+                } else if ('person' === ctrl.invoiceCompany.contractorType) {
+                    ctrl.invoiceCompany.personDealer = ctrl.companyDetails.id;
+                }
 
                 ctrl.fileToUpload = {
                     url: '/api/invoice/upload',
@@ -64,8 +99,8 @@
                         file: ctrl.file
                     }
                 };
-                if(form.$valid) {
-                    if(!ctrl.formSubmitted) {
+                if (form.$valid) {
+                    if (!ctrl.formSubmitted) {
                         ctrl.formSubmitted = true;
                         ctrl.showLoader = true;
                         Upload.upload(ctrl.fileToUpload).then(function ()
@@ -76,14 +111,19 @@
                             ctrl.createDatePicker.date = new Date();
                             ctrl.executionDatePicker.date = new Date();
                             ctrl.invoiceCompany = {
-                                status: 'unpaid'
+                                status: 'unpaid',
+                                products: {},
+                                reverseCharge: false,
+                                paymentMethod: ctrl.payment[1].type
                             };
                             ctrl.file = null;
                             form.$setPristine();
                             ctrl.formSubmitted = false;
+                            ctrl.showBox = false;
                             ctrl.getInvoiceNumber();
                         }).catch(function (error)
                         {
+                            ctrl.showLoader = false;
                             ctrl.errorMessage = error.data;
                             ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
                             ctrl.formSubmitted = false;
@@ -91,38 +131,13 @@
                     }
                 }
             } else {
-                ctrl.companyNotChosen= true;
+                ctrl.companyNotChosen = true;
             }
         }
 
         function closeNoCompanyAlert()
         {
             ctrl.companyNotChosen = false;
-        }
-
-        function addInvoicePerson()
-        {
-            ctrl.invoicePerson.type = ctrl.transationType;
-            ctrl.invoicePerson.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
-            ctrl.invoicePerson.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-        }
-
-        function findContractor()
-        {
-            CompanyDAO.findByNip(ctrl.nipContractor).then(function (result)
-            {
-                ctrl.showBox = true;
-                ctrl.showAlert = false;
-                ctrl.showButton = false;
-                ctrl.companyDetails = result;
-                ctrl.closeNoCompanyAlert();
-            }).catch(function ()
-            {
-                ctrl.showAlert = true;
-                ctrl.showButton = true;
-                ctrl.showBox = false;
-
-            });
         }
 
         ctrl.openAddCompanyModal = function (size)
@@ -151,45 +166,29 @@
             ctrl.addInvoice = false;
         }
 
-        function closeFormInvalidAlert(){
+        function closeFormInvalidAlert()
+        {
             ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
         }
 
-        function findCompaniesByNip(nip)
-        {
-            return CompanyDAO.getNips(nip).then(function (response)
-            {
-                return response;
-            });
-        }
 
-        function onSelect($item)
+        function getUserInfo()
         {
-            ctrl.nipContractor = $item.nip;
-            ctrl.findContractor();
-        }
-
-        function getUserInfo(){
             ctrl.mockedCompany = angular.fromJson($window.sessionStorage.getItem('userInfo') || {});
         }
 
         getInvoiceNumber();
-
         getUserInfo();
 
         ctrl.addInvoiceCompany = addInvoiceCompany;
-        ctrl.addInvoicePerson = addInvoicePerson;
-        ctrl.findContractor = findContractor;
         ctrl.closeNoCompanyAlert = closeNoCompanyAlert;
         ctrl.closeAddInvoiceSuccess = closeAddInvoiceSuccess;
-        ctrl.findCompaniesByNip = findCompaniesByNip;
-        ctrl.onSelect = onSelect;
         ctrl.getUserInfo = getUserInfo;
         ctrl.closeFormInvalidAlert = closeFormInvalidAlert;
         ctrl.getInvoiceNumber = getInvoiceNumber;
 
     }
 
-    angular.module('app').controller('UploadInvoiceController',['Upload','InvoiceDAO','CompanyDAO','$uibModal','$window',UploadInvoiceController]);
+    angular.module('app').controller('UploadInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$window', UploadInvoiceController]);
 
 })();

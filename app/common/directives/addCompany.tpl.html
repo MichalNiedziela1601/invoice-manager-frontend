@@ -16,6 +16,18 @@
             </div>
 
             <div class="form-group">
+                <label for="shortcut" class="col-sm-3 control-label">Company Shortcut*</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Company shortcut" ng-model="addCompDCtrl.company.shortcut"
+                           required minlength="4" ng-change="addCompDCtrl.validateShortcut()" required>
+                    <div ng-messages="companyForm.shortcut.$error" style="color:maroon" role="alert">
+                        <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                        <div ng-message="minlength">Company's shortcut required min. length is 2</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="nip_comp" class="col-sm-3 control-label">NIP*</label>
                 <div class="col-sm-9">
                     <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"

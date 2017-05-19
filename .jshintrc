@@ -42,6 +42,7 @@
         "spyOn": true,
         "successfulPromise": true,
         "unsuccessfulPromise": true,
-        "jasmine":true
+        "jasmine":true,
+        "_": true
     }
 }

@@ -33,13 +33,15 @@
             {
                 ctrl.addComp = false;
             }
-            function closeInvalidFormAlert(){
+
+            function closeInvalidFormAlert()
+            {
                 ctrl.invalidFormAlert = false;
             }
 
             function validateNip()
             {
-                if (null !== ctrl.company.nip || 9 < ctrl.company.nip.toString().length) {
+                if (ctrl.company.nip || 9 < ctrl.company.nip.toString().length) {
                     CompanyDAO.findByNip(ctrl.company.nip).then(function ()
                     {
                         ctrl.showAlert = true;
@@ -49,6 +51,24 @@
                     });
                 }
             }
+
+            ctrl.validateShortcut = function ()
+            {
+                if ( ctrl.company.shortcut) {
+                    setTimeout(function()
+                    {
+                        CompanyDAO.findShortcut(ctrl.company.shortcut).then(function (result)
+                        {
+                        })
+                                .catch(function (error)
+                                {
+                                    console.error(error);
+                                });
+
+                    },400);
+
+                }
+            };
 
             ctrl.validateNip = validateNip;
             ctrl.addCompany = addCompany;

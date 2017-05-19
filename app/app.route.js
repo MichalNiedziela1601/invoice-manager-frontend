@@ -36,7 +36,7 @@
         $routeProvider.when('/invoices/details/:id', {
             templateUrl: '/modules/invoices/details/invoiceDetails.tpl.html',
             controller: 'InvoiceDetailsController',
-            controllerAs: 'InvoiceDetailsCtrl',
+            controllerAs: 'invoiceDetailsCtrl',
             requireAuth: true
         });
 

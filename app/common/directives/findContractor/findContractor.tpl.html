@@ -1,0 +1,77 @@
+<div>
+    <div class="col-md-6 company-box">
+        <div class="findCompanyInput change" ng-class="{'fade-out': findContractorCtrl.addContractor, 'fade-in': !findContractorCtrl.addContractor}">
+            <div class="row well">
+
+                <label class="col-sm-5">Find company by NIP:</label>
+                <div class="input-group col-md-6">
+                    <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.companyModel" placeholder="NIP contractors"
+                                                       uib-typeahead="companies.nip for companies in findContractorCtrl.findCompaniesByNip($viewValue)"
+                                                       typeahead-no-results="findContractorCtrl.noResultsCompany" class="form-control"
+                                                       typeahead-on-select="findContractorCtrl.onSelectCompany($item,$model,$label)"
+                                                       typeahead-template-url="common/directives/findContractor/getNips.tpl.html">
+                        <div ng-show="findContractorCtrl.noResultsCompany">
+                            <i class="glyphicon glyphicon-remove"></i>
+                            <p class="text-justify">Company not found,<br>
+                                to add new company click <a href="" ng-click="findContractorCtrl.toggleAddContractor()">here</a></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="change" ng-class="{'fade-out': findContractorCtrl.addContractor, 'fade-in': !findContractorCtrl.addContractor}">
+            <div class="row well">
+
+                <label class="col-sm-5">Find person by Last name:</label>
+                <div class="input-group col-md-6">
+                    <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.personModel" placeholder="Last name"
+                                                       uib-typeahead="person.lastName for persons in findContractorCtrl.findPersonByLastName($viewValue)"
+                                                       typeahead-no-results="findContractorCtrl.noResultsPerson" class="form-control"
+                                                       typeahead-on-select="findContractorCtrl.onSelectPerson($item,$model,$label)"
+                                                       typeahead-template-url="common/directives/findContractor/getPerson.html">
+                        <div ng-show="findContractorCtrl.noResultsPerson">
+                            <i class="glyphicon glyphicon-remove"></i>
+                            <p class="text-justify">Company not found,<br>
+                                to add new company click <a href="" ng-click="findContractorCtrl.openAddCompanyModal('lg')">here</a></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 findCompanyInput">
+
+        <div class="panel panel-default" ng-if="findContractorCtrl.showBox">
+            <div class="panel-heading">
+                <div class="panel-title"><span ng-if="findContractorCtrl.company.name">{{findContractorCtrl.company.name}}</span>
+                    <span ng-if="findContractorCtrl.company.firstName">{{findContractorCtrl.company.firstName}} {{findContractorCtrl.company.lastName}}</span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table no-bottom-margin">
+                    <tr ng-if="findContractorCtrl.company.nip">
+                        <td>nip</td>
+                        <td>{{findContractorCtrl.company.nip}}</td>
+                    </tr>
+                    <tr ng-if="findContractorCtrl.company.hasOwnProperty('regon') && findContractorCtrl.company.regon">
+                        <td>regon</td>
+                        <td>{{findContractorCtrl.company.regon}}</td>
+                    </tr>
+                    <tr>
+                        <td>address</td>
+                        <td>{{findContractorCtrl.company.address.street}} {{findContractorCtrl.company.address.buildNr}}<span
+                                ng-if="findContractorCtrl.company.address.flatNr">{{'/'+findContractorCtrl.company.address.flatNr}}</span>
+                            <p>{{findContractorCtrl.company.address.postCode}} {{findContractorCtrl.company.address.city }}</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="well" ng-show="!findContractorCtrl.showBox"><strong>Enter NIP to find company or last name to find person</strong></div>
+    </div>
+</div>

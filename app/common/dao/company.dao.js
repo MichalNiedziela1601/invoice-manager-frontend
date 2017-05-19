@@ -20,6 +20,9 @@
             transformResponse:  $http.defaults.transformResponse.concat(queryTransformResponse)
                 }, addCompany: {
                 method: 'POST', isArray: false
+            },
+            findShortcut: {
+                method: 'GET', isArray: true
             }
         });
 
@@ -38,6 +41,9 @@
             },
             getNips: function(nip){
                 return nips.query({a: nip}).$promise;
+            },
+            findShortcut: function(shortcut){
+                return api.findShortcut({a: 'shortcut', shortcut: shortcut}).$promise;
             }
         };
     }
