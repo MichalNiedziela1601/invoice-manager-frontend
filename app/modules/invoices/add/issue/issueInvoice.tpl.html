@@ -79,45 +79,85 @@
                                 </div>
 
                             </div>
-                            <div class="form-group">
 
-                            </div>
 
-                            <div class="col-lg-9 col-lg-offset-2 col-md-9 col-md-offset-2 col-sm-12" ng-if="issueInvoiceCtrl.showNewProduct()">
-                                <table class="table table-responsive">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Amount</th>
-                                        <th>Netto</th>
-                                        <th>Vat</th>
-                                        <th>Brutto</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="(key,value) in issueInvoiceCtrl.invoiceCompany.products">
-                                        <td>{{value.name}}</td>
-                                        <td>{{value.amount}}</td>
-                                        <td>{{value.netto}}</td>
-                                        <td>{{value.vat}}</td>
-                                        <td>{{value.brutto}}</td>
-                                        <td>
-                                            <button class="btn btn-danger btn-sm" type="button" ng-click="issueInvoiceCtrl.deleteProduct(key)">
-                                                <i class="glyphicon glyphicon-remove-circle"></i> Delete
-                                            </button>
-                                            <button class="btn btn-primary btn-sm" type="button" ng-click="issueInvoiceCtrl.openAddEditProductModal(key)">
-                                                <i class="glyphicon glyphicon-edit"></i> Edit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                             <div class="form-group">
-                                <div class="col-lg-9 col-lg-offset-2 col-sm-offset-3 col-sm-9">
-                                    <button type="button" class="btn btn-info" ng-click="issueInvoiceCtrl.openAddEditProductModal()">Add new product/service
-                                    </button>
+                                <div class="col-md-12">
+                                    <table class="table table-responsive" id="tableProduct">
+                                        <tr ng-repeat="(key,value) in issueInvoiceCtrl.invoiceCompany.products track by $index">
+                                            <td>
+                                                <ng-form name="productForm" class="form-inline no-margin">
+                                                    <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b>Name:</b> <p>{{value.name}}</p></span>
+                                                        <div ng-class="{'has-error' : productForm.name.$invalid}" ng-show="value.editMode">
+                                                            <label class="sr-only">Name</label>
+                                                            <input type="text" class="form-control" name="name" ng-model="value.name" required
+                                                                   placeholder="Name"></div>
+                                                    </div>
+
+                                                    <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b ng-show="value.amount">Amount:</b>
+                                                        <p>{{value.amount}}</p></span>
+                                                        <label class="sr-only">Amount</label>
+                                                        <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.amount"
+                                                               ng-change="issueInvoiceCtrl.calculateBrutto(value)" placeholder="Amount">
+                                                    </div>
+
+                                                    <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b ng-if="value.unit">Unit:</b><p>{{value.unit}}</p></span>
+                                                        <input type="text" class="form-control" ng-show="value.editMode" ng-model="value.unit"
+                                                        placeholder="Unit">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Netto: </b>
+                                                            <p>{{value.netto}}</p></span>
+                                                        <div ng-class="{'has-error' : productForm.netto.$invalid}" ng-show="value.editMode">
+                                                            <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.netto"
+                                                                   ng-change="issueInvoiceCtrl.calculateBrutto(value)" name="netto" required min="0"
+                                                            placeholder="Netto"></div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Vat: </b>
+                                                            <p>{{value.vat}}</p></span>
+                                                        <div ng-class="{'has-error' : productForm.vat.$invalid}" ng-show="value.editMode">
+                                                            <select class="form-control" ng-show="value.editMode"
+                                                                    ng-options="v as v for v in issueInvoiceCtrl.vats" ng-model="value.vat"
+                                                                    ng-change="issueInvoiceCtrl.calculateBrutto(value)" required name="vat"></select></div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Brutto: </b>
+                                                            <p>{{value.brutto}}</p></span>
+                                                        <div ng-class="{'has-error' : productForm.brutto.$invalid}" ng-show="value.editMode">
+                                                            <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.brutto" required
+                                                                   name="brutto"></div>
+                                                    </div>
+
+
+                                                    <div class="form-group"><button type="button" data-ng-hide="value.editMode" data-ng-click="issueInvoiceCtrl.edit(value)"
+                                                            class="btn btn-primary">Edit
+                                                    </button>
+                                                    <button type="button" data-ng-hide="value.editMode" data-ng-click="issueInvoiceCtrl.deleteProduct(key)"
+                                                            class="btn btn-danger">Delete
+                                                    </button>
+                                                    <button type="button" ng-disabled="productForm.$invalid" data-ng-show="value.editMode"
+                                                            data-ng-click="issueInvoiceCtrl.save(value)" class="btn btn-success">Save
+                                                    </button>
+                                                    <button type="button" data-ng-show="value.editMode" data-ng-click="issueInvoiceCtrl.cancel(value, key)"
+                                                            class="btn btn-warning">Cancel
+                                                    </button></div>
+                                                </ng-form>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                    <button type="button" class="btn btn-info" ng-click="issueInvoiceCtrl.addNew()">Add new product/service</button>
                                 </div>
                             </div>
 
@@ -125,8 +165,7 @@
                                 <label class="control-label col-lg-2 col-md-2 col-sm-3">Advance</label>
                                 <div class="col-lg-2 col-md-2 col-sm-3">
                                     <input type="number" step="0.01" ng-model="issueInvoiceCtrl.invoiceCompany.advance"
-                                           ng-change="issueInvoiceCtrl.calculateNettoBrutto()"
-                                    class="form-control">
+                                           ng-change="issueInvoiceCtrl.calculateNettoBrutto()" class="form-control">
                                 </div>
 
 
@@ -137,10 +176,21 @@
                                             ng-model="issueInvoiceCtrl.invoiceCompany.paymentMethod" required>
                                     </select></div>
 
-                                <div class="col-lg-2 col-sm-3">
+                                <div class="col-lg-1 col-lg-offset-0 col-sm-offset-3 col-sm-1">
                                     <div class="checkbox">
                                         <label><input type="checkbox" ng-model="issueInvoiceCtrl.invoiceCompany.status" name="status" ng-true-value="'paid'"
                                                       ng-false-value="'nopaid'"> Paid</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1 col-sm-2"><label><input type="radio" ng-model="issueInvoiceCtrl.invoiceCompany.language" name="language"
+                                                                             value="en" ng-required="!issueInvoiceCtrl.invoiceCompany.language">EN</label>
+                                    <label><input type="radio" ng-model="issueInvoiceCtrl.invoiceCompany.language" name="language" value="pl"
+                                                  ng-required="!issueInvoiceCtrl.invoiceCompany.language">PL</label>
+                                    <div ng-messages="issueCompany.language.$error" class="input-error" role="alert">
+                                        <div ng-if="issueCompany.$submitted" ng-message="required">
+                                            Choose one of the options
+                                        </div>
                                     </div>
                                 </div>
 
@@ -164,6 +214,19 @@
                                         <div ng-if="issueCompany.$submitted" ng-message="required">Please enter a value for this field.</div>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-2 col-sm-2"><label><input type="radio" ng-model="issueInvoiceCtrl.invoiceCompany.currency" name="currency"
+                                                                             value="USD" ng-required="!issueInvoiceCtrl.invoiceCompany.currency">USD</label>
+                                    <label><input type="radio" ng-model="issueInvoiceCtrl.invoiceCompany.currency" name="currency" value="PLN"
+                                                  ng-required="!issueInvoiceCtrl.invoiceCompany.currency">PLN</label>
+                                    <div ng-messages="issueCompany.currency.$error" class="input-error" role="alert">
+                                        <div ng-if="issueCompany.$submitted" ng-message="required">
+                                            Choose one of the options
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
 
 

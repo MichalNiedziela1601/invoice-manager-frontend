@@ -11,7 +11,7 @@
         ctrl.nipContractor = null;
         ctrl.invoiceCompany = {
             products: {},
-            status: 'nopaid'
+            status: 'unpaid'
         };
         ctrl.invoicePerson = {};
         ctrl.companyDetails = null;
@@ -22,8 +22,13 @@
         ctrl.issueProductNotAdded = false;
         ctrl.payment = [
             {type: 'cash'},
-            {type: 'transfer'}
+            {type: 'bank transfer'}
         ];
+        ctrl.deleteCount = 0;
+        ctrl.vats = [
+            5, 8, 23, 'N/A'
+        ];
+        ctrl.editEntry = null;
         ctrl.invoiceCompany.paymentMethod = ctrl.payment[1].type;
 
         ctrl.createDatePicker = {
@@ -143,20 +148,23 @@
             });
         }
 
-        function showNewProduct()
+        ctrl.calculateBrutto = function (entry)
         {
-            var keys = Object.keys(ctrl.invoiceCompany.products);
-            var len = keys.length;
-            return len > 0;
-        }
+            if ('N/A' !== entry.vat) {
 
-        function addProduct()
-        {
-            var keys = Object.keys(ctrl.invoiceCompany.products);
-            var len = keys.length;
-            ctrl.invoiceCompany.products[len] = ctrl.product;
-            ctrl.product = {};
-        }
+                if (!isNaN(entry.netto) && !isNaN(entry.vat) && !isNaN(entry.amount)) {
+                    var brutto = Number((entry.netto * entry.amount * (1 + entry.vat / 100)).toFixed(2));
+                    entry.brutto = brutto;
+
+                }
+            } else {
+                if (undefined === entry.amount || null === entry.amount || '' === entry.amount) {
+                    entry.brutto = entry.netto;
+                } else {
+                    entry.brutto = Number((entry.netto * entry.amount).toFixed(2));
+                }
+            }
+        };
 
         function calculateNettoBrutto()
         {
@@ -165,58 +173,18 @@
             if (len > 0) {
                 angular.forEach(ctrl.invoiceCompany.products, function (product)
                 {
-                    netto += parseFloat(product.netto * product.amount, 10);
-                    brutto += product.brutto;
+                    if (product.amount) {
+                        netto += product.netto * product.amount;
+                        brutto += product.brutto;
+                    } else {
+                        netto += product.netto;
+                        brutto += product.brutto;
+                    }
                 });
-
-                ctrl.invoiceCompany.nettoValue = netto.toFixed(2);
-                ctrl.invoiceCompany.bruttoValue = brutto.toFixed(2);
+                ctrl.invoiceCompany.nettoValue = Number(netto);
+                ctrl.invoiceCompany.bruttoValue = Number(Math.round(brutto + 'e2')+'e-2');
             }
         }
-
-        ctrl.openAddEditProductModal = function (key)
-        {
-            if (undefined === key) {
-                ctrl.modalAddInstance = $uibModal.open({
-                    templateUrl: '/modules/invoices/add/addProductModal/addProductModal.tpl.html',
-                    controller: 'AddProductModalController',
-                    controllerAs: 'addProdModalCtrl',
-                    backdrop: 'static',
-                    resolve: {
-                        product: function ()
-                        {
-                            return null;
-                        }
-                    }
-                });
-
-                ctrl.modalAddInstance.result.then(function (product)
-                {
-                    ctrl.product = product;
-                    addProduct();
-                    calculateNettoBrutto();
-                });
-            } else {
-                ctrl.modalEditInstance = $uibModal.open({
-                    templateUrl: '/modules/invoices/add/addProductModal/addProductModal.tpl.html',
-                    controller: 'AddProductModalController',
-                    controllerAs: 'addProdModalCtrl',
-                    backdrop: 'static',
-                    resolve: {
-                        product: function ()
-                        {
-                            return ctrl.invoiceCompany.products[key];
-                        }
-                    }
-                });
-
-                ctrl.modalEditInstance.result.then(function (product)
-                {
-                    ctrl.invoiceCompany.products[key] = product;
-                    calculateNettoBrutto();
-                });
-            }
-        };
 
         function deleteProduct(key)
         {
@@ -244,7 +212,7 @@
                                 ctrl.executionDatePicker.date = new Date();
                                 ctrl.invoiceCompany = {
                                     products: {},
-                                    status: 'nopaid'
+                                    status: 'unpaid'
                                 };
                                 ctrl.invoiceCompany.paymentMethod = ctrl.payment[1].type;
                                 form.$setPristine();
@@ -272,6 +240,37 @@
             ctrl.issueProductNotAdded = false;
         }
 
+        ctrl.edit = function (entry)
+        {
+            ctrl.editEntry = angular.copy(entry);
+            entry.editMode = true;
+        };
+
+        ctrl.save = function (entry)
+        {
+            entry.editMode = false;
+            ctrl.editEntry = null;
+            ctrl.calculateNettoBrutto();
+        };
+
+        ctrl.cancel = function (entry, key)
+        {
+            entry.editMode = false;
+
+            if (ctrl.editEntry !== null) {
+                ctrl.invoiceCompany.products[key] = ctrl.editEntry;
+                ctrl.editEntry = null;
+            } else {
+                delete ctrl.invoiceCompany.products[key];
+            }
+        };
+
+        ctrl.addNew = function ()
+        {
+            var keys = Object.keys(ctrl.invoiceCompany.products);
+            var len = keys.length;
+            ctrl.invoiceCompany.products[len] = {editMode: true};
+        };
 
         getInvoiceNumber();
         getUserInfo();
@@ -283,7 +282,6 @@
         ctrl.onSelect = onSelect;
         ctrl.getUserInfo = getUserInfo;
         ctrl.closeFormInvalidAlert = closeFormInvalidAlert;
-        ctrl.showNewProduct = showNewProduct;
         ctrl.deleteProduct = deleteProduct;
         ctrl.addInvoiceCompany = addInvoiceCompany;
         ctrl.calculateNettoBrutto = calculateNettoBrutto;

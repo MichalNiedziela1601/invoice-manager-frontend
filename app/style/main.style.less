@@ -171,6 +171,7 @@ ul {
 }
 .invoice-detail-wrapper {
   position: relative;
+  width: 100%;
 }
 .ng-table {
   th {
@@ -332,5 +333,55 @@ ul {
   }
   .tabs-top-marg {
     margin-top: 5em;
+  }
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.gray {
+  background-color: lightgray;
+}
+
+.bottom-border {
+  border-bottom: 2px solid black;
+}
+
+.generate-mar-bottom(@n, @i: 0) when (@i =< @n) {
+  .mar-bottom-@{i} {
+    margin-bottom: (@i * 10px);
+  }
+  .generate-mar-bottom(@n, (@i + 1));
+}
+
+.responsive(@maxWidth; @rules) {
+  @media only screen and (max-width: @maxWidth) {
+    @rules();
+  }
+}
+
+.generate-mar-bottom(10);
+
+.no-margin {
+  .form-group {
+    margin-right: 2px;
+    margin-left: 2px;
+  }
+  span {
+    margin-right: 15px;
+    margin-left: 15px;
+    b {
+      text-align: center;
+    }
+    p {
+      text-align: center;
+    }
+
+    .responsive(767px, {
+    p {
+      text-align: left;
+    }
+    })
   }
 }
