@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function IssueInvoiceController(CompanyDAO, $uibModal, UserDAO, InvoiceDAO)
+    function IssueInvoiceController(CompanyDAO, $uibModal, $window, InvoiceDAO)
     {
         var ctrl = this;
 
@@ -29,6 +29,7 @@
             5, 8, 23, 'N/A'
         ];
         ctrl.editEntry = null;
+        ctrl.showLoader = false;
         ctrl.invoiceCompany.paymentMethod = ctrl.payment[1].type;
 
         ctrl.createDatePicker = {
@@ -142,10 +143,7 @@
 
         function getUserInfo()
         {
-            UserDAO.getUserInfo().then(function (userInfo)
-            {
-                ctrl.mockedCompany = userInfo;
-            });
+            ctrl.mockedCompany = angular.fromJson($window.sessionStorage.getItem('userInfo') || {});
         }
 
         ctrl.calculateBrutto = function (entry)
@@ -204,8 +202,10 @@
                     if (form.$valid) {
                         if (!ctrl.formSubmitted) {
                             ctrl.formSubmitted = true;
+                            ctrl.showLoader = true;
                             InvoiceDAO.issue(ctrl.invoiceCompany).then(function ()
                             {
+                                ctrl.showLoader = false;
                                 ctrl.issueCompanyNotChosen = false;
                                 ctrl.addInvoice = true;
                                 ctrl.createDatePicker.date = new Date();
@@ -290,7 +290,7 @@
     }
 
     angular.module('app')
-            .controller('IssueInvoiceController', ['CompanyDAO', '$uibModal', 'UserDAO', 'InvoiceDAO', IssueInvoiceController]);
+            .controller('IssueInvoiceController', ['CompanyDAO', '$uibModal','$window', 'InvoiceDAO', IssueInvoiceController]);
 
 
 })();

@@ -3,56 +3,47 @@ describe('UserController', function ()
     'use strict';
     var userCtrl;
     var userDaoMock;
-    var jwtHelperMock;
     var companyDaoMock;
-    var token;
-    var tokenDecode;
     var companyMock;
+    var $window;
 
     beforeEach(module('app'));
-    beforeEach(inject(function ($controller, UserDAO, jwtHelper, CompanyDAO)
+    beforeEach(inject(function ($controller, UserDAO, CompanyDAO, _$window_)
     {
         userDaoMock = UserDAO;
-        jwtHelperMock = jwtHelper;
         companyDaoMock = CompanyDAO;
-        companyMock = {
-            name: 'sdfsfd',
-            street: 'Błotna',
-            buildNr: '45a',
-            flatNr: null,
-            postCode: '33-100',
-            city: 'Gdzieś na krańcu świata'
-        };
-        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJuaXAiOjEyMjQ1Njc4OTAsImNvb' +
-                'XBhbnlJZCI6MiwiaWF0IjoxNDkzMzI0OTA2LCJleHA' +
-                'iOjE0OTMzMjg1MDZ9.TVFz4SGCENSk5lf-fxoIoFFNl_rQG1Gl-1ZNLA_m9-0';
-        tokenDecode = {
-            companyId: 2,
-            email: 'admin@gmail.com',
-            exp: 1493328506,
-            iat: 1493324906,
-            id: 1,
-            nip: 1224567890
-        };
-        spyOn(jwtHelperMock, 'decodeToken').and.returnValue(tokenDecode);
-        spyOn(userDaoMock,'getToken').and.returnValue(token);
-        spyOn(userDaoMock,'addAddress').and.callFake(function(){
-            return successfulPromise();
-        });
-        spyOn(userDaoMock,'addPersonalData').and.callFake(function ()
+        $window = _$window_;
+
+        $window.sessionStorage.setItem('userInfo', angular.toJson({
+            'id': 2,
+            'name': 'Firma BUDEX',
+            'nip': 1224567890,
+            'regon': 6189567,
+            'addressId': 2,
+            'googleCompanyId': null,
+            'bankAccount': '98753091857947708385263947',
+            'swift': 'INGBPLPW',
+            'email': 'user@gmail.com',
+            'address': {'id': 2, 'street': 'Krakowska', 'buildNr': '4', 'flatNr': null, 'postCode': '33-120', 'city': 'City 1'}
+        }));
+
+        companyMock = angular.fromJson($window.sessionStorage.getItem('userInfo'));
+
+        spyOn(userDaoMock, 'addAddress').and.callFake(function ()
         {
             return successfulPromise();
         });
-        spyOn(userDaoMock,'addAccountData').and.callFake(function ()
+        spyOn(userDaoMock, 'addPersonalData').and.callFake(function ()
         {
             return successfulPromise();
         });
-        spyOn(companyDaoMock,'findByNip').and.callFake(function(){
-            return successfulPromise(companyMock);
+        spyOn(userDaoMock, 'addAccountData').and.callFake(function ()
+        {
+            return successfulPromise();
         });
 
 
-        userCtrl = $controller('UserController', {UserDAO: userDaoMock, jwtHelper: jwtHelperMock, CompanyDAO: companyDaoMock});
+        userCtrl = $controller('UserController', {UserDAO: userDaoMock, CompanyDAO: companyDaoMock, $window: $window});
     }));
 
     describe('initialization', function ()
@@ -71,55 +62,32 @@ describe('UserController', function ()
         });
         it('should set showName', function ()
         {
-            expect(userCtrl.showName).toBeTruthy();
-        });
-        it('should set companyName', function ()
-        {
-            expect(userCtrl.companyName).toBe(companyMock.name);
+            expect(userCtrl.showName).toBeFalsy();
         });
         it('should set addressOpen', function ()
         {
             expect(userCtrl.addressOpen).toBeFalsy();
         });
-        it('should call UserDAO.getToken', function ()
-        {
-            expect(userDaoMock.getToken).toHaveBeenCalled();
-        });
-        it('should call jwthelper.decodeToken', function ()
-        {
-            expect(jwtHelperMock.decodeToken).toHaveBeenCalled();
-        });
-        it('should set token', function ()
-        {
-            expect(userCtrl.token).toBe(tokenDecode);
-        });
-        it('should call companyDAO.findByNip', function ()
-        {
-            expect(companyDaoMock.findByNip).toHaveBeenCalled();
-        });
-        it('should call companyDAO.findByNip with nip decode', function ()
-        {
-            expect(companyDaoMock.findByNip).toHaveBeenCalledWith(tokenDecode.nip);
-        });
+
         it('should set userAddressData.street', function ()
         {
-            expect(userCtrl.userAddressData.street).toBe(companyMock.street);
+            expect(userCtrl.userAddressData.street).toBe(companyMock.address.street);
         });
         it('should set userAddressData.buildNr', function ()
         {
-            expect(userCtrl.userAddressData.buildNr).toBe(companyMock.buildNr);
+            expect(userCtrl.userAddressData.buildNr).toBe(companyMock.address.buildNr);
         });
         it('should set userAddressData.flatNr', function ()
         {
-            expect(userCtrl.userAddressData.flatNr).toBe(companyMock.flatNr);
+            expect(userCtrl.userAddressData.flatNr).toBe(companyMock.address.flatNr);
         });
         it('should set userAddressData.postCode', function ()
         {
-            expect(userCtrl.userAddressData.postCode).toBe(companyMock.postCode);
+            expect(userCtrl.userAddressData.postCode).toBe(companyMock.address.postCode);
         });
         it('should set userAddressData.city', function ()
         {
-            expect(userCtrl.userAddressData.city).toBe(companyMock.city);
+            expect(userCtrl.userAddressData.city).toBe(companyMock.address.city);
         });
     });
 

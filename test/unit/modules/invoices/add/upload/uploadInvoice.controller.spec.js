@@ -12,30 +12,32 @@ describe('AddInvoiceController', function ()
     var baseTime;
     var nips;
     var form;
-    var UserDAOMock;
     var UploadMock;
-
+    var $window;
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, UserDAO,Upload)
+    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, Upload, _$window_)
     {
         invoiceDaoMock = InvoiceDAO;
         companyDaoMock = CompanyDAO;
         uibModal = $uibModal;
-        UserDAOMock = UserDAO;
-        UploadMock = Upload;
+
+        $window = _$window_;
+
+        $window.sessionStorage.setItem('userInfo', angular.toJson({
+            id: 2, name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: '33-120', city: 'City 1'
+        }));
+
+        mockFoundTestCompany = angular.fromJson($window.sessionStorage.getItem('userInfo'));
         form = {
-            $valid : true,
-            $setPristine: function(){}
+            $valid: true,
+            $setPristine: angular.noop
         };
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
         };
 
-        mockFoundTestCompany = {
-            id: '2', name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: 33 - 120, city: 'City 1'
-        };
 
         nips = [
             {nip: 1234567890},
@@ -73,10 +75,6 @@ describe('AddInvoiceController', function ()
             }
         });
 
-        spyOn(UserDAO, 'getUserInfo').and.callFake(function ()
-        {
-            return successfulPromise(mockFoundTestCompany);
-        });
 
         spyOn(companyDaoMock, 'getNips').and.callFake(function (nip)
         {
@@ -108,10 +106,13 @@ describe('AddInvoiceController', function ()
             }
         };
 
+        UploadMock = jasmine.createSpyObj('Upload', ['upload']);
+
         baseTime = new Date();
         jasmine.clock().mockDate(baseTime);
 
-        uploadCtrl = $controller('UploadInvoiceController', {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal });
+        uploadCtrl = $controller('UploadInvoiceController',
+                {InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal, $window: $window, Upload: UploadMock});
 
     }));
 
@@ -125,11 +126,6 @@ describe('AddInvoiceController', function ()
                 return baseTime;
             });
         });
-
-        it('should set transactionType variable to null', function ()
-        {
-            expect(uploadCtrl.transationType).toEqual(null);
-        });
         it('should set showAddInvoice variable to false', function ()
         {
             expect(uploadCtrl.showAddInvoice).toEqual(false);
@@ -140,7 +136,9 @@ describe('AddInvoiceController', function ()
         });
         it('should set invoiceCompany variable to empty object', function ()
         {
-            expect(uploadCtrl.invoiceCompany).toEqual({});
+            expect(uploadCtrl.invoiceCompany).toEqual({
+                status: 'unpaid'
+            });
         });
         it('should set invoicePerson variable to empty object', function ()
         {
@@ -212,72 +210,54 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
+                UploadMock.upload.and.callFake(function ()
+                {
+                    return successfulPromise();
+                });
                 uploadCtrl.companyDetails = mockTestCompany;
-                uploadCtrl.transationType = 'test';
                 uploadCtrl.createDatePicker.date = new Date('2000-12-15');
                 uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
+
                 uploadCtrl.addInvoiceCompany(form);
             });
-            describe('always', function ()
+            it('should set showLoader', function ()
             {
-
-                it('should set invoiceCompany.type to transactionType', function ()
-                {
-                    expect(uploadCtrl.invoiceCompany.type).toEqual('test');
-                });
-                it('should set invoiceCompany.createDate', function ()
-                {
-                    expect(uploadCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
-                });
-                it('should set invoiceCompany.executionEndDate', function ()
-                {
-                    expect(uploadCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
-                });
+                expect(uploadCtrl.showLoader).toBeFalsy();
+            });
+            it('should set companyNotChosen', function ()
+            {
+                expect(uploadCtrl.companyNotChosen).toBeFalsy();
+            });
+            it('should set addInvoice', function ()
+            {
+                expect(uploadCtrl.addInvoice).toBeTruthy();
+            });
+            it('should set createDatePicker.date', function ()
+            {
+                expect(uploadCtrl.createDatePicker.date).toEqual(baseTime);
+            });
+            it('should set executionEndDate.date', function ()
+            {
+                expect(uploadCtrl.executionDatePicker.date).toEqual(baseTime);
+            });
+            it('should set invoiceCompany', function ()
+            {
+                expect(uploadCtrl.invoiceCompany).toEqual({status: 'unpaid'});
+            });
+            it('should set file', function ()
+            {
+                expect(uploadCtrl.file).toBeNull();
+            });
+            it('should set formSubmitted', function ()
+            {
+                expect(uploadCtrl.formSubmitted).toBeFalsy();
+            });
+            it('should call InvoiceDAO.number', function ()
+            {
+                expect(invoiceDaoMock.number).toHaveBeenCalled();
             });
 
-            describe('checkTypeTransaction', function ()
-            {
-                describe('sell type', function ()
-                {
-                    beforeEach(function ()
-                    {
-                        uploadCtrl.companyDetails.id = 9;
-                        uploadCtrl.mockedCompany.id = 2;
-                        uploadCtrl.transationType = 'sell';
 
-                        uploadCtrl.addInvoiceCompany(form);
-                    });
-
-                    it('should set companyDealer variable', function ()
-                    {
-                        expect(uploadCtrl.invoiceCompany.companyDealer).toEqual(2);
-                    });
-                    it('should set companyRecipent variable', function ()
-                    {
-                        expect(uploadCtrl.invoiceCompany.companyRecipent).toEqual(9);
-                    });
-                });
-                describe('buy type', function ()
-                {
-                    beforeEach(function ()
-                    {
-                        uploadCtrl.companyDetails.id = 8;
-                        uploadCtrl.mockedCompany.id = 1;
-                        uploadCtrl.transationType = 'buy';
-                        uploadCtrl.addInvoiceCompany(form);
-                    });
-
-                    it('should set companyDealer variable', function ()
-                    {
-                        expect(uploadCtrl.invoiceCompany.companyDealer).toEqual(8);
-                    });
-                    it('should set companyRecipent variable', function ()
-                    {
-                        expect(uploadCtrl.invoiceCompany.companyRecipent).toEqual(1);
-                    });
-                });
-
-            });
         });
         describe('company invoicesDetails doesn\'t exists', function ()
         {
@@ -289,6 +269,34 @@ describe('AddInvoiceController', function ()
             it('should companyNotChosen to true', function ()
             {
                 expect(uploadCtrl.companyNotChosen).toEqual(true);
+            });
+        });
+
+        describe('when upload throw error', function ()
+        {
+            beforeEach(function ()
+            {
+                UploadMock.upload.and.callFake(function ()
+                {
+                    return unsuccessfulPromise({data: 'error'});
+                });
+                uploadCtrl.companyDetails = mockTestCompany;
+                uploadCtrl.createDatePicker.date = new Date('2000-12-15');
+                uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
+
+                uploadCtrl.addInvoiceCompany(form);
+            });
+            it('should set errorMessage', function ()
+            {
+                expect(uploadCtrl.errorMessage).toEqual('error');
+            });
+            it('should set formInvalidAlert', function ()
+            {
+                expect(uploadCtrl.formInvalidAlert).toBeTruthy();
+            });
+            it('should set formSubmitted', function ()
+            {
+                expect(uploadCtrl.formSubmitted).toBeFalsy();
             });
         });
     });
@@ -408,7 +416,8 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                uploadCtrl.findCompaniesByNip(12).then(function(result){
+                uploadCtrl.findCompaniesByNip(12).then(function (result)
+                {
                     nipsResult = result;
                 });
             });
@@ -448,7 +457,7 @@ describe('AddInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                spyOn(uploadCtrl,'findContractor');
+                spyOn(uploadCtrl, 'findContractor');
                 uploadCtrl.onSelect(nips[0]);
             });
             it('should set nipContractor', function ()
