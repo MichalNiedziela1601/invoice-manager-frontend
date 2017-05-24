@@ -4,12 +4,12 @@
     function UserDAO($resource,$window)
     {
         var api = $resource('/api/user/:a', null, {
-            addAddress: {method: 'POST', params: {a: 'addAddress'}},
-            addPersonalData: {method: 'POST', params: {a: 'addPersonalData'}},
-            addAccountData: {method: 'POST', params: {a: 'addAccountData'}},
+            updateAddress: {method: 'PUT', params: {a: 'address'}},
+            updateAccount: {method: 'PUT', params: {a: 'account'}},
             login: {method: 'POST', params: {a: 'auth'}},
             getUserInfo: {method: 'GET', params: {a: 'auth'}},
-            registration: {method: 'POST', params: {a: 'registration'}}
+            registration: {method: 'POST', params: {a: 'registration'}},
+            addNewUser: {method: 'POST', params: {a: 'newUser'}}
         });
 
         function getToken() {
@@ -22,20 +22,17 @@
 
         function logout(){
             delete $window.sessionStorage.token;
+            delete $window.sessionStorage.userInfo;
         }
 
         return {
-            addAddress: function (address)
+            updateAddress: function (address)
             {
-                return api.addAddress(address).$promise;
+                return api.updateAddress(address).$promise;
             },
-            addPersonalData: function (personalData)
+            updateAccount: function (accountData)
             {
-                return api.addPersonalData(personalData).$promise;
-            },
-            addAccountData: function (accountData)
-            {
-                return api.addAccountData(accountData).$promise;
+                return api.updateAccount(accountData).$promise;
             },
             login: function (credential)
             {
@@ -49,6 +46,10 @@
             },
             getUserInfo: function(){
                 return api.getUserInfo().$promise;
+            },
+            addNewUser: function(credentials,companyId){
+                Object.assign(credentials,{companyId: companyId});
+                return api.addNewUser(credentials).$promise;
             },
             getToken: getToken,
             isAuthenticated: isAuthenticated,

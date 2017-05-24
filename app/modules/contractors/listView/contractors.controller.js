@@ -15,6 +15,8 @@
             }, {
                 dataset: ctrl.companies
             });
+        }).catch(function(error){
+            console.error(error);
         });
 
         function applyGlobalSearch()
