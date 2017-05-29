@@ -3,52 +3,58 @@
         <h2 class="page-header text-center">{{invoicesCtrl.message}}</h2>
         <uib-tabset active="active" class="invoicesPanel">
             <uib-tab index="0" heading="Sell">
-                <div class="col-md-12">
-                    <div class="top-margin-2">
-                        <table ng-table="invoicesCtrl.sellTable" class="table table-striped table-condensed table-responsive">
+                <div class="row">
+                    <div class="col-xs-12 no-padding-side">
+                        <div class="top-margin-2">
+                            <table ng-table="invoicesCtrl.sellTable" class="table table-striped table-condensed table-responsive">
 
-                            <tr class="ng-table-group">
-                                <td colspan="5">
-                                    <input type="text" class="form-control" ng-model="invoicesCtrl.globalSearchTermSell" placeholder="Global search..."
-                                           ng-change="invoicesCtrl.applyGlobalSearchSell()"></td>
-                            </tr>
+                                <tr class="ng-table-group">
+                                    <td colspan="5">
+                                        <input type="text" class="form-control" ng-model="invoicesCtrl.globalSearchTermSell" placeholder="Global search..."
+                                               ng-change="invoicesCtrl.applyGlobalSearchSell()"></td>
+                                </tr>
 
-                            <tr ng-repeat="row in $data track by row.id">
-                                <td data-title="'Invoice nr'" sortable="'invoiceNr'"><a ng-href="/invoices/details/{{row.id}}">{{row.invoiceNr}}</a></td>
-                                <td data-title="'Contractor'" sortable="'companyRecipent.name'">{{(row.companyRecipent ? row.companyRecipent.name :
-                                    row.personRecipent.firstName + ' ' + row.personRecipent.lastName)}} </td>
-                                <td data-title="'Create Date'" sortable="'createDate'">{{row.createDate | date: 'dd-MM-yyyy'}}</td>
-                                <td data-title="'End date'" sortable="'executionEndDate'">{{row.executionEndDate | date:
-                                    'dd-MM-yyyy'}}
-                                </td>
-                                <td data-title="'status'" sortable="'status'">{{row.status}}</td>
-                            </tr>
-                        </table>
+                                <tr ng-repeat="row in $data track by row.id">
+                                    <td data-title="'Invoice nr'" sortable="'invoiceNr'"><a ng-href="/invoices/details/{{row.id}}">{{row.invoiceNr}}</a></td>
+                                    <td data-title="'Contractor'" sortable="'companyRecipent.name'">{{(row.companyRecipent ? row.companyRecipent.name :
+                                        row.personRecipent.firstName + ' ' + row.personRecipent.lastName)}}
+                                    </td>
+                                    <td data-title="'Create Date'" sortable="'createDate'">{{row.createDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td data-title="'End date'" sortable="'executionEndDate'">{{row.executionEndDate | date:
+                                        'dd-MM-yyyy'}}
+                                    </td>
+                                    <td data-title="'status'" sortable="'status'">{{row.status}}</td>
+                                </tr>
+                            </table>
 
+                        </div>
                     </div>
                 </div>
             </uib-tab>
             <uib-tab index="1" heading="Buy">
-                <div class="col-md-12">
-                    <div class="top-margin-2">
-                        <table ng-table="invoicesCtrl.buyTable" class="table table-striped table-condensed table-responsive">
-                            <tr class="ng-table-group">
-                                <td colspan="5">
-                                    <input type="text" class="form-control" ng-model="invoicesCtrl.globalSearchTermBuy" placeholder="Global search..."
-                                           ng-change="invoicesCtrl.applyGlobalSearchBuy()"></td>
-                            </tr>
-                            <tr ng-repeat="row in $data track by row.id">
-                                <td data-title="'Invoice nr'" sortable="'invoiceNr'"><a ng-href="/invoices/details/{{row.id}}">{{row.invoiceNr}}</a></td>
-                                <td data-title="'Contractor'" sortable="'companyDealer.name'">{{( row.companyDealer ? row.companyDealer.name :
-                                    row.personDealer.firstName + ' ' + row.personDealer.lastName)}}</td>
-                                <td data-title="'Create Date'" sortable="'createDate'">{{row.createDate | date: 'dd-MM-yyyy'}}</td>
-                                <td data-title="'End date'" sortable="'executionEndDate'">{{row.executionEndDate | date:
-                                    'dd-MM-yyyy'}}
-                                </td>
-                                <td data-title="'status'" sortable="'status'">{{row.status}}</td>
-                            </tr>
-                        </table>
+                <div class="row">
+                    <div class="col-xs-12 no-padding-side">
+                        <div class="top-margin-2">
+                            <table ng-table="invoicesCtrl.buyTable" class="table table-striped table-condensed table-responsive">
+                                <tr class="ng-table-group">
+                                    <td colspan="5">
+                                        <input type="text" class="form-control" ng-model="invoicesCtrl.globalSearchTermBuy" placeholder="Global search..."
+                                               ng-change="invoicesCtrl.applyGlobalSearchBuy()"></td>
+                                </tr>
+                                <tr ng-repeat="row in $data track by row.id">
+                                    <td data-title="'Invoice nr'" sortable="'invoiceNr'"><a ng-href="/invoices/details/{{row.id}}">{{row.invoiceNr}}</a></td>
+                                    <td data-title="'Contractor'" sortable="'companyDealer.name'">{{( row.companyDealer ? row.companyDealer.name :
+                                        row.personDealer.firstName + ' ' + row.personDealer.lastName)}}
+                                    </td>
+                                    <td data-title="'Create Date'" sortable="'createDate'">{{row.createDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td data-title="'End date'" sortable="'executionEndDate'">{{row.executionEndDate | date:
+                                        'dd-MM-yyyy'}}
+                                    </td>
+                                    <td data-title="'status'" sortable="'status'">{{row.status}}</td>
+                                </tr>
+                            </table>
 
+                        </div>
                     </div>
                 </div>
             </uib-tab>

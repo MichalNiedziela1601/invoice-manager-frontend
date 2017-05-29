@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function IssueInvoiceController(CompanyDAO, $uibModal, InvoiceDAO, $window)
+    function IssueInvoiceController(InvoiceDAO, $window)
     {
         var ctrl = this;
 
@@ -68,30 +68,6 @@
             });
         }
 
-        ctrl.openAddCompanyModal = function (size)
-        {
-            ctrl.noResultsCompany = !ctrl.noResultsCompany;
-            ctrl.modalInstance = $uibModal.open({
-                templateUrl: '/modules/invoices/add/addCompanyModal/addCompanyModal.tpl.html',
-                controller: 'AddCompanyModalController',
-                controllerAs: 'addCompModalCtrl',
-                backdrop: 'static',
-                size: size
-            });
-
-            ctrl.modalInstance.result.then(function (compDetails)
-            {
-                CompanyDAO.findByNip(compDetails.nip).then(function (result)
-                {
-                    ctrl.companyDetails = result;
-                    ctrl.showBox = true;
-                });
-            }, function (error)
-            {
-                console.error('ERROR: ' + error);
-            });
-        };
-
         function closeAddInvoiceSuccess()
         {
             ctrl.addInvoice = false;
@@ -123,7 +99,7 @@
                     }
                 });
                 ctrl.invoiceCompany.nettoValue = Number(netto);
-                ctrl.invoiceCompany.bruttoValue = Number(Math.round(brutto + 'e2')+'e-2');
+                ctrl.invoiceCompany.bruttoValue = Number(Math.round(brutto + 'e2') + 'e-2');
             }
         }
 
@@ -132,9 +108,9 @@
             if (ctrl.companyDetails) {
                 ctrl.invoiceCompany.type = ctrl.transationType;
                 ctrl.invoiceCompany.companyDealer = ctrl.mockedCompany.id;
-                if('company' === ctrl.invoiceCompany.contractorType) {
+                if ('company' === ctrl.invoiceCompany.contractorType) {
                     ctrl.invoiceCompany.companyRecipent = ctrl.companyDetails.id;
-                } else if('person' === ctrl.invoiceCompany.contractorType){
+                } else if ('person' === ctrl.invoiceCompany.contractorType) {
                     ctrl.invoiceCompany.personRecipent = ctrl.companyDetails.id;
                 }
                 ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
@@ -186,6 +162,17 @@
             ctrl.issueProductNotAdded = false;
         }
 
+        ctrl.checkAdvanced = function (form)
+        {
+            if(ctrl.invoiceCompany.advance > Number(ctrl.invoiceCompany.bruttoValue)){
+                form.advance.$error.validationError = true;
+                form.$setValidity('advance',false);
+            } else {
+                form.advance.$error.validationError = false;
+                form.$setValidity('advance',true);
+            }
+        };
+
         getInvoiceNumber();
         getUserInfo();
 
@@ -200,7 +187,7 @@
     }
 
     angular.module('app')
-            .controller('IssueInvoiceController', ['CompanyDAO', '$uibModal', 'InvoiceDAO','$window', IssueInvoiceController]);
+            .controller('IssueInvoiceController', ['InvoiceDAO', '$window', IssueInvoiceController]);
 
 
 })();

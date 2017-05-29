@@ -140,27 +140,6 @@
             ctrl.companyNotChosen = false;
         }
 
-        ctrl.openAddCompanyModal = function (size)
-        {
-            ctrl.noResults = !ctrl.noResults;
-            ctrl.modalInstance = $uibModal.open({
-                templateUrl: '/modules/invoices/add/addCompanyModal/addCompanyModal.tpl.html',
-                controller: 'AddCompanyModalController',
-                controllerAs: 'addCompModalCtrl',
-                backdrop: 'static',
-                size: size
-            });
-
-            ctrl.modalInstance.result.then(function (compDetails)
-            {
-                CompanyDAO.findByNip(compDetails.nip).then(function (result)
-                {
-                    ctrl.companyDetails = result;
-                    ctrl.showBox = true;
-                });
-            });
-        };
-
         function closeAddInvoiceSuccess()
         {
             ctrl.addInvoice = false;

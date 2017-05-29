@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function ContractorsController(CompanyDAO,NgTableParams)
+    function ContractorsController(CompanyDAO,NgTableParams, Person)
     {
         var ctrl = this;
         ctrl.message = 'Contractors';
@@ -10,11 +10,16 @@
         CompanyDAO.query().then(function (data)
         {
             ctrl.companies = data;
-            ctrl.companyTable = new NgTableParams({
-                sorting: { Name: 'asc'}
-            }, {
-                dataset: ctrl.companies
+            Person.getPersons().then(function(persons)
+            {
+                ctrl.companies = ctrl.companies.concat(persons);
+                ctrl.companyTable = new NgTableParams({
+                    sorting: { Name: 'asc'}
+                }, {
+                    dataset: ctrl.companies
+                });
             });
+
         }).catch(function(error){
             console.error(error);
         });
@@ -28,6 +33,6 @@
         ctrl.applyGlobalSearch = applyGlobalSearch;
     }
 
-    angular.module('app').controller('ContractorsController', ['CompanyDAO','NgTableParams', ContractorsController]);
+    angular.module('app').controller('ContractorsController', ['CompanyDAO','NgTableParams','Person', ContractorsController]);
 
 })();

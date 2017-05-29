@@ -7,8 +7,7 @@
         return {
             restrict: 'E',
             scope: {
-                company: '=',
-                address: '='
+                company: '='
             },
             templateUrl: 'common/directives/contractorInfoInvoice.tpl.html',
             replace: true

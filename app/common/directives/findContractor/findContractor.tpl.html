@@ -1,77 +1,347 @@
-<div>
-    <div class="col-md-6 company-box">
-        <div class="findCompanyInput change" ng-class="{'fade-out': findContractorCtrl.addContractor, 'fade-in': !findContractorCtrl.addContractor}">
-            <div class="row well">
+<div class="row">
+    <div ng-show="findContractorCtrl.showCompanyContractor && findContractorCtrl.showPersonContractor">
+        <div class="col-lg-6 col-md-12">
+            <div class="findCompanyInput">
+                <div class="row well">
 
-                <label class="col-sm-5">Find company by NIP:</label>
-                <div class="input-group col-md-6">
-                    <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.companyModel" placeholder="NIP contractors"
-                                                       uib-typeahead="companies.nip for companies in findContractorCtrl.findCompaniesByNip($viewValue)"
-                                                       typeahead-no-results="findContractorCtrl.noResultsCompany" class="form-control"
-                                                       typeahead-on-select="findContractorCtrl.onSelectCompany($item,$model,$label)"
-                                                       typeahead-template-url="common/directives/findContractor/getNips.tpl.html">
-                        <div ng-show="findContractorCtrl.noResultsCompany">
-                            <i class="glyphicon glyphicon-remove"></i>
-                            <p class="text-justify">Company not found,<br>
-                                to add new company click <a href="" ng-click="findContractorCtrl.toggleAddContractor()">here</a></p>
+                    <label class="col-sm-5">Find company by NIP or shortcut:</label>
+                    <div class="input-group col-md-6">
+                        <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.companyModel" placeholder="NIP contractors or shortcut"
+                                                           uib-typeahead="companies.nip for companies in findContractorCtrl.findCompaniesByNip($viewValue)"
+                                                           typeahead-no-results="findContractorCtrl.noResultsCompany" class="form-control"
+                                                           typeahead-on-select="findContractorCtrl.onSelectCompany($item,$model,$label)"
+                                                           typeahead-template-url="common/directives/findContractor/getNips.tpl.html">
+                            <div ng-show="findContractorCtrl.noResultsCompany">
+                                <i class="glyphicon glyphicon-remove"></i>
+                                <p class="text-justify">Company not found,<br>
+                                    to add new company click <a href="" ng-click="findContractorCtrl.toggleShowCompany()">here</a></p>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="row well">
+
+                    <label class="col-sm-5">Find person by Last name:</label>
+                    <div class="input-group col-md-6">
+                        <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.personModel" placeholder="Last name"
+                                                           uib-typeahead="person.lastName for persons in findContractorCtrl.findPersonByLastName($viewValue)"
+                                                           typeahead-no-results="findContractorCtrl.noResultsPerson" class="form-control"
+                                                           typeahead-on-select="findContractorCtrl.onSelectPerson($item,$model,$label)"
+                                                           typeahead-template-url="common/directives/findContractor/getPerson.html">
+                            <div ng-show="findContractorCtrl.noResultsPerson">
+                                <i class="glyphicon glyphicon-remove"></i>
+                                <p class="text-justify">Company not found,<br>
+                                    to add new company click <a href="" ng-click="findContractorCtrl.toggleShowPerson()">here</a></p>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="change" ng-class="{'fade-out': findContractorCtrl.addContractor, 'fade-in': !findContractorCtrl.addContractor}">
-            <div class="row well">
 
-                <label class="col-sm-5">Find person by Last name:</label>
-                <div class="input-group col-md-6">
-                    <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.personModel" placeholder="Last name"
-                                                       uib-typeahead="person.lastName for persons in findContractorCtrl.findPersonByLastName($viewValue)"
-                                                       typeahead-no-results="findContractorCtrl.noResultsPerson" class="form-control"
-                                                       typeahead-on-select="findContractorCtrl.onSelectPerson($item,$model,$label)"
-                                                       typeahead-template-url="common/directives/findContractor/getPerson.html">
-                        <div ng-show="findContractorCtrl.noResultsPerson">
-                            <i class="glyphicon glyphicon-remove"></i>
-                            <p class="text-justify">Company not found,<br>
-                                to add new company click <a href="" ng-click="findContractorCtrl.openAddCompanyModal('lg')">here</a></p>
-                        </div>
+        <div class="col-lg-6 col-md-12 findCompanyInput">
+
+            <div class="panel panel-default" ng-if="findContractorCtrl.showBox">
+                <div class="panel-heading">
+                    <div class="panel-title"><span ng-if="findContractorCtrl.company.name">{{findContractorCtrl.company.name}}</span>
+                        <span ng-if="findContractorCtrl.company.firstName">{{findContractorCtrl.company.firstName}} {{findContractorCtrl.company.lastName}}</span>
                     </div>
-
+                </div>
+                <div class="panel-body">
+                    <table class="table no-bottom-margin">
+                        <tr ng-if="findContractorCtrl.company.nip">
+                            <td>Nip</td>
+                            <td>{{findContractorCtrl.company.nip}}</td>
+                        </tr>
+                        <tr ng-if="findContractorCtrl.company.hasOwnProperty('regon') && findContractorCtrl.company.regon">
+                            <td>Regon</td>
+                            <td>{{findContractorCtrl.company.regon}}</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>{{findContractorCtrl.company.address.street}} {{findContractorCtrl.company.address.buildNr}}<span
+                                    ng-if="findContractorCtrl.company.address.flatNr">{{'/'+findContractorCtrl.company.address.flatNr}}</span>
+                                <p>{{findContractorCtrl.company.address.postCode}} {{findContractorCtrl.company.address.city }}</p>
+                            </td>
+                        </tr>
+                        <tr ng-if="findContractorCtrl.company.hasOwnProperty('bankName') && findContractorCtrl.company.bankName">
+                            <td>Bank Name</td>
+                            <td>{{findContractorCtrl.company.bankName}}</td>
+                        </tr>
+                        <tr ng-if="findContractorCtrl.company.hasOwnProperty('bankAccount') && findContractorCtrl.company.bankAccount">
+                            <td>Bank Account</td>
+                            <td class="wrap-word">{{findContractorCtrl.company.bankAccount}}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
+
+
+            <div class="well" ng-show="!findContractorCtrl.showBox"><strong>Enter NIP to find company or last name to find person</strong></div>
         </div>
     </div>
 
-    <div class="col-md-6 findCompanyInput">
 
-        <div class="panel panel-default" ng-if="findContractorCtrl.showBox">
-            <div class="panel-heading">
-                <div class="panel-title"><span ng-if="findContractorCtrl.company.name">{{findContractorCtrl.company.name}}</span>
-                    <span ng-if="findContractorCtrl.company.firstName">{{findContractorCtrl.company.firstName}} {{findContractorCtrl.company.lastName}}</span>
+    <div ng-show="!findContractorCtrl.showCompanyContractor">
+        <form class="form-inline comp-form" name="companyForm" ng-submit="findContractorCtrl.addCompany(companyForm)" novalidate>
+            <div class="form-group" ng-class="{'has-error' : companyForm.companyName.$invalid}">
+                <label class="sr-only">Company Name*</label>
+                <input type="text" class="form-control" id="name_company" name="companyName" placeholder="Company name"
+                       ng-model="findContractorCtrl.company.name" required minlength="2">
+                <div ng-messages="companyForm.companyName.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's name required min. length is 2</div>
                 </div>
             </div>
-            <div class="panel-body">
-                <table class="table no-bottom-margin">
-                    <tr ng-if="findContractorCtrl.company.nip">
-                        <td>nip</td>
-                        <td>{{findContractorCtrl.company.nip}}</td>
-                    </tr>
-                    <tr ng-if="findContractorCtrl.company.hasOwnProperty('regon') && findContractorCtrl.company.regon">
-                        <td>regon</td>
-                        <td>{{findContractorCtrl.company.regon}}</td>
-                    </tr>
-                    <tr>
-                        <td>address</td>
-                        <td>{{findContractorCtrl.company.address.street}} {{findContractorCtrl.company.address.buildNr}}<span
-                                ng-if="findContractorCtrl.company.address.flatNr">{{'/'+findContractorCtrl.company.address.flatNr}}</span>
-                            <p>{{findContractorCtrl.company.address.postCode}} {{findContractorCtrl.company.address.city }}</p>
-                        </td>
-                    </tr>
-                </table>
+
+            <div class="form-group" ng-class="{'has-error' : companyForm.shortcut.$invalid}">
+                <label class="sr-only">Company Shortcut*</label>
+                <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Company shortcut"
+                       ng-model="findContractorCtrl.company.shortcut" required minlength="2" ng-change="findContractorCtrl.validateShortcut()" required>
+                <div ng-messages="companyForm.shortcut.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's shortcut required min. length is 2</div>
+                </div>
+                <div ng-show="companyForm.shortcut.$error" class="input-error" role="alert">
+                    <div ng-show="findContractorCtrl.showShortcut">Shortcut already exists</div>
+                </div>
             </div>
-        </div>
+
+            <div class="form-group" ng-class="{'has-error' : companyForm.companyNip.$invalid}">
+                <label class="sr-only">NIP*</label>
+                <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"
+                       ng-model="findContractorCtrl.company.nip" required nip-mask ng-change="findContractorCtrl.validateNip()">
+                <div ng-messages="companyForm.companyNip.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="pattern">Company's nip required length is 10</div>
+                </div>
+                <div ng-show="companyForm.companyNip.$error" class="input-error">
+                    <div ng-show="findContractorCtrl.showAlert">Nip already exsist</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="sr-only">Regon</label>
+                <input pattern="[0-9]{10}" class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
+                       ng-model="findContractorCtrl.company.regon">
+                <div ng-messages="companyForm.companyRegon.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="pattern">Company's regon required length is 10</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : companyForm.companyStreet.$invalid}">
+                <label class="sr-only">Street*</label>
+                <input type="text" class="form-control" id="street" name="companyStreet" placeholder="Street"
+                       ng-model="findContractorCtrl.company.address.street" required minlength="2">
+                <div ng-messages="companyForm.companyStreet.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's street required min. length is 2</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : companyForm.build_nr.$invalid}">
+                <label class="sr-only">Build number*</label>
+                <input type="text" class="form-control" id="build_nr" name="build_nr" placeholder="Build number"
+                       ng-model="findContractorCtrl.company.address.buildNr" required>
+                <div ng-messages="companyForm.build_nr.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="sr-only">Flat number</label>
+                <input type="text" class="form-control" id="flat_nr" placeholder="Flat number" ng-model="findContractorCtrl.company.address.flatNr">
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : companyForm.companyPostcode.$invalid}">
+                <label class="sr-only">Post code*</label>
+                <input type="text" class="form-control" id="post_code" name="companyPostcode" placeholder="Post code"
+                       ng-model="findContractorCtrl.company.address.postCode" required>
+                <div ng-messages="companyForm.companyPostcode.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="pattern">Company's post-code required pattern is xx-xxx</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : companyForm.city.$invalid}">
+                <label class="sr-only">City*</label>
+                <input type="text" class="form-control" id="city" name="city" placeholder="City" ng-model="findContractorCtrl.company.address.city" required>
+                <div ng-messages="companyForm.city.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's street required min. length is 2</div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error' : companyForm.bankName.$invalid}">
+                <label class="sr-only">Bank Name*</label>
+                <input type="text" class="form-control" id="bankName" name="bankName" placeholder="Bank Name" ng-model="findContractorCtrl.company.bankName"
+                       required>
+                <div ng-messages="companyForm.bankName.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's bank name required min. length is 2</div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error' : companyForm.bankAccount.$invalid}">
+                <label class="sr-only">Bank Account*</label>
+                <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="Bank Account"
+                       ng-model="findContractorCtrl.company.bankAccount" required>
+                <div ng-messages="companyForm.bankAccount.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                </div>
+            </div>
+
+            <div class="col-sm-9 col-xs-12">
+                <div ng-show="findContractorCtrl.invalidFormAlert" uib-alert class="alert-danger" id="alert" role="alert"
+                     close="findContractorCtrl.closeInvalidFormAlert()">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    Requested fields are not correct!
+                </div>
+
+                <div ng-show="findContractorCtrl.showError" uib-alert class="alert-danger" role="alert" close="findContractorCtrl.closeShowError()">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    {{findContractorCtrl.errorMessage}}
+                </div>
+
+            </div>
+
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary">Add new company</button>
+                <button type="button" class="btn btn-default" ng-click="findContractorCtrl.showFind(); findContractorCtrl.showBox=false;">Cancel</button>
+            </div>
+        </form>
+    </div>
 
 
-        <div class="well" ng-show="!findContractorCtrl.showBox"><strong>Enter NIP to find company or last name to find person</strong></div>
+    <div ng-show="!findContractorCtrl.showPersonContractor">
+        <form class="form-inline comp-form" name="personForm" ng-submit="findContractorCtrl.addPerson(personForm)" novalidate>
+            <div class="form-group" ng-class="{'has-error' : personForm.first_name.$invalid}">
+                <label class="sr-only">First Name*</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name"
+                       ng-model="findContractorCtrl.company.firstName" required minlength="2">
+                <div ng-messages="personForm.first_name.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">First name required min. length is 2</div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error' : personForm.last_name.$invalid}">
+                <label class="sr-only">Last Name*</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name"
+                       ng-model="findContractorCtrl.company.lastName" required minlength="2">
+                <div ng-messages="personForm.last_name.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Last name required min. length is 2</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : personForm.shortcut_p.$invalid}">
+                <label class="sr-only">Company Shortcut*</label>
+                <input type="text" class="form-control" id="shortcut_p" name="shortcut_p" placeholder="Person shortcut"
+                       ng-model="findContractorCtrl.company.shortcut" required minlength="2" ng-change="findContractorCtrl.validateShortcutPerson()" required>
+                <div ng-messages="personForm.shortcut_p.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's shortcut required min. length is 2</div>
+                </div>
+                <div ng-show="personForm.shortcut_p.$error" class="input-error" role="alert">
+                    <div ng-show="findContractorCtrl.showShortcut">Shortcut already exists</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : personForm.nip_person.$invalid}">
+                <label class="sr-only">NIP</label>
+                <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_person" name="personNip" placeholder="NIP"
+                       ng-model="findContractorCtrl.company.nip" nip-mask ng-change="findContractorCtrl.validateNipPerson()">
+                <div ng-messages="personForm.personNip.$error" class="input-error">
+                    <div ng-message="pattern">Company's nip required length is 10</div>
+                </div>
+                <div ng-show="personForm.personNip.$error" class="input-error">
+                    <div ng-show="findContractorCtrl.showAlert">Nip already exsist</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : personForm.personStreet.$invalid}">
+                <label class="sr-only">Street*</label>
+                <input type="text" class="form-control" id="street_pers" name="personStreet" placeholder="Street"
+                       ng-model="findContractorCtrl.company.address.street" required minlength="2">
+                <div ng-messages="personForm.personStreet.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's street required min. length is 2</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : personForm.build_nr_pers.$invalid}">
+                <label class="sr-only">Build number*</label>
+                <input type="text" class="form-control" id="build_nr_pers" name="build_nr_pers" placeholder="Build number"
+                       ng-model="findContractorCtrl.company.address.buildNr" required>
+                <div ng-messages="personForm.build_nr_pers.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="sr-only">Flat number</label>
+                <input type="text" class="form-control" id="flat_nr_pers" placeholder="Flat number" ng-model="findContractorCtrl.company.address.flatNr">
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : personForm.personPostcode.$invalid}">
+                <label class="sr-only">Post code*</label>
+                <input type="text" class="form-control" id="post_code_pers" name="personPostcode" placeholder="Post code"
+                       ng-model="findContractorCtrl.company.address.postCode" required>
+                <div ng-messages="personForm.personPostcode.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : personForm.cityPerson.$invalid}">
+                <label class="sr-only">City*</label>
+                <input type="text" class="form-control" id="city_pers" name="cityPerson" placeholder="City" ng-model="findContractorCtrl.company.address.city" required>
+                <div ng-messages="personForm.cityPerson.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's street required min. length is 2</div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error' : personForm.bankNamePers.$invalid}">
+                <label class="sr-only">Bank Name*</label>
+                <input type="text" class="form-control" id="bankNamePers" name="bankNamePers" placeholder="Bank Name" ng-model="findContractorCtrl.company.bankName"
+                       required>
+                <div ng-messages="personForm.bankNamePers.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                    <div ng-message="minlength">Company's bank name required min. length is 2</div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error' : personForm.bankAccountPers.$invalid}">
+                <label class="sr-only">Bank Account*</label>
+                <input type="text" class="form-control" id="bankAccountPers" name="bankAccountPers" placeholder="Bank Account"
+                       ng-model="findContractorCtrl.company.bankAccount" required>
+                <div ng-messages="personForm.bankAccountPers.$error" class="input-error">
+                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                </div>
+            </div>
+
+            <div class="col-sm-9 col-xs-12">
+                <div ng-show="findContractorCtrl.invalidFormAlert" uib-alert class="alert-danger" role="alert"
+                     close="findContractorCtrl.closeInvalidFormAlert()">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    Requested fields are not correct!
+                </div>
+
+                <div ng-show="findContractorCtrl.showError" uib-alert class="alert-danger" role="alert" close="findContractorCtrl.closeShowError()">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    {{findContractorCtrl.errorMessage}}
+                </div>
+
+            </div>
+
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary">Add new person</button>
+                <button type="button" class="btn btn-default" ng-click="findContractorCtrl.showFind(); findContractorCtrl.showBox=false;">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>

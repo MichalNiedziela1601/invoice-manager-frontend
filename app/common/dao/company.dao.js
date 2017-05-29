@@ -19,10 +19,13 @@
             }, query: {method: 'GET', isArray: true,
             transformResponse:  $http.defaults.transformResponse.concat(queryTransformResponse)
                 }, addCompany: {
-                method: 'POST', isArray: false
+                method: 'POST'
             },
             findShortcut: {
                 method: 'GET', isArray: true
+            },
+            update: {
+                method: 'PUT'
             }
         });
 
@@ -44,6 +47,14 @@
             },
             findShortcut: function(shortcut){
                 return api.findShortcut({a: 'shortcut', shortcut: shortcut}).$promise;
+            },
+            getById: function (id)
+            {
+                return api.get({a: 'id', id: id}).$promise;
+            },
+            updateCompany: function(company)
+            {
+                return api.update(company).$promise;
             }
         };
     }

@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    function InvoiceDetailsController(InvoiceDetailsDAO, $routeParams)
+    function InvoiceDetailsController(InvoiceDetailsDAO, InvoiceDAO, $routeParams)
     {
         var ctrl = this;
         ctrl.message = 'Details Invoice';
@@ -14,6 +14,9 @@
         ctrl.errorMessage = '';
         ctrl.product = {};
         ctrl.contractorChange = false;
+        ctrl.productNotChoosen = false;
+        ctrl.changeNumber = true;
+        ctrl.showLoader = false;
         ctrl.payment = [
             {type: 'cash'},
             {type: 'bank transfer'}
@@ -23,6 +26,7 @@
 
         function createSummary(details)
         {
+            ctrl.summary = [];
             var subTotal = _.reduce(details.products, function (result, value)
             {
                 (result[value.vat] || (result[value.vat] = [])).push(value);
@@ -44,7 +48,6 @@
                     sum.bruttoValue += val.brutto;
                 });
                 ctrl.summary.push(sum);
-
             });
         }
 
@@ -63,6 +66,7 @@
                     ctrl.details.contractorType = ctrl.details.companyDealer ? 'company' : 'person';
                 }
 
+                ctrl.tooltip = ('unpaid' === ctrl.details.status) ? 'Mark as paid' : 'Mark as unpaid';
                 if (!ctrl.details.reverseCharge) {
                     createSummary(ctrl.details);
                 }
@@ -114,6 +118,7 @@
         {
             ctrl.showEditInvoice = !ctrl.showEditInvoice;
             ctrl.showDetailsInvoice = !ctrl.showDetailsInvoice;
+            ctrl.getDetails();
         }
 
         function changeContractor()
@@ -128,36 +133,64 @@
 
         }
 
+        function getInvoiceNumber()
+        {
+            var year = ctrl.createDatePicker.date.getFullYear();
+            var month = ctrl.createDatePicker.date.getMonth() + 1;
+            InvoiceDAO.number(year, month).then(function (number)
+            {
+                ctrl.details.invoiceNr = 'FV ' + year + '/' + month + '/' + number.number;
+            }).catch(function (error)
+            {
+                console.log('error', error);
+            });
+        }
+
         function editInvoice(form)
         {
-            if (form.$valid) {
-                ctrl.details.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
-                ctrl.details.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-                ctrl.details.companyDealer = _.get(ctrl.details, 'companyDealer.id');
-                ctrl.details.companyRecipent = _.get(ctrl.details, 'companyRecipent.id');
-                ctrl.details.personDealer = _.get(ctrl.details, 'personDealer.id');
-                ctrl.details.personRecipent = _.get(ctrl.details, 'personRecipent.id');
-                changeContractor();
-                InvoiceDetailsDAO.update(ctrl.id, ctrl.details).then(function ()
-                {
-                    ctrl.summary = [];
-                    ctrl.showBox = false;
-                    ctrl.getDetails();
-                    ctrl.showEdit();
-                })
-                        .catch(function (error)
-                        {
-                            ctrl.getDetails();
-                            ctrl.errorMessage = error.data || error.message || error;
-                            ctrl.formInvalidAlert = true;
-                        });
+            if(Object.keys(ctrl.details.products).length > 0){
+                if (form.$valid) {
+                    ctrl.details.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
+                    ctrl.details.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
+                    ctrl.details.companyDealer = _.get(ctrl.details, 'companyDealer.id');
+                    ctrl.details.companyRecipent = _.get(ctrl.details, 'companyRecipent.id');
+                    ctrl.details.personDealer = _.get(ctrl.details, 'personDealer.id');
+                    ctrl.details.personRecipent = _.get(ctrl.details, 'personRecipent.id');
+                    changeContractor();
+                    ctrl.showLoader = true;
+                    InvoiceDetailsDAO.update(ctrl.id, ctrl.details).then(function ()
+                    {
+                        ctrl.changeNumber = true;
+                        ctrl.showLoader = false;
+                        ctrl.summary = [];
+                        ctrl.showBox = false;
+                        ctrl.getDetails();
+                        ctrl.showEdit();
+                    })
+                            .catch(function (error)
+                            {
+                                ctrl.changeNumber = true;
+                                ctrl.showLoader = false;
+                                ctrl.getDetails();
+                                ctrl.errorMessage = error.data || error.message || error;
+                                ctrl.formInvalidAlert = true;
+                            });
+                }
+            } else {
+                ctrl.productNotChoosen = true;
             }
+
         }
 
         function closeFormInvalidAlert()
         {
             ctrl.formInvalidAlert = false;
         }
+
+        ctrl.closeProductNotChoosen = function ()
+        {
+            ctrl.productNotChoosen = false;
+        };
 
         ctrl.changeStatus = function ()
         {
@@ -187,11 +220,28 @@
             ctrl.contractorChange = !ctrl.contractorChange;
         };
 
+        ctrl.checkAdvanced = function (form)
+        {
+           if(ctrl.details.advance > Number(ctrl.details.bruttoValue)){
+               form.advance.$error.validationError = true;
+               form.$setValidity('advance',false);
+           } else {
+               form.advance.$error.validationError = false;
+               form.$setValidity('advance',true);
+           }
+        };
+
+        ctrl.toogleChangeNumber = function()
+        {
+            ctrl.changeNumber = !ctrl.changeNumber;
+        };
+
+        ctrl.getInvoiceNumber = getInvoiceNumber;
         ctrl.closeFormInvalidAlert = closeFormInvalidAlert;
         ctrl.showEdit = showEdit;
         ctrl.getDetails = getDetails;
         ctrl.editInvoice = editInvoice;
     }
 
-    angular.module('app').controller('InvoiceDetailsController', ['InvoiceDetailsDAO', '$routeParams', InvoiceDetailsController]);
+    angular.module('app').controller('InvoiceDetailsController', ['InvoiceDetailsDAO', 'InvoiceDAO', '$routeParams', InvoiceDetailsController]);
 })();
