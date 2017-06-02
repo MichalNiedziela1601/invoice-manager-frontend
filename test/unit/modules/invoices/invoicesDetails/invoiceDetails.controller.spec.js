@@ -62,7 +62,7 @@ describe('InvoiceDetailsController', function ()
 
         $routeParamsMock.id = 1;
 
-        InvoiceDetailsDAOMock = jasmine.createSpyObj('InvoiceDetailsDAO', ['query','update','changeStatus']);
+        InvoiceDetailsDAOMock = jasmine.createSpyObj('InvoiceDetailsDAO', ['query', 'update', 'changeStatus']);
         InvoiceDetailsDAOMock.query.and.callFake(function ()
         {
             return successfulPromise(invoiceMock);
@@ -154,114 +154,151 @@ describe('InvoiceDetailsController', function ()
 
     describe('getDetails', function ()
     {
-        describe('when reverse charge', function ()
+        describe('when type is sell', function ()
         {
-            beforeEach(function ()
+            describe('when companyRecipent is not null', function ()
             {
-                invoiceMock = {
-                    'id': 9,
-                    'year': 2017,
-                    'month': 5,
-                    'number': 4,
-                    'invoiceNr': 'FV 2017/5/4',
-                    'type': 'sell',
-                    'createDate': '2017-05-16T00:00:00.000Z',
-                    'executionEndDate': '2017-05-16T00:00:00.000Z',
-                    'nettoValue': '1259.01',
-                    'bruttoValue': '1384.14',
-                    'status': 'unpaid',
-                    'url': 'https://drive.google.com/file/d/0BwdQNJT2vJhNQU9jT09laFltdDQ/view?usp=drivesdk',
-                    'companyDealer': 2,
-                    'companyRecipent': 10,
-                    'personDealer': null,
-                    'personRecipent': null,
-                    'googleYearFolderId': '0BwdQNJT2vJhNekhWZVY5c1JLRkE',
-                    'googleMonthFolderId': '0BwdQNJT2vJhNQVhLY3hqcEFyV2M',
-                    'description': null,
-                    'products': {
-                        '0': {
-                            'editMode': false,
-                            'name': 'IT service',
-                            'netto': 345.45,
-                            'vat': 'N/A',
-                            'brutto': 345.45
-                        }
-                    },
-                    'paymentMethod': 'bank transfer',
-                    'advance': '1000.00',
-                    'fileId': '0BwdQNJT2vJhNQU9jT09laFltdDQ',
-                    'currency': 'PLN',
-                    'language': 'pl'
-                };
-                InvoiceDetailsDAOMock.query.and.callFake(function ()
+                beforeEach(function ()
                 {
-                    return successfulPromise(invoiceMock);
-                });
-                invoiceDetailCtrl.getDetails();
-            });
-            it('should set reverseCharge', function ()
-            {
-                expect(invoiceDetailCtrl.reverseCharge).toBeTruthy();
+                    invoiceMock = {
+                        type: 'sell',
+                        'companyDealer': 2,
+                        'companyRecipent': 10,
+                        'personDealer': null,
+                        'personRecipent': null
 
+                    };
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                });
+                it('should set contractorType to company', function ()
+                {
+                    expect(invoiceDetailCtrl.details.contractorType).toEqual('company');
+
+                });
+            });
+
+            describe('when companyRecipent is null', function ()
+            {
+                beforeEach(function ()
+                {
+                    invoiceMock = {
+                        'type': 'sell',
+                        'companyDealer': 2,
+                        'companyRecipent': null,
+                        'personDealer': null,
+                        'personRecipent': 10
+
+                    };
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                });
+                it('should set contractorType to company', function ()
+                {
+                    expect(invoiceDetailCtrl.details.contractorType).toEqual('person');
+
+                });
+            });
+        });
+        describe('when type is buy', function ()
+        {
+            describe('when companyDealer is not null', function ()
+            {
+                beforeEach(function ()
+                {
+                    invoiceMock = {
+                        type: 'buy',
+                        'companyDealer': 2,
+                        'companyRecipent': 10,
+                        'personDealer': null,
+                        'personRecipent': null
+
+                    };
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                });
+                it('should set contractorType to company', function ()
+                {
+                    expect(invoiceDetailCtrl.details.contractorType).toEqual('company');
+
+                });
+            });
+
+            describe('when companyDealer is null', function ()
+            {
+                beforeEach(function ()
+                {
+                    invoiceMock = {
+                        'type': 'buy',
+                        'companyDealer': null,
+                        'companyRecipent': 2,
+                        'personDealer': 10,
+                        'personRecipent': null
+
+                    };
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                });
+                it('should set contractorType to company', function ()
+                {
+                    expect(invoiceDetailCtrl.details.contractorType).toEqual('person');
+
+                });
             });
         });
     });
 
-    describe('calculateBrutto', function ()
+    describe('calculateNettoBrutto', function ()
     {
-        describe('when entry have vat', function ()
+        describe('when product has amount', function ()
         {
             beforeEach(function ()
             {
-                productsMock = { netto: 500, vat: 8, amount: 2};
-                invoiceDetailCtrl.calculateBrutto(productsMock);
+
+                invoiceDetailCtrl.details.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 424.9};
+                invoiceDetailCtrl.details.products[1] = {name: 'Product 2', netto: 456.78, vat: 5, amount: 2, brutto: 959.24};
+                invoiceDetailCtrl.calculateNettoBrutto();
+            });
+            it('should set netto', function ()
+            {
+                expect(invoiceDetailCtrl.details.nettoValue).toEqual(1259.01);
             });
             it('should set brutto', function ()
             {
-                expect(productsMock.brutto).toEqual(Number((productsMock.netto * productsMock.amount * (1 + productsMock.vat/100)).toFixed(2)));
+                expect(invoiceDetailCtrl.details.bruttoValue).toEqual(1384.14);
             });
         });
 
-        describe('when entry not have vat available', function ()
+        describe('when product don\'t have amount', function ()
         {
-            describe('when no amount', function ()
+            beforeEach(function ()
             {
-                beforeEach(function ()
-                {
-                    productsMock = { netto: 6000, vat: 'N/A'};
-                    invoiceDetailCtrl.calculateBrutto(productsMock);
-                });
-                it('should set brutto', function ()
-                {
-                    expect(productsMock.brutto).toEqual(productsMock.netto);
-                });
+                invoiceDetailCtrl.details.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, brutto: 345.45};
+                invoiceDetailCtrl.details.products[1] = {name: 'Product 2', netto: 456.78, vat: 5, brutto: 456.78};
+                invoiceDetailCtrl.calculateNettoBrutto();
             });
-            describe('when amount exists', function ()
+            it('should set netto', function ()
             {
-                beforeEach(function ()
-                {
-                    productsMock = { netto: 6000.56 , vat: 'N/A', amount: 4};
-                    invoiceDetailCtrl.calculateBrutto(productsMock);
-                });
-                it('should set brutto', function ()
-                {
-                    expect(productsMock.brutto).toEqual(productsMock.netto * productsMock.amount);
-                });
+                expect(invoiceDetailCtrl.details.nettoValue).toEqual(802.23);
             });
+            it('should set brutto', function ()
+            {
+                expect(invoiceDetailCtrl.details.bruttoValue).toEqual(802.23);
+            });
+        });
 
-        });
-    });
-
-    describe('deleteProduct', function ()
-    {
-        beforeEach(function ()
-        {
-            invoiceDetailCtrl.deleteProduct(0);
-        });
-        it('should delete product', function ()
-        {
-            expect(invoiceDetailCtrl.details.products).toEqual({1: invoiceMock.products[1]});
-        });
     });
 
     describe('showEdit', function ()
@@ -282,6 +319,148 @@ describe('InvoiceDetailsController', function ()
 
     describe('editInvoice', function ()
     {
+        describe('when type is sell', function ()
+        {
+            describe('when contractorType is company and companyRecipinet is not null', function ()
+            {
+                beforeEach(function ()
+                {
+                    invoiceMock = {
+                        createDate: '2017-04-23',
+                        executionEndDate: '2017-04-30',
+                        type: 'sell',
+                        'companyDealer': 2,
+                        'companyRecipent': {id: 10},
+                        'personDealer': null,
+                        'personRecipent': null
+
+                    };
+
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                    form = {
+                        $valid: true
+                    };
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set companyRecipient', function ()
+                {
+                    expect(invoiceDetailCtrl.details.companyRecipent).toEqual(10);
+                });
+            });
+            describe('when contractorType is company and companyRecipient is null', function ()
+            {
+                beforeEach(function ()
+                {
+                    invoiceMock = {
+                        createDate: '2017-04-23',
+                        executionEndDate: '2017-04-30',
+                        type: 'sell',
+                        'companyDealer': 2,
+                        'companyRecipent': null,
+                        'personDealer': null,
+                        'personRecipent': {id: 10}
+
+                    };
+
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                    form = {
+                        $valid: true
+                    };
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set companyRecipient', function ()
+                {
+                    expect(invoiceDetailCtrl.details.personRecipent).toEqual(10);
+                });
+            });
+        });
+        describe('when type is buy', function ()
+        {
+            describe('when contractorType is company and companyDealer is not null', function ()
+            {
+                beforeEach(function ()
+                {
+                    invoiceMock = {
+                        createDate: '2017-04-23',
+                        executionEndDate: '2017-04-30',
+                        type: 'buy',
+                        'companyDealer': {id: 10},
+                        'companyRecipent': 2 ,
+                        'personDealer': null,
+                        'personRecipent': null
+
+                    };
+
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                    form = {
+                        $valid: true
+                    };
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set companyRecipient', function ()
+                {
+                    expect(invoiceDetailCtrl.details.companyDealer).toEqual(10);
+                });
+            });
+            describe('when contractorType is company and personDealer is null', function ()
+            {
+                beforeEach(function ()
+                {
+                    invoiceMock = {
+                        createDate: '2017-04-23',
+                        executionEndDate: '2017-04-30',
+                        type: 'buy',
+                        'companyDealer': null,
+                        'companyRecipent': 2,
+                        'personDealer': {id: 10},
+                        'personRecipent': null
+
+                    };
+
+                    InvoiceDetailsDAOMock.query.and.callFake(function ()
+                    {
+                        return successfulPromise(invoiceMock);
+                    });
+                    invoiceDetailCtrl.getDetails();
+                    form = {
+                        $valid: true
+                    };
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set companyRecipient', function ()
+                {
+                    expect(invoiceDetailCtrl.details.personDealer).toEqual(10);
+                });
+            });
+        });
         describe('when success', function ()
         {
             beforeEach(function ()
@@ -289,7 +468,8 @@ describe('InvoiceDetailsController', function ()
                 form = {
                     $valid: true
                 };
-                InvoiceDetailsDAOMock.update.and.callFake(function(){
+                InvoiceDetailsDAOMock.update.and.callFake(function ()
+                {
                     return successfulPromise();
                 });
                 invoiceDetailCtrl.editInvoice(form);
@@ -310,8 +490,9 @@ describe('InvoiceDetailsController', function ()
                 form = {
                     $valid: true
                 };
-                InvoiceDetailsDAOMock.update.and.callFake(function(){
-                    return unsuccessfulPromise({data:'Something bad happens'});
+                InvoiceDetailsDAOMock.update.and.callFake(function ()
+                {
+                    return unsuccessfulPromise({data: 'Something bad happens'});
                 });
                 invoiceDetailCtrl.editInvoice(form);
             });
@@ -345,7 +526,8 @@ describe('InvoiceDetailsController', function ()
             beforeEach(function ()
             {
                 invoiceMock.status = 'unpaid';
-                InvoiceDetailsDAOMock.changeStatus.and.callFake(function() {
+                InvoiceDetailsDAOMock.changeStatus.and.callFake(function ()
+                {
                     return successfulPromise();
                 });
                 invoiceDetailCtrl.changeStatus();
@@ -356,7 +538,7 @@ describe('InvoiceDetailsController', function ()
             });
             it('should called changeStatus with parameters', function ()
             {
-                expect(InvoiceDetailsDAOMock.changeStatus).toHaveBeenCalledWith(invoiceDetailCtrl.id,'paid');
+                expect(InvoiceDetailsDAOMock.changeStatus).toHaveBeenCalledWith(invoiceDetailCtrl.id, 'paid');
             });
             it('should call query', function ()
             {
@@ -369,7 +551,8 @@ describe('InvoiceDetailsController', function ()
             beforeEach(function ()
             {
                 invoiceMock.status = 'paid';
-                InvoiceDetailsDAOMock.changeStatus.and.callFake(function() {
+                InvoiceDetailsDAOMock.changeStatus.and.callFake(function ()
+                {
                     return successfulPromise();
                 });
                 invoiceDetailCtrl.changeStatus();
@@ -380,7 +563,7 @@ describe('InvoiceDetailsController', function ()
             });
             it('should called changeStatus with parameters', function ()
             {
-                expect(InvoiceDetailsDAOMock.changeStatus).toHaveBeenCalledWith(invoiceDetailCtrl.id,'unpaid');
+                expect(InvoiceDetailsDAOMock.changeStatus).toHaveBeenCalledWith(invoiceDetailCtrl.id, 'unpaid');
             });
             it('should call query', function ()
             {
@@ -392,8 +575,9 @@ describe('InvoiceDetailsController', function ()
         {
             beforeEach(function ()
             {
-                spyOn(console,'error');
-                InvoiceDetailsDAOMock.changeStatus.and.callFake(function() {
+                spyOn(console, 'error');
+                InvoiceDetailsDAOMock.changeStatus.and.callFake(function ()
+                {
                     return unsuccessfulPromise();
                 });
                 invoiceDetailCtrl.changeStatus();
@@ -403,67 +587,20 @@ describe('InvoiceDetailsController', function ()
                 expect(console.error).toHaveBeenCalled();
             });
         });
-    });
 
-    describe('edit', function ()
-    {
-        beforeEach(function ()
-        {
-            invoiceDetailCtrl.edit(invoiceDetailCtrl.details.products[0]);
-        });
-        it('should set editMode', function ()
-        {
-            expect(invoiceDetailCtrl.details.products[0].editMode).toBeTruthy();
-        });
-        it('should copy entry to editEntry', function ()
-        {
-            invoiceDetailCtrl.details.products[0].editMode = false;
-            expect(invoiceDetailCtrl.editEntry).toEqual(invoiceDetailCtrl.details.products[0]);
-        });
-        it('should set new when save', function ()
-        {
-            invoiceDetailCtrl.details.products[0].netto = 600;
-            invoiceDetailCtrl.save(invoiceDetailCtrl.details.products[0]);
-            expect(invoiceDetailCtrl.details.products[0].netto).toEqual(600);
-        });
-    });
-
-    describe('cancel', function ()
-    {
-        describe('when add new', function ()
+        describe('toggleContractorChange', function ()
         {
             beforeEach(function ()
             {
-                invoiceDetailCtrl.addNew();
-                var editEntry = { name: 'Product 1', netto: 345.45, vat: 'N/A'};
-                invoiceDetailCtrl.calculateBrutto(editEntry);
-                Object.assign(invoiceDetailCtrl.details.products[2],editEntry);
-                invoiceDetailCtrl.cancel(editEntry,2);
+                invoiceDetailCtrl.contractorChange = false;
+                invoiceDetailCtrl.toggleContractorChange();
             });
-            it('should delete product', function ()
+            it('should set contractorChange to true', function ()
             {
-                expect(invoiceDetailCtrl.details.products[2]).toEqual();
+                expect(invoiceDetailCtrl.contractorChange).toBeTruthy();
             });
         });
-        describe('when edit product', function ()
-        {
-            beforeEach(function ()
-            {
-                invoiceDetailCtrl.addNew();
-                var editEntry = { name: 'Product 1', netto: 345.45, vat: 'N/A'};
-                invoiceDetailCtrl.calculateBrutto(editEntry);
-                Object.assign(invoiceDetailCtrl.details.products[0],editEntry);
-                invoiceDetailCtrl.save(editEntry);
-                invoiceDetailCtrl.edit(invoiceDetailCtrl.details.products[0]);
-
-            });
-            it('should set editEntry to null', function ()
-            {
-                invoiceDetailCtrl.cancel(invoiceDetailCtrl.details.products[0],0);
-                expect(invoiceDetailCtrl.editEntry).toBeNull();
-            });
-        });
-
     });
+
 
 });

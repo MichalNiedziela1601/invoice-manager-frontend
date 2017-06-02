@@ -1,4 +1,4 @@
-describe('AddInvoiceController', function ()
+describe('UploadInvoiceController', function ()
 {
     'use strict';
 
@@ -32,7 +32,9 @@ describe('AddInvoiceController', function ()
         mockFoundTestCompany = angular.fromJson($window.sessionStorage.getItem('userInfo'));
         form = {
             $valid: true,
-            $setPristine: angular.noop
+            $setPristine: function ()
+            {
+            }
         };
         mockTestCompany = {
             id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
@@ -134,10 +136,10 @@ describe('AddInvoiceController', function ()
         {
             expect(uploadCtrl.nipContractor).toEqual(null);
         });
-        it('should set invoiceCompany variable to empty object', function ()
+        it('should set invoiceCompany variable', function ()
         {
             expect(uploadCtrl.invoiceCompany).toEqual({
-                status: 'unpaid'
+                status: 'unpaid', products: {}, reverseCharge: false, paymentMethod: 'bank transfer'
             });
         });
         it('should set invoicePerson variable to empty object', function ()
@@ -204,9 +206,51 @@ describe('AddInvoiceController', function ()
         });
     });
 
+    describe('calculateNettoBrutto', function ()
+    {
+        describe('when product has amount', function ()
+        {
+            beforeEach(function ()
+            {
+
+                uploadCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 424.9};
+                uploadCtrl.invoiceCompany.products[1] = {name: 'Product 2', netto: 456.78, vat: 5, amount: 2, brutto: 959.24};
+                uploadCtrl.calculateNettoBrutto();
+            });
+            it('should set netto', function ()
+            {
+                expect(uploadCtrl.invoiceCompany.nettoValue).toEqual(1259.01);
+            });
+            it('should set brutto', function ()
+            {
+                expect(uploadCtrl.invoiceCompany.bruttoValue).toEqual(1384.14);
+            });
+        });
+
+        describe('when product don\'t have amount', function ()
+        {
+            beforeEach(function ()
+            {
+
+                uploadCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, brutto: 345.45};
+                uploadCtrl.invoiceCompany.products[1] = {name: 'Product 2', netto: 456.78, vat: 5, brutto: 456.78};
+                uploadCtrl.calculateNettoBrutto();
+            });
+            it('should set netto', function ()
+            {
+                expect(uploadCtrl.invoiceCompany.nettoValue).toEqual(802.23);
+            });
+            it('should set brutto', function ()
+            {
+                expect(uploadCtrl.invoiceCompany.bruttoValue).toEqual(802.23);
+            });
+        });
+
+    });
+
     describe('addInvoiceCompany', function ()
     {
-        describe('company invoicesDetails exists', function ()
+        describe('company invoicesDetails exists and contratorType is company', function ()
         {
             beforeEach(function ()
             {
@@ -215,6 +259,7 @@ describe('AddInvoiceController', function ()
                     return successfulPromise();
                 });
                 uploadCtrl.companyDetails = mockTestCompany;
+                uploadCtrl.invoiceCompany.contractorType = 'company';
                 uploadCtrl.createDatePicker.date = new Date('2000-12-15');
                 uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
 
@@ -242,7 +287,7 @@ describe('AddInvoiceController', function ()
             });
             it('should set invoiceCompany', function ()
             {
-                expect(uploadCtrl.invoiceCompany).toEqual({status: 'unpaid'});
+                expect(uploadCtrl.invoiceCompany).toEqual({status: 'unpaid', products: {}, reverseCharge: false, paymentMethod: 'bank transfer'});
             });
             it('should set file', function ()
             {
@@ -301,87 +346,7 @@ describe('AddInvoiceController', function ()
         });
     });
 
-    describe('addInvoicePerson', function ()
-    {
-        beforeEach(function ()
-        {
-            uploadCtrl.transationType = 'test';
-            uploadCtrl.createDatePicker.date = new Date('2007-12-15');
-            uploadCtrl.executionDatePicker.date = new Date('2009-01-23');
-            uploadCtrl.addInvoicePerson();
-        });
-        it('should set invoicePerson.type', function ()
-        {
-            expect(uploadCtrl.invoicePerson.type).toEqual('test');
-        });
-        it('should set invoicePerson.createDate', function ()
-        {
-            expect(uploadCtrl.invoicePerson.createDate).toEqual('2007-12-15');
-        });
-        it('should set invoicePerson.type', function ()
-        {
-            expect(uploadCtrl.invoicePerson.executionEndDate).toEqual('2009-01-23');
-        });
-    });
 
-    describe('findContractor', function ()
-    {
-        describe('contractor nip is valid', function ()
-        {
-            beforeEach(function ()
-            {
-                uploadCtrl.nipContractor = 1234567890;
-                uploadCtrl.findContractor();
-            });
-
-            it('should call findByNip function', function ()
-            {
-                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(1234567890);
-            });
-            it('should set showBox to false', function ()
-            {
-                expect(uploadCtrl.showBox).toEqual(true);
-            });
-            it('should set showAlert to false', function ()
-            {
-                expect(uploadCtrl.showAlert).toEqual(false);
-            });
-            it('should set showButton to false', function ()
-            {
-                expect(uploadCtrl.showButton).toEqual(false);
-            });
-            it('should set companyDetails to proper values from database', function ()
-            {
-                expect(uploadCtrl.companyDetails).toEqual(mockTestCompany);
-            });
-        });
-
-        describe('contractor nip is invalid', function ()
-        {
-            beforeEach(function ()
-            {
-                uploadCtrl.nipContractor = 9999999999;
-                uploadCtrl.findContractor();
-            });
-
-            it('should call findByNip function', function ()
-            {
-                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(9999999999);
-            });
-            it('should set showBox to false', function ()
-            {
-                expect(uploadCtrl.showBox).toEqual(false);
-            });
-            it('should set showAlert to false', function ()
-            {
-                expect(uploadCtrl.showAlert).toEqual(true);
-            });
-            it('should set showButton to false', function ()
-            {
-                expect(uploadCtrl.showButton).toEqual(true);
-            });
-        });
-    });
 
     describe('addCompany modal', function ()
     {
@@ -409,67 +374,7 @@ describe('AddInvoiceController', function ()
         });
     });
 
-    describe('findCompaniesByNip', function ()
-    {
-        var nipsResult;
-        describe('when pass valid part of nip', function ()
-        {
-            beforeEach(function ()
-            {
-                uploadCtrl.findCompaniesByNip(12).then(function (result)
-                {
-                    nipsResult = result;
-                });
-            });
-            it('should call CompanyDAO.getNips', function ()
-            {
-                expect(companyDaoMock.getNips).toHaveBeenCalled();
-            });
-            it('should call CompanyDAO.getNIps with args', function ()
-            {
-                expect(companyDaoMock.getNips).toHaveBeenCalledWith(12);
-            });
-            it('should return array of nips', function ()
-            {
-                expect(nipsResult).toEqual(nips);
-            });
-        });
-
-        describe('when not pass valid part of nip', function ()
-        {
-            beforeEach(function ()
-            {
-                uploadCtrl.findCompaniesByNip(1233).then(function (result)
-                {
-                    nipsResult = result;
-                });
-            });
-            it('should return empty array', function ()
-            {
-                expect(nipsResult).toEqual([]);
-            });
-        });
-    });
-
-    describe('onSelect', function ()
-    {
-        describe('when choose nip from typehead', function ()
-        {
-            beforeEach(function ()
-            {
-                spyOn(uploadCtrl, 'findContractor');
-                uploadCtrl.onSelect(nips[0]);
-            });
-            it('should set nipContractor', function ()
-            {
-                expect(uploadCtrl.nipContractor).toBe(nips[0].nip);
-            });
-            it('should call findContractor', function ()
-            {
-                expect(uploadCtrl.findContractor).toHaveBeenCalled();
-            });
-        });
-    });
+    
 
     describe('closeAddInvoiceSuccess', function ()
     {

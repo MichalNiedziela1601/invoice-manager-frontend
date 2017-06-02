@@ -9,12 +9,11 @@
             scope: {
                 company: '='
             },
-            templateUrl: 'common/directives/contractorInfo.tpl.html',
-            replace: true
+            templateUrl: 'common/directives/contractorInfo.tpl.html'
         };
     }
 
     angular.module('app')
-            .directive('contractorInfo', ContractorInfoDirective);
+            .directive('contractorInfo',ContractorInfoDirective);
 
 })();

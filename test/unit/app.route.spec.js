@@ -105,7 +105,7 @@ describe('Routes', function ()
         });
         it('should has \'invoices/details/:id\' as controller shortcut', function ()
         {
-            expect(route.routes['/invoices/details/:id'].controllerAs).toBe('InvoiceDetailsCtrl');
+            expect(route.routes['/invoices/details/:id'].controllerAs).toBe('invoiceDetailsCtrl');
         });
     });
     describe('/registration', function ()

@@ -1,21 +1,24 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="panel-title">{{company.name}}</div>
+        <div class="panel-title"><span ng-if="company.name">{{company.name}}</span>
+            <span ng-if="company.firstName">{{company.firstName}} {{company.lastName}}</span>
+        </div>
     </div>
     <div class="panel-body">
         <table class="table no-bottom-margin">
-            <tr>
+            <tr ng-if="company.nip">
                 <td>nip</td>
                 <td>{{company.nip}}</td>
             </tr>
-            <tr ng-if="company.regon !== null">
+            <tr ng-if="company.hasOwnProperty('regon') && company.regon">
                 <td>regon</td>
                 <td>{{company.regon}}</td>
             </tr>
             <tr>
                 <td>address</td>
-                <td>{{company.street}} {{company.buildNr}}<span ng-if="company.flatNr">{{'/'+company.flatNr}}</span>
-                    <p>{{company.postCode}} {{company.city }}</p>
+                <td>{{company.address.street}} {{company.address.buildNr}}<span
+                        ng-if="company.address.flatNr">{{'/'+company.address.flatNr}}</span>
+                    <p>{{company.address.postCode}} {{company.address.city }}</p>
                 </td>
             </tr>
         </table>

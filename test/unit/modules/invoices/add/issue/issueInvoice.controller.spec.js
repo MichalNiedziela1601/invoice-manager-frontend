@@ -38,7 +38,6 @@ describe('IssueInvoiceController', function ()
         };
 
 
-
         nips = [
             {nip: 1234567890},
             {nip: 1224567890}
@@ -113,6 +112,18 @@ describe('IssueInvoiceController', function ()
 
     }));
 
+    describe('closeNoCompanyAlert', function ()
+    {
+        beforeEach(function ()
+        {
+            issueCtrl.closeNoCompanyAlert();
+        });
+        it('should set issueCompanyNotChosen', function ()
+        {
+            expect(issueCtrl.issueCompanyNotChosen).toBeFalsy();
+        });
+    });
+
 
     describe('initialization', function ()
     {
@@ -132,17 +143,10 @@ describe('IssueInvoiceController', function ()
         {
             expect(issueCtrl.showAddInvoice).toEqual(false);
         });
-        it('should set nipContractor variable to null', function ()
-        {
-            expect(issueCtrl.nipContractor).toEqual(null);
-        });
+
         it('should set invoiceCompany variable to empty object', function ()
         {
-            expect(issueCtrl.invoiceCompany).toEqual({products: {}, status: 'unpaid', paymentMethod: 'bank transfer'});
-        });
-        it('should set invoicePerson variable to empty object', function ()
-        {
-            expect(issueCtrl.invoicePerson).toEqual({});
+            expect(issueCtrl.invoiceCompany).toEqual({products: {}, status: 'unpaid', reverseCharge: false, showAmount: false, paymentMethod: 'bank transfer'});
         });
         it('should set companyDetails variable to empty object', function ()
         {
@@ -180,14 +184,6 @@ describe('IssueInvoiceController', function ()
         it('should set deleteCount', function ()
         {
             expect(issueCtrl.deleteCount).toBe(0);
-        });
-        it('should set vats', function ()
-        {
-            expect(issueCtrl.vats).toEqual([5, 8, 23, 'N/A']);
-        });
-        it('should set editEntry', function ()
-        {
-            expect(issueCtrl.editEntry).toBeNull();
         });
 
         describe('createDatePicker', function ()
@@ -240,64 +236,6 @@ describe('IssueInvoiceController', function ()
         });
     });
 
-    describe('findContractor', function ()
-    {
-        describe('contractor nip is valid', function ()
-        {
-            beforeEach(function ()
-            {
-                issueCtrl.nipContractor = 1234567890;
-                issueCtrl.findContractor();
-            });
-
-            it('should call findByNip function', function ()
-            {
-                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(1234567890);
-            });
-            it('should set showBox to false', function ()
-            {
-                expect(issueCtrl.showBox).toEqual(true);
-            });
-            it('should set showAlert to false', function ()
-            {
-                expect(issueCtrl.showAlert).toEqual(false);
-            });
-            it('should set showButton to false', function ()
-            {
-                expect(issueCtrl.showButton).toEqual(false);
-            });
-            it('should set companyDetails to proper values from database', function ()
-            {
-                expect(issueCtrl.companyDetails).toEqual(mockTestCompany);
-            });
-        });
-
-        describe('contractor nip is invalid', function ()
-        {
-            beforeEach(function ()
-            {
-                issueCtrl.nipContractor = 9999999999;
-                issueCtrl.findContractor();
-            });
-
-            it('should call findByNip function', function ()
-            {
-                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(9999999999);
-            });
-            it('should set showBox to false', function ()
-            {
-                expect(issueCtrl.showBox).toEqual(false);
-            });
-            it('should set showAlert to false', function ()
-            {
-                expect(issueCtrl.showAlert).toEqual(true);
-            });
-            it('should set showButton to false', function ()
-            {
-                expect(issueCtrl.showButton).toEqual(true);
-            });
-        });
-    });
 
     describe('getInvoiceNumber', function ()
     {
@@ -391,112 +329,6 @@ describe('IssueInvoiceController', function ()
         });
     });
 
-    describe('findCompaniesByNip', function ()
-    {
-        var nipsResult;
-        describe('when pass valid part of nip', function ()
-        {
-            beforeEach(function ()
-            {
-                issueCtrl.findCompaniesByNip(12).then(function (result)
-                {
-                    nipsResult = result;
-                });
-            });
-            it('should call CompanyDAO.getNips', function ()
-            {
-                expect(companyDaoMock.getNips).toHaveBeenCalled();
-            });
-            it('should call CompanyDAO.getNIps with args', function ()
-            {
-                expect(companyDaoMock.getNips).toHaveBeenCalledWith(12);
-            });
-            it('should return array of nips', function ()
-            {
-                expect(nipsResult).toEqual(nips);
-            });
-        });
-
-        describe('when not pass valid part of nip', function ()
-        {
-            beforeEach(function ()
-            {
-                issueCtrl.findCompaniesByNip(1233).then(function (result)
-                {
-                    nipsResult = result;
-                });
-            });
-            it('should return empty array', function ()
-            {
-                expect(nipsResult).toEqual([]);
-            });
-        });
-    });
-
-    describe('onSelect', function ()
-    {
-        describe('when choose nip from typehead', function ()
-        {
-            beforeEach(function ()
-            {
-                spyOn(issueCtrl, 'findContractor');
-                issueCtrl.onSelect(nips[0]);
-            });
-            it('should set nipContractor', function ()
-            {
-                expect(issueCtrl.nipContractor).toBe(nips[0].nip);
-            });
-            it('should call findContractor', function ()
-            {
-                expect(issueCtrl.findContractor).toHaveBeenCalled();
-            });
-        });
-    });
-
-    describe('calculateBrutto', function ()
-    {
-        describe('when entry have vat', function ()
-        {
-            beforeEach(function ()
-            {
-                productsMock = {netto: 500, vat: 8, amount: 2};
-                issueCtrl.calculateBrutto(productsMock);
-            });
-            it('should set brutto', function ()
-            {
-                expect(productsMock.brutto).toEqual(Number((productsMock.netto * productsMock.amount * (1 + productsMock.vat / 100)).toFixed(2)));
-            });
-        });
-
-        describe('when entry not have vat available', function ()
-        {
-            describe('when no amount', function ()
-            {
-                beforeEach(function ()
-                {
-                    productsMock = {netto: 6000, vat: 'N/A'};
-                    issueCtrl.calculateBrutto(productsMock);
-                });
-                it('should set brutto', function ()
-                {
-                    expect(productsMock.brutto).toEqual(productsMock.netto);
-                });
-            });
-            describe('when amount exists', function ()
-            {
-                beforeEach(function ()
-                {
-                    productsMock = {netto: 6000.56, vat: 'N/A', amount: 4};
-                    issueCtrl.calculateBrutto(productsMock);
-                });
-                it('should set brutto', function ()
-                {
-                    expect(productsMock.brutto).toEqual(productsMock.netto * productsMock.amount);
-                });
-            });
-
-        });
-    });
 
     describe('calculateNettoBrutto', function ()
     {
@@ -504,16 +336,9 @@ describe('IssueInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                issueCtrl.addNew();
-                var editEntry = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1};
-                issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
-                issueCtrl.save(editEntry);
-                issueCtrl.addNew();
-                editEntry = {name: 'Product 2', netto: 456.78, vat: 5, amount: 2};
-                issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[1], editEntry);
-                issueCtrl.save(editEntry);
+
+                issueCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 424.9};
+                issueCtrl.invoiceCompany.products[1] = {name: 'Product 2', netto: 456.78, vat: 5, amount: 2, brutto: 959.24};
                 issueCtrl.calculateNettoBrutto();
             });
             it('should set netto', function ()
@@ -530,16 +355,9 @@ describe('IssueInvoiceController', function ()
         {
             beforeEach(function ()
             {
-                issueCtrl.addNew();
-                var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
-                issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
-                issueCtrl.save(editEntry);
-                issueCtrl.addNew();
-                editEntry = {name: 'Product 2', netto: 456.78, vat: 'N/A'};
-                issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[1], editEntry);
-                issueCtrl.save(editEntry);
+
+                issueCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, brutto: 345.45};
+                issueCtrl.invoiceCompany.products[1] = {name: 'Product 2', netto: 456.78, vat: 5, brutto: 456.78};
                 issueCtrl.calculateNettoBrutto();
             });
             it('should set netto', function ()
@@ -554,152 +372,174 @@ describe('IssueInvoiceController', function ()
 
     });
 
-    describe('deleteProduct', function ()
-    {
-        beforeEach(function ()
-        {
-            issueCtrl.invoiceCompany.products['0'] = productsMock;
-            issueCtrl.invoiceCompany.products['1'] = productsMock;
-            issueCtrl.deleteProduct('0');
-        });
-        it('should delete product', function ()
-        {
-            expect(issueCtrl.invoiceCompany.products).toEqual({'1': productsMock});
-        });
-    });
-
     describe('addInvoiceCompany', function ()
     {
         describe('company invoicesDetails exists', function ()
         {
 
-            beforeEach(function ()
-            {
-
-                issueCtrl.companyDetails = mockTestCompany;
-                issueCtrl.createDatePicker.date = new Date('2000-12-15');
-                issueCtrl.executionDatePicker.date = new Date('2001-01-23');
-
-                issueCtrl.addInvoiceCompany(form);
-            });
-            describe('always', function ()
-            {
-                it('should set invoiceCompany.type to transactionType', function ()
-                {
-                    expect(issueCtrl.invoiceCompany.type).toEqual('sell');
-                });
-                it('should set invoiceCompany.createDate', function ()
-                {
-                    expect(issueCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
-                });
-                it('should set invoiceCompany.executionEndDate', function ()
-                {
-                    expect(issueCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
-                });
-                it('should set invoiceCompany.companyDealer', function ()
-                {
-                    expect(issueCtrl.invoiceCompany.companyDealer).toEqual(2);
-                });
-                it('should set invoiceCompany.companyRecipent', function ()
-                {
-                    expect(issueCtrl.invoiceCompany.companyRecipent).toEqual(1);
-                });
-            });
-
-
-            describe('products not added', function ()
+            describe('when contratorType is company', function ()
             {
                 beforeEach(function ()
                 {
-                    issueCtrl.invoiceCompany.products = {};
+
+                    issueCtrl.companyDetails = mockTestCompany;
+                    issueCtrl.createDatePicker.date = new Date('2000-12-15');
+                    issueCtrl.invoiceCompany.contractorType = 'company';
+                    issueCtrl.executionDatePicker.date = new Date('2001-01-23');
+
                     issueCtrl.addInvoiceCompany(form);
                 });
-                it('should set issueProductNotAdded to true', function ()
+                describe('always', function ()
                 {
-                    expect(issueCtrl.issueProductNotAdded).toEqual(true);
+                    it('should set invoiceCompany.type to transactionType', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.type).toEqual('sell');
+                    });
+                    it('should set invoiceCompany.createDate', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
+                    });
+                    it('should set invoiceCompany.executionEndDate', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
+                    });
+                    it('should set invoiceCompany.companyDealer', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.companyDealer).toEqual(2);
+                    });
+                    it('should set invoiceCompany.companyRecipent', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.companyRecipent).toEqual(1);
+                    });
                 });
+
+                describe('products not added', function ()
+                {
+                    beforeEach(function ()
+                    {
+                        issueCtrl.invoiceCompany.products = {};
+                        issueCtrl.addInvoiceCompany(form);
+                    });
+                    it('should set issueProductNotAdded to true', function ()
+                    {
+                        expect(issueCtrl.issueProductNotAdded).toEqual(true);
+                    });
+                });
+
+                describe('when add products', function ()
+                {
+                    describe('when invoice added', function ()
+                    {
+                        beforeEach(function ()
+                        {
+                            spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
+                            {
+                                return successfulPromise();
+                            });
+                            spyOn(form, '$setPristine');
+                            spyOn(issueCtrl, 'getInvoiceNumber');
+                            issueCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
+                            issueCtrl.addInvoiceCompany(form);
+                        });
+                        it('should call InvoiceDAO.issue', function ()
+                        {
+                            expect(invoiceDaoMock.issue).toHaveBeenCalledTimes(1);
+                        });
+                        it('should set issueCompanyNotChosen', function ()
+                        {
+                            expect(issueCtrl.issueCompanyNotChosen).toBeFalsy();
+                        });
+                        it('should set addInvoice', function ()
+                        {
+                            expect(issueCtrl.addInvoice).toBeTruthy();
+                        });
+                        it('should set new date createDatePicker.date', function ()
+                        {
+                            expect(issueCtrl.createDatePicker.date).toEqual(baseTime);
+                        });
+                        it('should set new date executionDatePicker.date', function ()
+                        {
+                            expect(issueCtrl.executionDatePicker.date).toEqual(baseTime);
+                        });
+                        it('should call form setPristine', function ()
+                        {
+                            expect(form.$setPristine).toHaveBeenCalled();
+                        });
+                        it('should reset invoiceCompany', function ()
+                        {
+                            expect(issueCtrl.invoiceCompany)
+                                    .toEqual({products: {}, status: 'unpaid', paymentMethod: 'bank transfer', reverseCharge: false, showAmount: false});
+                        });
+                        it('should call InvoiceDAO.number', function ()
+                        {
+                            expect(invoiceDaoMock.number).toHaveBeenCalled();
+                        });
+                    });
+                    describe('when invoice not added', function ()
+                    {
+                        beforeEach(function ()
+                        {
+                            spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
+                            {
+                                return unsuccessfulPromise({data: 'Unknow Error'});
+                            });
+                            issueCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
+                            issueCtrl.addInvoiceCompany(form);
+                        });
+                        it('should set formSubmitted', function ()
+                        {
+                            expect(issueCtrl.formSubmitted).toBeFalsy();
+                        });
+                        it('should set errorMessage', function ()
+                        {
+                            expect(issueCtrl.errorMessage).toEqual('Unknow Error');
+                        });
+                        it('should set formInvalidAlert', function ()
+                        {
+                            expect(issueCtrl.formInvalidAlert).toBeTruthy();
+                        });
+                    });
+                });
+
             });
 
-            describe('when add products', function ()
+            describe('when contractorType is person', function ()
             {
-                describe('when invoice added', function ()
+                beforeEach(function ()
                 {
-                    beforeEach(function ()
-                    {
-                        spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
-                        {
-                            return successfulPromise();
-                        });
-                        spyOn(form, '$setPristine');
-                        spyOn(issueCtrl, 'getInvoiceNumber');
-                        issueCtrl.addNew();
-                        var editEntry = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
-                        Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
-                        issueCtrl.save(editEntry);
-                        issueCtrl.addInvoiceCompany(form);
-                    });
-                    it('should call InvoiceDAO.issue', function ()
-                    {
-                        expect(invoiceDaoMock.issue).toHaveBeenCalledTimes(1);
-                    });
-                    it('should set issueCompanyNotChosen', function ()
-                    {
-                        expect(issueCtrl.issueCompanyNotChosen).toBeFalsy();
-                    });
-                    it('should set addInvoice', function ()
-                    {
-                        expect(issueCtrl.addInvoice).toBeTruthy();
-                    });
-                    it('should set new date createDatePicker.date', function ()
-                    {
-                        expect(issueCtrl.createDatePicker.date).toEqual(baseTime);
-                    });
-                    it('should set new date executionDatePicker.date', function ()
-                    {
-                        expect(issueCtrl.executionDatePicker.date).toEqual(baseTime);
-                    });
-                    it('should call form setPristine', function ()
-                    {
-                        expect(form.$setPristine).toHaveBeenCalled();
-                    });
-                    it('should reset invoiceCompany', function ()
-                    {
-                        expect(issueCtrl.invoiceCompany).toEqual({products: {}, status: 'unpaid', paymentMethod: 'bank transfer'});
-                    });
-                    it('should call InvoiceDAO.number', function ()
-                    {
-                        expect(invoiceDaoMock.number).toHaveBeenCalled();
-                    });
-                });
-                describe('when invoice not added', function ()
-                {
-                    beforeEach(function ()
-                    {
-                        spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
-                        {
-                            return unsuccessfulPromise({data: 'Unknow Error'});
-                        });
-                        issueCtrl.addNew();
-                        var editEntry = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
-                        Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
-                        issueCtrl.save(editEntry);
-                        issueCtrl.addInvoiceCompany(form);
-                    });
-                    it('should set formSubmitted', function ()
-                    {
-                        expect(issueCtrl.formSubmitted).toBeFalsy();
-                    });
-                    it('should set errorMessage', function ()
-                    {
-                        expect(issueCtrl.errorMessage).toEqual('Unknow Error');
-                    });
-                    it('should set formInvalidAlert', function ()
-                    {
-                        expect(issueCtrl.formInvalidAlert).toBeTruthy();
-                    });
-                });
-            });
 
+                    issueCtrl.companyDetails = mockTestCompany;
+                    issueCtrl.createDatePicker.date = new Date('2000-12-15');
+                    issueCtrl.invoiceCompany.contractorType = 'person';
+                    issueCtrl.executionDatePicker.date = new Date('2001-01-23');
+
+                    issueCtrl.addInvoiceCompany(form);
+                });
+                describe('always', function ()
+                {
+                    it('should set invoiceCompany.type to transactionType', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.type).toEqual('sell');
+                    });
+                    it('should set invoiceCompany.createDate', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.createDate).toEqual('2000-12-15');
+                    });
+                    it('should set invoiceCompany.executionEndDate', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.executionEndDate).toEqual('2001-01-23');
+                    });
+                    it('should set invoiceCompany.companyDealer', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.companyDealer).toEqual(2);
+                    });
+                    it('should set invoiceCompany.companyRecipent', function ()
+                    {
+                        expect(issueCtrl.invoiceCompany.personRecipent).toEqual(1);
+                    });
+                });
+
+            });
 
         });
         describe('company invoicesDetails doesn\'t exists', function ()
@@ -727,69 +567,7 @@ describe('IssueInvoiceController', function ()
         });
     });
 
-    describe('edit', function ()
-    {
-        beforeEach(function ()
-        {
-            issueCtrl.addNew();
-            var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
-            issueCtrl.calculateBrutto(editEntry);
-            Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
-            issueCtrl.save(editEntry);
-            issueCtrl.edit(issueCtrl.invoiceCompany.products[0]);
-        });
-        it('should set editMode', function ()
-        {
-            expect(issueCtrl.invoiceCompany.products[0].editMode).toBeTruthy();
-        });
-        it('should copy entry to editEntry', function ()
-        {
-            expect(issueCtrl.editEntry).toEqual(issueCtrl.invoiceCompany.products[0]);
-        });
-        it('should set new when save', function ()
-        {
-            issueCtrl.invoiceCompany.products[0].netto = 600;
-            issueCtrl.save(issueCtrl.invoiceCompany.products[0]);
-            expect(issueCtrl.invoiceCompany.products[0].netto).toEqual(600);
-        });
-    });
 
-    describe('cancel', function ()
-    {
-        describe('when add new', function ()
-        {
-            beforeEach(function ()
-            {
-                issueCtrl.addNew();
-                var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
-                issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
-                issueCtrl.cancel(editEntry, 0);
-            });
-            it('should delete product', function ()
-            {
-                expect(issueCtrl.invoiceCompany.products).toEqual({});
-            });
-        });
-        describe('when edit product', function ()
-        {
-            beforeEach(function ()
-            {
-                issueCtrl.addNew();
-                var editEntry = {name: 'Product 1', netto: 345.45, vat: 'N/A'};
-                issueCtrl.calculateBrutto(editEntry);
-                Object.assign(issueCtrl.invoiceCompany.products[0], editEntry);
-                issueCtrl.save(editEntry);
-                issueCtrl.edit(issueCtrl.invoiceCompany.products[0]);
-
-            });
-            it('should set editEntry to null', function ()
-            {
-                issueCtrl.cancel(issueCtrl.invoiceCompany.products[0], 0);
-                expect(issueCtrl.editEntry).toBeNull();
-            });
-        });
-
-    });
-});
+})
+;
 
