@@ -23,9 +23,9 @@
             {
                 return api.save({a: 'issue'},invoice).$promise;
             },
-            number: function(year,month)
+            number: function(year,month, type)
             {
-                return api.query({a: 'number', year: year, month: month}).$promise;
+                return api.query({a: 'number', year: year, month: month, type: type}).$promise;
             },
             pdf: function(base)
             {
