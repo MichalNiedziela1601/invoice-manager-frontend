@@ -250,7 +250,7 @@ describe('UploadInvoiceController', function ()
 
     describe('addInvoiceCompany', function ()
     {
-        describe('company invoicesDetails exists and contratorType is company', function ()
+        describe('company invoicesDetails exists and contractorType is company', function ()
         {
             beforeEach(function ()
             {
@@ -260,6 +260,61 @@ describe('UploadInvoiceController', function ()
                 });
                 uploadCtrl.companyDetails = mockTestCompany;
                 uploadCtrl.invoiceCompany.contractorType = 'company';
+                uploadCtrl.createDatePicker.date = new Date('2000-12-15');
+                uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
+
+                uploadCtrl.addInvoiceCompany(form);
+            });
+            it('should set showLoader', function ()
+            {
+                expect(uploadCtrl.showLoader).toBeFalsy();
+            });
+            it('should set companyNotChosen', function ()
+            {
+                expect(uploadCtrl.companyNotChosen).toBeFalsy();
+            });
+            it('should set addInvoice', function ()
+            {
+                expect(uploadCtrl.addInvoice).toBeTruthy();
+            });
+            it('should set createDatePicker.date', function ()
+            {
+                expect(uploadCtrl.createDatePicker.date).toEqual(baseTime);
+            });
+            it('should set executionEndDate.date', function ()
+            {
+                expect(uploadCtrl.executionDatePicker.date).toEqual(baseTime);
+            });
+            it('should set invoiceCompany', function ()
+            {
+                expect(uploadCtrl.invoiceCompany).toEqual({status: 'unpaid', products: {}, reverseCharge: false, paymentMethod: 'bank transfer'});
+            });
+            it('should set file', function ()
+            {
+                expect(uploadCtrl.file).toBeNull();
+            });
+            it('should set formSubmitted', function ()
+            {
+                expect(uploadCtrl.formSubmitted).toBeFalsy();
+            });
+            it('should call InvoiceDAO.number', function ()
+            {
+                expect(invoiceDaoMock.number).toHaveBeenCalled();
+            });
+
+
+        });
+
+        describe('company invoicesDetails exists and contractorType is person', function ()
+        {
+            beforeEach(function ()
+            {
+                UploadMock.upload.and.callFake(function ()
+                {
+                    return successfulPromise();
+                });
+                uploadCtrl.companyDetails = mockTestCompany;
+                uploadCtrl.invoiceCompany.contractorType = 'person';
                 uploadCtrl.createDatePicker.date = new Date('2000-12-15');
                 uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
 
@@ -346,35 +401,17 @@ describe('UploadInvoiceController', function ()
         });
     });
 
-
-
-    describe('addCompany modal', function ()
+    describe('closeNoCompanyAlert', function ()
     {
-        describe('when ok', function ()
+        beforeEach(function ()
         {
-            beforeEach(function ()
-            {
-                spyOn(uibModal, 'open').and.returnValue(fakeModal);
-                var compDetails = {nip: 1234567890};
-                uploadCtrl.openAddCompanyModal();
-                uploadCtrl.modalInstance.close(compDetails);
-            });
-            it('should call findByNip function', function ()
-            {
-                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(1234567890);
-            });
-            it('should set result from findByNip function to companyDetails variable', function ()
-            {
-                expect(uploadCtrl.companyDetails).toEqual(mockTestCompany);
-            });
-            it('should set variable showBox to true', function ()
-            {
-                expect(uploadCtrl.showBox).toEqual(true);
-            });
+            uploadCtrl.closeNoCompanyAlert();
+        });
+        it('should set companyNotChose to false', function ()
+        {
+            expect(uploadCtrl.companyNotChosen).toBeFalsy();
         });
     });
-
-    
 
     describe('closeAddInvoiceSuccess', function ()
     {

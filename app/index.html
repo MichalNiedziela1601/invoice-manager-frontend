@@ -34,9 +34,7 @@
                     <a href="/login" >
                         <button class="btn btn-info btn-sm">Sign In</button>
                     </a>
-                    <a href="/registration">
-                        <button class="btn btn-primary btn-sm">Sign Up</button>
-                    </a>
+
                 </div>
                     <div ng-if="appCtrl.isAuth" class="nav-login">
                         <p><a href="/user">{{appCtrl.token.email}}</a>
@@ -101,11 +99,11 @@
 <script src="modules/invoices/list/invoices.controller.js"></script>
 <script src="modules/invoices/add/upload/uploadInvoice.controller.js"></script>
 <script src="modules/registration/registrationCompany.controller.js"></script>
-<script src="modules/invoices/add/addCompanyModal/addCompanyModal.controller.js"></script>
 <script src="modules/user/user.controller.js"></script>
 <script src="modules/invoices/details/invoiceDetails.controller.js"></script>
 <script src="modules/contractors/add/addContractors.controller.js"></script>
 <script src="modules/invoices/add/issue/issueInvoice.controller.js"></script>
+<script src="modules/contractors/details/contractorDetails.controller.js"></script>
 
 <!-- Services -->
 <script src="common/dao/company.dao.js"></script>
@@ -117,12 +115,12 @@
 
 <!-- Directives -->
 <script src="common/directives/addCompany.directive.js"></script>
-<script src="common/directives/postCodeMask.directive.js"></script>
 <script src="common/directives/nipMask.directive.js"></script>
 <script src="common/directives/contratorInfo.directive.js"></script>
 <script src="common/directives/contractorInfoInvoice.directive.js"></script>
 <script src="common/directives/findContractor/findContractor.directive.js"></script>
 <script src="common/directives/addProduct/addProduct.directive.js"></script>
+<script src="common/directives/capitalize.directive.js"></script>
 
 </body>
 </html>

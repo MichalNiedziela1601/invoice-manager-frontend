@@ -6,13 +6,14 @@ describe('InvoiceDetailsController', function ()
     var invoiceDetailCtrl;
     var invoiceMock;
     var baseTime;
-    var productsMock;
     var form;
+    var invoiceDaoMock;
 
     beforeEach(module('app'));
-    beforeEach(inject(function ($controller, $routeParams)
+    beforeEach(inject(function ($controller, $routeParams, InvoiceDAO)
     {
         $routeParamsMock = $routeParams;
+        invoiceDaoMock = InvoiceDAO;
         invoiceMock = {
             'id': 9,
             'year': 2017,
@@ -61,6 +62,20 @@ describe('InvoiceDetailsController', function ()
         };
 
         $routeParamsMock.id = 1;
+        spyOn(invoiceDaoMock, 'number').and.callFake(function (year, month)
+        {
+            var number = {};
+            if (2012 === year && 2 === month) {
+                number.number = 3;
+                return successfulPromise(number);
+            } else if (2013 === year && 4 === month) {
+                number.number = 1;
+                return successfulPromise(number);
+            }
+            else {
+                return unsuccessfulPromise();
+            }
+        });
 
         InvoiceDetailsDAOMock = jasmine.createSpyObj('InvoiceDetailsDAO', ['query', 'update', 'changeStatus']);
         InvoiceDetailsDAOMock.query.and.callFake(function ()
@@ -68,7 +83,8 @@ describe('InvoiceDetailsController', function ()
             return successfulPromise(invoiceMock);
         });
 
-        invoiceDetailCtrl = $controller('InvoiceDetailsController', {$routeParams: $routeParamsMock, InvoiceDetailsDAO: InvoiceDetailsDAOMock});
+        invoiceDetailCtrl =
+                $controller('InvoiceDetailsController', {$routeParams: $routeParamsMock, InvoiceDetailsDAO: InvoiceDetailsDAOMock, InvoiceDAO: invoiceDaoMock});
     }));
 
     describe('initialization', function ()
@@ -317,150 +333,51 @@ describe('InvoiceDetailsController', function ()
         });
     });
 
+    describe('getInvoiceNumber', function ()
+    {
+
+        describe('when find number', function ()
+        {
+            beforeEach(function ()
+            {
+                invoiceDetailCtrl.createDatePicker.date = new Date('2012,2,2');
+                invoiceDetailCtrl.getInvoiceNumber();
+            });
+            it('should set invoiceNumber with new number', function ()
+            {
+                expect(invoiceDetailCtrl.details.invoiceNr).toEqual('FV 2012/2/3');
+            });
+        });
+        describe('when not find number', function ()
+        {
+            beforeEach(function ()
+            {
+                invoiceDetailCtrl.createDatePicker.date = new Date('2013,4,3');
+                invoiceDetailCtrl.getInvoiceNumber();
+            });
+            it('should set invoiceNumber with new number', function ()
+            {
+                expect(invoiceDetailCtrl.details.invoiceNr).toEqual('FV 2013/4/1');
+            });
+        });
+
+        describe('when throw error', function ()
+        {
+            beforeEach(function ()
+            {
+                invoiceDetailCtrl.createDatePicker.date = new Date('2017,6,3');
+                spyOn(console, 'log');
+                invoiceDetailCtrl.getInvoiceNumber();
+            });
+            it('should call console.log', function ()
+            {
+                expect(console.log).toHaveBeenCalledTimes(1);
+            });
+        });
+    });
+
     describe('editInvoice', function ()
     {
-        describe('when type is sell', function ()
-        {
-            describe('when contractorType is company and companyRecipinet is not null', function ()
-            {
-                beforeEach(function ()
-                {
-                    invoiceMock = {
-                        createDate: '2017-04-23',
-                        executionEndDate: '2017-04-30',
-                        type: 'sell',
-                        'companyDealer': 2,
-                        'companyRecipent': {id: 10},
-                        'personDealer': null,
-                        'personRecipent': null
-
-                    };
-
-                    InvoiceDetailsDAOMock.query.and.callFake(function ()
-                    {
-                        return successfulPromise(invoiceMock);
-                    });
-                    invoiceDetailCtrl.getDetails();
-                    form = {
-                        $valid: true
-                    };
-                    InvoiceDetailsDAOMock.update.and.callFake(function ()
-                    {
-                        return successfulPromise();
-                    });
-                    invoiceDetailCtrl.editInvoice(form);
-                });
-                it('should set companyRecipient', function ()
-                {
-                    expect(invoiceDetailCtrl.details.companyRecipent).toEqual(10);
-                });
-            });
-            describe('when contractorType is company and companyRecipient is null', function ()
-            {
-                beforeEach(function ()
-                {
-                    invoiceMock = {
-                        createDate: '2017-04-23',
-                        executionEndDate: '2017-04-30',
-                        type: 'sell',
-                        'companyDealer': 2,
-                        'companyRecipent': null,
-                        'personDealer': null,
-                        'personRecipent': {id: 10}
-
-                    };
-
-                    InvoiceDetailsDAOMock.query.and.callFake(function ()
-                    {
-                        return successfulPromise(invoiceMock);
-                    });
-                    invoiceDetailCtrl.getDetails();
-                    form = {
-                        $valid: true
-                    };
-                    InvoiceDetailsDAOMock.update.and.callFake(function ()
-                    {
-                        return successfulPromise();
-                    });
-                    invoiceDetailCtrl.editInvoice(form);
-                });
-                it('should set companyRecipient', function ()
-                {
-                    expect(invoiceDetailCtrl.details.personRecipent).toEqual(10);
-                });
-            });
-        });
-        describe('when type is buy', function ()
-        {
-            describe('when contractorType is company and companyDealer is not null', function ()
-            {
-                beforeEach(function ()
-                {
-                    invoiceMock = {
-                        createDate: '2017-04-23',
-                        executionEndDate: '2017-04-30',
-                        type: 'buy',
-                        'companyDealer': {id: 10},
-                        'companyRecipent': 2 ,
-                        'personDealer': null,
-                        'personRecipent': null
-
-                    };
-
-                    InvoiceDetailsDAOMock.query.and.callFake(function ()
-                    {
-                        return successfulPromise(invoiceMock);
-                    });
-                    invoiceDetailCtrl.getDetails();
-                    form = {
-                        $valid: true
-                    };
-                    InvoiceDetailsDAOMock.update.and.callFake(function ()
-                    {
-                        return successfulPromise();
-                    });
-                    invoiceDetailCtrl.editInvoice(form);
-                });
-                it('should set companyRecipient', function ()
-                {
-                    expect(invoiceDetailCtrl.details.companyDealer).toEqual(10);
-                });
-            });
-            describe('when contractorType is company and personDealer is null', function ()
-            {
-                beforeEach(function ()
-                {
-                    invoiceMock = {
-                        createDate: '2017-04-23',
-                        executionEndDate: '2017-04-30',
-                        type: 'buy',
-                        'companyDealer': null,
-                        'companyRecipent': 2,
-                        'personDealer': {id: 10},
-                        'personRecipent': null
-
-                    };
-
-                    InvoiceDetailsDAOMock.query.and.callFake(function ()
-                    {
-                        return successfulPromise(invoiceMock);
-                    });
-                    invoiceDetailCtrl.getDetails();
-                    form = {
-                        $valid: true
-                    };
-                    InvoiceDetailsDAOMock.update.and.callFake(function ()
-                    {
-                        return successfulPromise();
-                    });
-                    invoiceDetailCtrl.editInvoice(form);
-                });
-                it('should set companyRecipient', function ()
-                {
-                    expect(invoiceDetailCtrl.details.personDealer).toEqual(10);
-                });
-            });
-        });
         describe('when success', function ()
         {
             beforeEach(function ()
@@ -505,6 +422,153 @@ describe('InvoiceDetailsController', function ()
                 expect(invoiceDetailCtrl.formInvalidAlert).toBeTruthy();
             });
         });
+
+        describe('when no products', function ()
+        {
+            beforeEach(function ()
+            {
+                form = {
+                    $valid: true
+                };
+                invoiceDetailCtrl.details = {
+                    createDate: '2017-04-23',
+                    executionEndDate: '2017-04-30',
+                    type: 'sell',
+                    'companyDealer': 2,
+                    'companyRecipent': {id: 10},
+                    'personDealer': null,
+                    'personRecipent': null,
+                    products: {}
+                };
+
+                invoiceDetailCtrl.editInvoice(form);
+            });
+            it('should set productNotChoosen to true', function ()
+            {
+                expect(invoiceDetailCtrl.productNotChoosen).toBeTruthy();
+            });
+        });
+
+        describe('when type is sell', function ()
+        {
+            describe('when contractorType is company', function ()
+            {
+                beforeEach(function ()
+                {
+                    form = {
+                        $valid: true
+                    };
+                    invoiceDetailCtrl.details.contractorType = 'company';
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set changeNumber to true', function ()
+                {
+                    expect(invoiceDetailCtrl.changeNumber).toBe(true);
+                });
+                it('should set showLoader to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showLoader).toBeFalsy();
+                });
+                it('should set showBox to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showBox).toBeFalsy();
+                });
+            });
+
+            describe('when contractorType is person', function ()
+            {
+                beforeEach(function ()
+                {
+                    form = {
+                        $valid: true
+                    };
+                    invoiceDetailCtrl.details.contractorType = 'person';
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set changeNumber to true', function ()
+                {
+                    expect(invoiceDetailCtrl.changeNumber).toBe(true);
+                });
+                it('should set showLoader to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showLoader).toBeFalsy();
+                });
+                it('should set showBox to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showBox).toBeFalsy();
+                });
+            });
+        });
+        describe('when type is buy', function ()
+        {
+            describe('when contractorType is company', function ()
+            {
+                beforeEach(function ()
+                {
+                    form = {
+                        $valid: true
+                    };
+                    invoiceDetailCtrl.details.type = 'buy';
+                    invoiceDetailCtrl.details.contractorType = 'company';
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set changeNumber to true', function ()
+                {
+                    expect(invoiceDetailCtrl.changeNumber).toBe(true);
+                });
+                it('should set showLoader to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showLoader).toBeFalsy();
+                });
+                it('should set showBox to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showBox).toBeFalsy();
+                });
+            });
+
+            describe('when contractorType is person', function ()
+            {
+                beforeEach(function ()
+                {
+                    form = {
+                        $valid: true
+                    };
+                    invoiceDetailCtrl.details.type = 'buy';
+                    invoiceDetailCtrl.details.contractorType = 'person';
+                    InvoiceDetailsDAOMock.update.and.callFake(function ()
+                    {
+                        return successfulPromise();
+                    });
+                    invoiceDetailCtrl.editInvoice(form);
+                });
+                it('should set changeNumber to true', function ()
+                {
+                    expect(invoiceDetailCtrl.changeNumber).toBe(true);
+                });
+                it('should set showLoader to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showLoader).toBeFalsy();
+                });
+                it('should set showBox to false', function ()
+                {
+                    expect(invoiceDetailCtrl.showBox).toBeFalsy();
+                });
+            });
+        });
+
+
     });
 
     describe('closeFormInvalidAlert', function ()
@@ -516,6 +580,18 @@ describe('InvoiceDetailsController', function ()
         it('should set formInvalidAlert to false', function ()
         {
             expect(invoiceDetailCtrl.formInvalidAlert).toBeFalsy();
+        });
+    });
+
+    describe('closeProductNotChoosen', function ()
+    {
+        beforeEach(function ()
+        {
+            invoiceDetailCtrl.closeProductNotChoosen();
+        });
+        it('should set productNotChoosen', function ()
+        {
+            expect(invoiceDetailCtrl.productNotChoosen).toBeFalsy();
         });
     });
 
@@ -599,6 +675,90 @@ describe('InvoiceDetailsController', function ()
             {
                 expect(invoiceDetailCtrl.contractorChange).toBeTruthy();
             });
+        });
+    });
+
+    describe('checkAdvanced', function ()
+    {
+        describe('when advance is bigger then bruttoValue', function ()
+        {
+            beforeEach(function ()
+            {
+                invoiceDetailCtrl.details = {
+                    bruttoValue: 5000
+                };
+                form = {
+                    advance: {
+                        $error: {
+                            validationError: null
+                        }
+                    },
+                    $setValidity: angular.noop
+                };
+                spyOn(form, '$setValidity');
+
+                invoiceDetailCtrl.details.advance = 5212;
+                invoiceDetailCtrl.checkAdvanced(form);
+            });
+            it('should set validationError to true', function ()
+            {
+                expect(form.advance.$error.validationError).toBeTruthy();
+            });
+            it('should call $setValidity', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledTimes(1);
+            });
+            it('should call $setValidity with args', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledWith('advance', false);
+            });
+        });
+
+        describe('when advance isn\'t bigger then bruttoValue', function ()
+        {
+            beforeEach(function ()
+            {
+                invoiceDetailCtrl.details = {
+                    bruttoValue: 5000
+                };
+                form = {
+                    advance: {
+                        $error: {
+                            validationError: null
+                        }
+                    },
+                    $setValidity: angular.noop
+                };
+                spyOn(form, '$setValidity');
+
+                invoiceDetailCtrl.details.advance = 400;
+                invoiceDetailCtrl.checkAdvanced(form);
+            });
+            it('should set validationError to true', function ()
+            {
+                expect(form.advance.$error.validationError).toBeFalsy();
+            });
+            it('should call $setValidity', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledTimes(1);
+            });
+            it('should call $setValidity with args', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledWith('advance', true);
+            });
+        });
+    });
+
+    describe('toggleChangeNumber', function ()
+    {
+        beforeEach(function ()
+        {
+            invoiceDetailCtrl.changeNumber = false;
+            invoiceDetailCtrl.toogleChangeNumber();
+        });
+        it('should set changeNumber to oposite', function ()
+        {
+            expect(invoiceDetailCtrl.changeNumber).toBeTruthy();
         });
     });
 

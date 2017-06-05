@@ -17,9 +17,11 @@
   height: 100%;
   z-index: 1;
 }
+
 .navbar {
   width: 100%;
 }
+
 .sidebar-nav {
   top: 0;
   margin: 0;
@@ -48,13 +50,16 @@
     }
   }
 }
+
 #sidebar-wrapper.sidebar-toggle {
   transition: all 0.3s ease-out;
   margin-left: -200px;
 }
+
 ul {
   padding-left: 0;
 }
+
 .menu-1 {
   &:active {
     background: white;
@@ -65,6 +70,7 @@ ul {
     color: @color_2;
   }
 }
+
 .menu-2 {
   &:active {
     background: white;
@@ -76,6 +82,7 @@ ul {
   }
   cursor: pointer;
 }
+
 .menu-3 {
   &:active {
     background: white;
@@ -87,33 +94,41 @@ ul {
   }
   cursor: pointer;
 }
+
 .menu-2-main {
   cursor: pointer;
 }
+
 .menu-3-main {
   cursor: pointer;
 }
+
 .menu-toggle {
   margin-left: 12px;
 }
+
 .add-comp-width {
   display: inline-block;
   width: 100%;
 }
+
 .st-sort-ascent {
   &:after {
     content: '\25B2';
   }
 }
+
 .st-sort-descent {
   &:after {
     content: '\25BC';
   }
 }
+
 .logo2 {
   height: 200px;
   width: 210px;
 }
+
 .logo {
   height: 45px;
   width: 55px;
@@ -121,92 +136,124 @@ ul {
   margin-top: 2px;
   float: left;
 }
+
 .space {
   margin-right: 3%;
 }
+
 .top-margin-2 {
   margin-top: 20px;
 }
+
 .pagination {
   margin: 0;
 }
+
 .pointer-cursor {
   cursor: pointer;
 }
+
 .no-bottom-margin {
   margin-bottom: 0;
+
+  tbody tr td {
+    padding: 3px 8px 3px 8px;
+  }
+
 }
+
 .login-info {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 100;
 }
+
 .nav-login {
   position: absolute;
   right: 80px;
   top: 8px;
 }
+
 .buttonSign {
   margin-top: 5%;
 }
+
 .invoice-cost-box {
   padding: 20px;
 }
+
 .padding-bottom-3 {
   padding-bottom: 30px;
 }
+
 .animate-show-hide {
   position: absolute;
   left: 0;
 }
+
 .animate-show-hide.ng-hide {
   opacity: 0;
 }
+
 .animate-show-hide.ng-hide-add {
   transition: all linear 0.5s;
 }
+
 .animate-show-hide.ng-hide-remove {
   transition: all linear 0.5s;
 }
+
 .invoice-detail-wrapper {
   position: relative;
   width: 100%;
 }
+
 .ng-table {
   th {
     text-align: left;
   }
 }
+
 .user-info {
   margin-top: 6px;
 }
+
 .buttonLarge {
   width: 75%;
   height: 125px;
 }
+
 .footer {
   padding-top: 4em;
 }
+
 .tabs-top-marg {
   margin-top: 2em;
 }
+
 .findCompanyInput {
   margin-top: 25px;
   label {
     margin-top: 5px;
-  };
+  }
+;
+  .well {
+    margin-bottom: 5px;
+  }
+;
   .well {
     margin-bottom: 5px;
   }
 }
+
 .boxBeforeAddPdf {
   margin-top: 25px;
   height: 800px;
   text-align: center;
-  -webkit-box-shadow: 0px 0px 5px 5px rgba(82,57,78,0.75);
-  -moz-box-shadow: 0px 0px 5px 5px rgba(82,57,78,0.75);
-  box-shadow: 0px 0px 5px 5px rgba(82,57,78,0.75);
+  -webkit-box-shadow: 0 0 5px 5px rgba(82, 57, 78, 0.75);
+  -moz-box-shadow: 0 0 5px 5px rgba(82, 57, 78, 0.75);
+  box-shadow: 0 0 5px 5px rgba(82, 57, 78, 0.75);
   p {
     position: relative;
     top: 40%;
@@ -217,6 +264,7 @@ ul {
     }
   }
 }
+
 .invoice-checkboxes {
   margin-top: 40px;
   margin-bottom: 15px;
@@ -228,39 +276,48 @@ ul {
     }
   }
 }
+
 .form-inline {
   margin-top: 40px;
   margin-bottom: 15px;
 }
+
 #inputNip {
   margin-right: 10px;
 }
+
 .glyphicon-remove {
   margin-top: 5px;
 }
+
 .text-justify {
   display: inline-table;
 }
+
 .companyBtn {
   width: 120px;
   &:nth-child(2) {
     margin-top: 10px;
   }
 }
+
 #showAlert {
   position: absolute;
   top: 132px;
   left: 295px;
   font-size: 18px;
 }
+
 .findCompanyDetails {
   margin-bottom: -38px;
 }
+
 .pdfView {
   height: 800px;
   width: 730px;
   margin-top: 25px;
 }
+
 .typeahead-demo {
   .custom-popup-wrapper {
     position: absolute;
@@ -269,12 +326,13 @@ ul {
     z-index: 1000;
     display: none;
     background-color: @background_color_2;
-    >.message {
+    > .message {
       padding: 10px 20px;
       border-bottom: 1px solid #ddd;
       color: @color_3;
     }
-    >.dropdown-menu {
+    > .dropdown-menu {
+      overflow-y: visible;
       position: static;
       float: none;
       display: block;
@@ -290,6 +348,7 @@ ul {
     border-bottom-right-radius: 4px !important;
   }
 }
+
 .input-error {
   color: @color_4;
 }
@@ -298,42 +357,51 @@ ul {
   border: 2px solid black;
   padding: 22px;
 }
+
 @media (max-width: 1380px) and (min-width: 1200px) {
   #sidebar-wrapper.sidebar-toggle {
     transition: all 0.3s ease-out;
     margin-left: -230px;
   }
 }
+
 @media (max-width: 940px) and (min-width: 767px) {
   #sidebar-wrapper.sidebar-toggle {
     transition: all 0.3s ease-out;
     margin-left: -230px;
   }
 }
+
 @media (min-width: 768px) {
   #sidebar-wrapper.sidebar-toggle {
     transition: 0s;
     left: 200px;
   }
+
   .visibleBlock {
     display: none;
   }
 }
+
 @media screen and (max-width: 768px) {
   .login-info {
     display: none;
   }
+
   .login {
     display: none;
   }
+
   .logo {
     margin-left: 3px;
   }
 }
+
 @media (max-width: 992px) {
   .boxBeforeAddPdf {
     height: 560px;
   }
+
   .tabs-top-marg {
     margin-top: 5em;
   }
@@ -364,6 +432,12 @@ ul {
   }
 }
 
+.responsive-max-min(@maxWidth, @minWidth, @rules) {
+  @media only screen and (max-width: @maxWidth) and (min-width: @minWidth) {
+    @rules();
+  }
+}
+
 .generate-mar-bottom(10);
 
 .no-margin {
@@ -382,11 +456,9 @@ ul {
       text-align: center;
     }
 
-    .responsive(767px, {
-    p {
+    .responsive(767px, { p {
       text-align: left;
-    }
-    })
+    } })
   }
 }
 
@@ -399,16 +471,24 @@ ul {
   height: 50px;
   animation: spin 1s linear infinite;
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }
 
 .disabled {
   pointer-events: none;
   input {
-    background: lighten(lightgrey,10%);
+    background: lighten(lightgrey, 10%);
   }
+}
+
+.undisabled {
+  pointer-events: auto;
 }
 
 .panel {
@@ -424,25 +504,252 @@ ul {
   display: inline-block;
   margin-left: 10px;
 }
+
 .hide {
   display: none;
 }
 
-.company-box {
-
-  .fade-in {
-    opacity: 1;
-    width: 100%
-  }
-
-  .fade-out {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .change {
-    transition: all 2s linear;
+.comp-form {
+  input {
+    margin: 4px 5px 4px 5px;
   }
 }
 
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.status {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.max-width {
+  display: inline-block;
+}
+
+.product-box {
+  .service-name {
+    max-width: 200px;
+  }
+
+  .responsive(767px, { .form-group {
+    p {
+      display: inline-block;
+      margin-bottom: 0;
+    }
+  } })
+
+}
+
+.no-padding-side {
+  .responsive(767px, { padding-left: 0; padding-right: 0; });
+  .responsive-max-min(991px, 768px, { padding-left: 5px; padding-right: 5px; })
+}
+
+.table-invoice-details {
+  .responsive(480px,
+  { thead {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  } td:nth-of-type(1) {
+      width: 100%;
+      display: block;
+      position: relative;
+      border-top: 2px solid black;
+      &:before {
+        content: 'Name:';
+        font-weight: bold;
+        padding-right: 6px;
+      }
+    } td:nth-of-type(2) {
+        width: 50%;
+        display: inline-block;
+        position: relative;
+        &:before {
+          content: 'Amount: ';
+          font-weight: bold;
+          padding-right: 6px;
+        }
+      } td:nth-of-type(3) {
+          width: 50%;
+          display: inline-block;
+          position: relative;
+          &:before {
+            content: 'Unit: ';
+            font-weight: bold;
+            padding-right: 6px;
+          }
+        } td:nth-of-type(4) {
+            width: 100%;
+            display: inline-block;
+            position: relative;
+            &:before {
+              content: 'Vat[%]: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          } td:nth-of-type(5) {
+              width: 100%;
+              display: inline-block;
+              position: relative;
+              &:before {
+                content: 'Unit price: ';
+                font-weight: bold;
+                padding-right: 6px;
+              }
+
+            } td:nth-of-type(6) {
+                width: 100%;
+                display: inline-block;
+                position: relative;
+                &:before {
+                  content: 'Brutto price: ';
+                  font-weight: bold;
+                  padding-right: 6px;
+                }
+
+              } })
+}
+
+.table-invoice-summary {
+  .responsive(480px, { .table-row {
+    display: table-row;
+  } thead {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    } tbody {
+        tr:first-child {
+          td:nth-of-type(1) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+          }
+          td:nth-of-type(2) {
+            display: none;
+          }
+          td:nth-of-type(3) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            &:before {
+              content: 'Netto Value: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          }
+          td:nth-of-type(4) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            &:before {
+              content: 'Vat Value: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          }
+          td:nth-of-type(5) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            &:before {
+              content: 'Brutto Value: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          }
+        }
+        tr {
+          td:nth-of-type(1) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+          }
+          td:nth-of-type(2) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            &:before {
+              content: 'VAT[%]: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          }
+          td:nth-of-type(3) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            &:before {
+              content: 'Netto Value: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          }
+          td:nth-of-type(4) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            &:before {
+              content: 'Vat Value: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          }
+          td:nth-of-type(5) {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            &:before {
+              content: 'Brutto Value: ';
+              font-weight: bold;
+              padding-right: 6px;
+            }
+          }
+        }
+      } })
+}
+
+.wrap-word {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  word-break: break-all;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+span.amount-due {
+  .responsive(767px, { float: left !important; })
+}
+
+.button-edit-pdf {
+  float: right;
+  button {
+    padding-left: 18px;
+    padding-right: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+  }
+  .responsive(600px, { margin-top: 15px; margin-bottom: 10px; float: none; })
+}
+
+.pd-top-5px {
+  padding-top: 5px;
+}
+
+.form-invoice-details {
+  .responsive-max-min(991px, 768px, { .col-sm-3 {
+    padding-left: 5px;
+    padding-right: 5px;
+  } })
+}

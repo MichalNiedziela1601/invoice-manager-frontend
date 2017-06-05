@@ -106,4 +106,40 @@ describe('CompanyDAO', function ()
             return companies;
         });
     });
+
+    describe('findShortcut', function ()
+    {
+        describe('when find shortcut', function ()
+        {
+            it('should return id of result', function ()
+            {
+                mockResponse = [{id: 4}];
+                httpBackend.expectGET('/api/company/shortcut?shortcut=MELEX').respond(200, mockResponse);
+               companyDAOMock.findShortcut({shortcut: 'MELEX'}).then(function(data){
+                    httpBackend.flush();
+                    expect(data[0].id).toBe(4);
+                });
+            });
+        });
+        describe('when not found shortcut', function ()
+        {
+            it('should return empty array', function ()
+            {
+                mockResponse = [];
+                httpBackend.expectGET('/api/company/shortcut?shortcut=JAN').respond(200, mockResponse);
+                companyDAOMock.findShortcut({shortcut: 'JAN'}).then(function(data){
+                    httpBackend.flush();
+                    expect(data).toEqual();
+                });
+            });
+
+        });
+    });
+
+    describe('getById', function ()
+    {
+
+    });
+
+
 });

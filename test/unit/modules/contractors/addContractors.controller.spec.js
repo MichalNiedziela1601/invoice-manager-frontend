@@ -21,16 +21,4 @@ describe('AddContractorsController', function ()
         });
     });
 
-    describe('closeAddCompanySuccess', function ()
-    {
-        beforeEach(function ()
-        {
-            addContractor.company = { name: 'Firma test', nip: 1233456788};
-        });
-        it('should clear company after call function', function ()
-        {
-            addContractor.closeAddCompanySuccess();
-            expect(addContractor.company).toEqual({});
-        });
-    });
 });

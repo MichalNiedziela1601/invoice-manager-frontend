@@ -266,47 +266,6 @@ describe('IssueInvoiceController', function ()
         });
     });
 
-    describe('addCompany modal', function ()
-    {
-        describe('when error', function ()
-        {
-            beforeEach(function ()
-            {
-                spyOn(uibModal, 'open').and.returnValue(fakeModal);
-                spyOn(console, 'error');
-                var compDetails = {nip: 1234567890};
-                issueCtrl.openAddCompanyModal('lg');
-                issueCtrl.modalInstance.dismiss(compDetails);
-            });
-            it('should call findByNip function', function ()
-            {
-                expect(console.error).toHaveBeenCalled();
-            });
-
-        });
-        describe('when ok', function ()
-        {
-            beforeEach(function ()
-            {
-                spyOn(uibModal, 'open').and.returnValue(fakeModal);
-                var compDetails = {nip: 1234567890};
-                issueCtrl.openAddCompanyModal('lg');
-                issueCtrl.modalInstance.close(compDetails);
-            });
-            it('should call findByNip function', function ()
-            {
-                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(1234567890);
-            });
-            it('should set result from findByNip function to companyDetails variable', function ()
-            {
-                expect(issueCtrl.companyDetails).toEqual(mockTestCompany);
-            });
-            it('should set variable showBox to true', function ()
-            {
-                expect(issueCtrl.showBox).toEqual(true);
-            });
-        });
-    });
 
     describe('closeAddInvoiceSuccess', function ()
     {
@@ -328,7 +287,6 @@ describe('IssueInvoiceController', function ()
             expect(issueCtrl.formInvalidAlert).toBeTruthy();
         });
     });
-
 
     describe('calculateNettoBrutto', function ()
     {
@@ -564,6 +522,77 @@ describe('IssueInvoiceController', function ()
         {
             issueCtrl.closeProductNotAdded();
             expect(issueCtrl.issueProductNotAdded).toBeFalsy();
+        });
+    });
+
+    describe('checkAdvanced', function ()
+    {
+        describe('when advance is bigger then bruttoValue', function ()
+        {
+            beforeEach(function ()
+            {
+                issueCtrl.invoiceCompany = {
+                    bruttoValue: 5000
+                };
+                form = {
+                    advance: {
+                        $error: {
+                            validationError: null
+                        }
+                    },
+                    $setValidity: angular.noop
+                };
+                spyOn(form,'$setValidity');
+
+                issueCtrl.invoiceCompany.advance = 5212;
+                issueCtrl.checkAdvanced(form);
+            });
+            it('should set validationError to true', function ()
+            {
+                expect(form.advance.$error.validationError).toBeTruthy();
+            });
+            it('should call $setValidity', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledTimes(1);
+            });
+            it('should call $setValidity with args', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledWith('advance',false);
+            });
+        });
+
+        describe('when advance isn\'t bigger then bruttoValue', function ()
+        {
+            beforeEach(function ()
+            {
+                issueCtrl.invoiceCompany = {
+                    bruttoValue: 5000
+                };
+                form = {
+                    advance: {
+                        $error: {
+                            validationError: null
+                        }
+                    },
+                    $setValidity: angular.noop
+                };
+                spyOn(form,'$setValidity');
+
+                issueCtrl.invoiceCompany.advance = 400;
+                issueCtrl.checkAdvanced(form);
+            });
+            it('should set validationError to true', function ()
+            {
+                expect(form.advance.$error.validationError).toBeFalsy();
+            });
+            it('should call $setValidity', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledTimes(1);
+            });
+            it('should call $setValidity with args', function ()
+            {
+                expect(form.$setValidity).toHaveBeenCalledWith('advance',true);
+            });
         });
     });
 

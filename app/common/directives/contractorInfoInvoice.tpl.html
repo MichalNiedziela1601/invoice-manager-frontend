@@ -1,7 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="panel-title"><span ng-if="company.name">{{company.name}}</span>
-        <span ng-if="company.firstName">{{company.firstName}} {{company.lastName}}</span></div>
+            <span ng-if="company.firstName">{{company.firstName}} {{company.lastName}}</span>
+        </div>
     </div>
     <div class="panel-body">
         <table class="table table-condensed no-bottom-margin">
@@ -14,11 +15,22 @@
                 <td>{{company.regon}}</td>
             </tr>
             <tr>
-                <td>address</td>
-                <td>{{address.street}} {{address.buildNr}}<span ng-if="address.flatNr">{{'/'+address.flatNr}}</span>
-                    <p>{{address.postCode}} {{address.city }}</p>
+                <td>Address</td>
+                <td>{{company.address.street}} {{company.address.buildNr}}<span
+                        ng-if="company.address.flatNr">{{'/'+company.address.flatNr}}</span>
+                    <p>{{company.address.postCode}} {{company.address.city }}</p>
                 </td>
-            </tr></tbody>
+            </tr>
+            <tr ng-if="company.hasOwnProperty('bankName') && company.bankName">
+                <td>Bank Name</td>
+                <td>{{company.bankName}}</td>
+            </tr>
+            <tr ng-if="company.hasOwnProperty('bankAccount') && company.bankAccount ">
+                <td>Bank Account</td>
+                <td class="wrap-word">{{company.bankAccount}}</td>
+            </tr>
         </table>
     </div>
 </div>
+ wi
+s

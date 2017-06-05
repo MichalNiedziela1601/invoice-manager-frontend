@@ -9,8 +9,9 @@
                     <input type="text" class="form-control" ng-model="contractorsCtrl.globalSearchTerm" placeholder="Global search..."
                            ng-change="contractorsCtrl.applyGlobalSearch()"></td>
             </tr>
-            <tr ng-repeat="row in $data track by row.id" >
-                <td data-title="'Name'" sortable="'name'">{{row.name}}</td>
+            <tr ng-repeat="row in $data track by $index" >
+                <td data-title="'Name'" sortable="'name'"><a ng-href="/contractors/details/{{row.id}}/{{row.firstName ? 'person' : 'company'}}">
+                    {{row.name}}</a></td>
                 <td data-title="'Nip'" sortable="'nip'">{{row.nip}}</td>
                 <td data-title="'Address'" sortable="'address'">{{row.address}}</td>
             </tr>

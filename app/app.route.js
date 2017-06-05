@@ -26,6 +26,13 @@
             requireAuth: true
         });
 
+        $routeProvider.when('/contractors/details/:id/:type',{
+            templateUrl: '/modules/contractors/details/contractorDetails.tpl.html',
+            controller: 'ContractorDetailsController',
+            controllerAs: 'contractorDetailsCtrl',
+            requireAuth: true
+        });
+
         $routeProvider.when('/invoices', {
             templateUrl: 'modules/invoices/list/invoices.tpl.html',
             controller: 'InvoicesController',
