@@ -50,7 +50,7 @@
         {
             var year = ctrl.createDatePicker.date.getFullYear();
             var month = ctrl.createDatePicker.date.getMonth() + 1;
-            InvoiceDAO.number(year, month).then(function (number)
+            InvoiceDAO.number(year, month, 'buy').then(function (number)
             {
                 ctrl.invoiceCompany.invoiceNr = 'FV ' + year + '/' + month + '/' + number.number;
             }).catch(function (error)
