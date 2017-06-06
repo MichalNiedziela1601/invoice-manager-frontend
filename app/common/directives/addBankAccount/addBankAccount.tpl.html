@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-responsive" id="tableProduct">
+            <tr ng-repeat="(key,value) in addAccountCtrl.accounts track by $index">
+                <td>
+                    <ng-form name="accountForm" class="form-inline no-margin product-box">
+                        <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b>Name:</b> <p>{{value.name}}</p></span>
+                            <div ng-class="{'has-error' : accountForm.name.$invalid}" ng-show="value.editMode">
+                                <label class="sr-only">Name</label>
+                                <input type="text" class="form-control" name="name" ng-model="value.name" required placeholder="Account Name"></div>
+                        </div>
+
+                        <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Bank Name: </b>
+                                                            <p>{{value.bankName}}</p></span>
+                            <div ng-class="{'has-error' : accountForm.bankName.$invalid}" ng-show="value.editMode">
+                                <input type="text" class="form-control" ng-show="value.editMode" ng-model="value.bankName"
+                                        name="bankName" required placeholder="Bank Name"></div>
+                        </div>
+
+                        <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Account: </b>
+                                                            <p>{{value.account}}</p></span>
+                            <div ng-class="{'has-error' : accountForm.account.$invalid}" ng-show="value.editMode">
+                                <input type="text" class="form-control" ng-show="value.editMode" ng-model="value.account"
+                                       name="account" required placeholder="Account"></div>
+                        </div>
+
+                        <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>SWIFT: </b>
+                                                            <p>{{value.swift}}</p></span>
+                            <div ng-class="{'has-error' : accountForm.swift.$invalid}" ng-show="value.editMode">
+                                <input type="text" class="form-control" ng-show="value.editMode" ng-model="value.swift" required name="swift"
+                                       placeholder="SWIFT"></div>
+                        </div>
+
+
+                        <div>
+                            <button type="button" data-ng-hide="value.editMode" data-ng-click="addAccountCtrl.edit(value)" class="btn btn-primary ">Edit
+                            </button>
+                            <button type="button" data-ng-hide="value.editMode" data-ng-click="addAccountCtrl.delete(key)" class="btn btn-danger">Delete
+                            </button>
+                            <button type="button" ng-disabled="accountForm.$invalid" data-ng-show="value.editMode" data-ng-click="addAccountCtrl.save(value)"
+                                    class="btn btn-primary top-margin-2">Save
+                            </button>
+                            <button type="button" data-ng-show="value.editMode" data-ng-click="addAccountCtrl.cancel(value, key)" class="btn btn-default top-margin-2">Cancel
+                            </button>
+                        </div>
+                    </ng-form>
+
+                </td>
+            </tr>
+
+        </table>
+        <div>
+            <button type="button" class="btn btn-info" ng-click="addAccountCtrl.addNew()">Add new account</button>
+        </div>
+    </div>
+</div> 

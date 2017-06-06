@@ -31,6 +31,7 @@
         ctrl.invoiceCompany.paymentMethod = ctrl.payment[1].type;
         ctrl.contractorType = '';
         ctrl.showBox = false;
+        ctrl.showNotAccountError = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -103,6 +104,30 @@
             }
         }
 
+        ctrl.checkAccounts = function ()
+        {
+            if('bank transfer' === ctrl.invoiceCompany.paymentMethod){
+                return Object.keys(ctrl.mockedCompany.bankAccounts).length > 1;
+            }
+            return false;
+        };
+
+        ctrl.checkAccountChosen = function(){
+            if(ctrl.checkAccounts()){
+                ctrl.showNotAccountError = !ctrl.invoiceCompany.dealerAccountNr;
+            } else {
+                ctrl.invoiceCompany.dealerAccountNr = null;
+            }
+        };
+
+        ctrl.checkTypeTransaction = function(){
+            if('bank transfer' === ctrl.invoiceCompany.paymentMethod){
+                return !ctrl.invoiceCompany.dealerAccountNr;
+            } else if ('cash' === ctrl.invoiceCompany.paymentMethod) {
+                return false;
+            }
+        };
+
         function addInvoiceCompany(form)
         {
             if (ctrl.companyDetails) {
@@ -115,12 +140,14 @@
                 }
                 ctrl.invoiceCompany.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
                 ctrl.invoiceCompany.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
+                ctrl.checkAccountChosen();
 
                 if (Object.keys(ctrl.invoiceCompany.products).length > 0) {
                     if (form.$valid) {
                         if (!ctrl.formSubmitted) {
                             ctrl.formSubmitted = true;
                             ctrl.showLoader = true;
+
                             InvoiceDAO.issue(ctrl.invoiceCompany).then(function ()
                             {
                                 ctrl.showLoader = false;
@@ -172,6 +199,8 @@
                 form.$setValidity('advance',true);
             }
         };
+
+
 
         getInvoiceNumber();
         getUserInfo();

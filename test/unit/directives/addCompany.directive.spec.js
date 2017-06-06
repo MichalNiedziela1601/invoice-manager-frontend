@@ -143,10 +143,7 @@ describe('AddCompanyDirective', function ()
                 {
                     expect(controller.person).toEqual({firstName: 'Adam', lastName: 'Nowak'});
                 });
-                it('should set company to empty object', function ()
-                {
-                    expect(controller.company).toBeNull();
-                });
+
             });
         });
         describe('addCompany', function ()
@@ -163,7 +160,7 @@ describe('AddCompanyDirective', function ()
                     form.$valid = true;
                     form.$setPristine = angular.noop;
                     spyOn(form, '$setPristine');
-                    controller.company = {name: 'Jakub', regon: null, nip: 1234567890};
+                    controller.company = {name: 'Jakub', nip: 1234567890};
                     controller.addCompany(form);
                 });
                 it('should set company to empty  ', function ()
@@ -174,7 +171,7 @@ describe('AddCompanyDirective', function ()
                 {
                     it('should be called with controller.company', function ()
                     {
-                        expect(companyDaoMock.addCompany).toHaveBeenCalledWith({name: 'Jakub', regon: null, nip: 1234567890});
+                        expect(companyDaoMock.addCompany).toHaveBeenCalledWith({name: 'Jakub', nip: 1234567890, bankAccounts: undefined});
                     });
                     it('should set invalidFormAlert to false', function ()
                     {
@@ -219,7 +216,7 @@ describe('AddCompanyDirective', function ()
                     {
                         return unsuccessfulPromise({data: 'Error'});
                     });
-                    controller.company = {name: 'Jakub', regon: null, nip: 1234567890};
+                    controller.company = {name: 'Jakub', regon: '', nip: 1234567890};
                     controller.addCompany(form);
                 });
                 it('should set showError to true', function ()
@@ -245,7 +242,8 @@ describe('AddCompanyDirective', function ()
                     form.$valid = true;
                     form.$setPristine = angular.noop;
                     spyOn(form, '$setPristine');
-                    controller.company = {name: 'Jakub', regon: null, nip: 1234567890};
+                    controller.company = {name: 'Jakub', regon: '', nip: 1234567890};
+                    controller.accounts = {0: {account: '787348973249'}};
                     controller.addCompany(form);
                 });
 
@@ -253,7 +251,8 @@ describe('AddCompanyDirective', function ()
                 {
                     it('should be called with controller.company', function ()
                     {
-                        expect(companyDaoMock.updateCompany).toHaveBeenCalledWith({name: 'Jakub', regon: null, nip: 1234567890});
+                        expect(companyDaoMock.updateCompany)
+                                .toHaveBeenCalledWith({name: 'Jakub', nip: 1234567890, bankAccounts: {0: {account: '787348973249'}}});
                     });
                     it('should set invalidFormAlert to false', function ()
                     {
@@ -288,7 +287,7 @@ describe('AddCompanyDirective', function ()
                     {
                         return unsuccessfulPromise({data: {message: 'Something bad happens'}});
                     });
-                    controller.company = {name: 'Jakub', regon: null, nip: 1234567890};
+                    controller.company = {name: 'Jakub', regon: '', nip: 1234567890};
                     controller.addCompany(form);
                 });
                 it('should set showError to true', function ()
@@ -565,7 +564,7 @@ describe('AddCompanyDirective', function ()
                 {
                     it('should be called with controller.person', function ()
                     {
-                        expect(Person.addPerson).toHaveBeenCalledWith({firstName: 'Jakub', nip: 1234567890});
+                        expect(Person.addPerson).toHaveBeenCalledWith({firstName: 'Jakub', nip: 1234567890, bankAccounts: undefined});
                     });
                     it('should set invalidFormAlert to false', function ()
                     {
@@ -588,6 +587,8 @@ describe('AddCompanyDirective', function ()
                 {
                     form = {};
                     form.$valid = false;
+                    controller.accounts = {0: {account: '90809890809890809'}};
+                    controller.person = {firstName: 'Jakub', nip: 1234567890, bankAccounts: null};
                     controller.addPerson(form.$valid);
 
                 });
@@ -614,7 +615,7 @@ describe('AddCompanyDirective', function ()
                     {
                         return unsuccessfulPromise({data: 'Error'});
                     });
-                    controller.company = {firstName: 'Jakub', nip: 1234567890};
+                    controller.person = {firstName: 'Jakub', nip: 1234567890};
                     controller.addPerson(form);
                 });
                 it('should set showError to true', function ()
@@ -640,6 +641,7 @@ describe('AddCompanyDirective', function ()
                     form.$valid = true;
                     form.$setPristine = angular.noop;
                     spyOn(form, '$setPristine');
+                    controller.accounts = {0: {account: '8080980980'}};
                     controller.person = {firstName: 'Jakub', nip: 1234567890};
                     controller.addPerson(form);
                 });
@@ -648,7 +650,7 @@ describe('AddCompanyDirective', function ()
                 {
                     it('should be called with controller.person', function ()
                     {
-                        expect(Person.updatePerson).toHaveBeenCalledWith({firstName: 'Jakub', nip: 1234567890});
+                        expect(Person.updatePerson).toHaveBeenCalledWith({firstName: 'Jakub', nip: 1234567890, bankAccounts: {0: {account: '8080980980'}}});
                     });
                     it('should set invalidFormAlert to false', function ()
                     {

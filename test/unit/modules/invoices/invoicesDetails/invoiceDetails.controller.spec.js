@@ -385,10 +385,12 @@ describe('InvoiceDetailsController', function ()
                 form = {
                     $valid: true
                 };
+                invoiceDetailCtrl.details.dealerAccountNr = '0';
                 InvoiceDetailsDAOMock.update.and.callFake(function ()
                 {
                     return successfulPromise();
                 });
+                console.log('details',invoiceDetailCtrl.details);
                 invoiceDetailCtrl.editInvoice(form);
             });
             it('should call update', function ()
@@ -407,6 +409,8 @@ describe('InvoiceDetailsController', function ()
                 form = {
                     $valid: true
                 };
+
+                invoiceDetailCtrl.details.dealerAccountNr = '0';
                 InvoiceDetailsDAOMock.update.and.callFake(function ()
                 {
                     return unsuccessfulPromise({data: 'Something bad happens'});
@@ -518,6 +522,8 @@ describe('InvoiceDetailsController', function ()
                     };
                     invoiceDetailCtrl.details.type = 'buy';
                     invoiceDetailCtrl.details.contractorType = 'company';
+                    invoiceDetailCtrl.details.paymentMethod = 'bank transfer';
+                    invoiceDetailCtrl.details.dealerAccountNr = '0';
                     InvoiceDetailsDAOMock.update.and.callFake(function ()
                     {
                         return successfulPromise();
@@ -547,6 +553,8 @@ describe('InvoiceDetailsController', function ()
                     };
                     invoiceDetailCtrl.details.type = 'buy';
                     invoiceDetailCtrl.details.contractorType = 'person';
+                    invoiceDetailCtrl.details.paymentMethod = 'bank transfer';
+                    invoiceDetailCtrl.details.dealerAccountNr = '0';
                     InvoiceDetailsDAOMock.update.and.callFake(function ()
                     {
                         return successfulPromise();
@@ -565,6 +573,29 @@ describe('InvoiceDetailsController', function ()
                 {
                     expect(invoiceDetailCtrl.showBox).toBeFalsy();
                 });
+            });
+        });
+
+        describe('when paymentMethod is cash', function ()
+        {
+            beforeEach(function ()
+            {
+                form = {
+                    $valid: true
+                };
+                invoiceDetailCtrl.details.type = 'buy';
+                invoiceDetailCtrl.details.contractorType = 'company';
+                invoiceDetailCtrl.details.paymentMethod = 'cash';
+                invoiceDetailCtrl.details.dealerAccountNr = '0';
+                InvoiceDetailsDAOMock.update.and.callFake(function ()
+                {
+                    return successfulPromise();
+                });
+                invoiceDetailCtrl.editInvoice(form);
+            });
+            it('should set dealerAccountNr to null', function ()
+            {
+                expect(invoiceDetailCtrl.details.dealerAccountNr).toBeNull();
             });
         });
 
@@ -762,5 +793,12 @@ describe('InvoiceDetailsController', function ()
         });
     });
 
-
+    describe('closeAccountNotChosen', function ()
+    {
+        it('should set showAccountNotChosen to false', function ()
+        {
+            invoiceDetailCtrl.closeAccountNotChosen();
+            expect(invoiceDetailCtrl.showAccountNotChosen).toBeFalsy();
+        });
+    });
 });

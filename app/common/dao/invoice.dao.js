@@ -26,10 +26,6 @@
             number: function(year,month, type)
             {
                 return api.query({a: 'number', year: year, month: month, type: type}).$promise;
-            },
-            pdf: function(base)
-            {
-                return api.save({a: 'pdf'},{file: base}).$promise;
             }
         };
     }

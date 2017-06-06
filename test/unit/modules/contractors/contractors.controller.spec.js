@@ -5,11 +5,14 @@ describe('ContractorsController', function ()
     var listCtrl;
     var companyDaoMock;
     var companyListMock;
+    var personListMock;
+    var personMOck;
 
     beforeEach(module('app'));
-    beforeEach(inject(function ($controller, CompanyDAO)
+    beforeEach(inject(function ($controller, CompanyDAO, Person)
     {
         companyDaoMock = CompanyDAO;
+        personMOck = Person;
 
         companyListMock = [{
             name: 'Firma X', nip: 5454545454, address: {
@@ -21,12 +24,20 @@ describe('ContractorsController', function ()
             }
         }];
 
+        personListMock = [{
+            firstName: 'John', lastName: 'Smith', address: { street: 'GreenHills', buildNr: '12', city: 'Brooklyn', postCode: 'h56 09k'}
+        }];
+
         spyOn(companyDaoMock, 'query').and.callFake(function ()
         {
             return successfulPromise(companyListMock);
         });
 
-        listCtrl = $controller('ContractorsController', {CompanyDAO: companyDaoMock});
+        spyOn(personMOck,'getPersons').and.callFake(function(){
+            return successfulPromise(personListMock);
+        });
+
+        listCtrl = $controller('ContractorsController', {CompanyDAO: companyDaoMock, Person: personMOck});
     }));
 
     describe('initialization', function ()
@@ -41,7 +52,22 @@ describe('ContractorsController', function ()
         });
         it('should set data from CompanyDAO service to companies variable', function ()
         {
-            expect(listCtrl.companies).toEqual(companyListMock);
+            expect(listCtrl.companies).toEqual(companyListMock.concat(personListMock));
         });
     });
+
+    describe('applyGlobalSearch', function ()
+    {
+        beforeEach(function ()
+        {
+            listCtrl.globalSearchTerm = 'Lublin';
+            spyOn(listCtrl.companyTable,'filter');
+            listCtrl.applyGlobalSearch();
+        });
+        it('should call companyTable.filter with term', function ()
+        {
+            expect(listCtrl.companyTable.filter).toHaveBeenCalled();
+        });
+    });
+
 });

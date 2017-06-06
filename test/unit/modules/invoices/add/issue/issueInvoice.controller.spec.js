@@ -3,11 +3,8 @@ describe('IssueInvoiceController', function ()
     'use strict';
     var issueCtrl;
     var invoiceDaoMock;
-    var companyDaoMock;
-    var uibModal;
     var mockTestCompany;
     var mockFoundTestCompany;
-    var fakeModal;
     var baseTime;
     var nips;
     var form;
@@ -16,15 +13,13 @@ describe('IssueInvoiceController', function ()
 
     beforeEach(module('app'));
 
-    beforeEach(inject(function ($controller, InvoiceDAO, CompanyDAO, $uibModal, _$window_)
+    beforeEach(inject(function ($controller, InvoiceDAO, _$window_)
     {
         invoiceDaoMock = InvoiceDAO;
-        companyDaoMock = CompanyDAO;
-        uibModal = $uibModal;
         $window = _$window_;
 
         $window.sessionStorage.setItem('userInfo', angular.toJson({
-            id: 2, name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: '33-120', city: 'City 1'
+            id: 2, name: 'Firma BUDEX', nip: 1224567890, regon: 6189567, street: 'Krakowska', buildNr: 4, flatNr: null, postCode: '33-120', city: 'City 1',
         }));
 
         mockFoundTestCompany = angular.fromJson($window.sessionStorage.getItem('userInfo'));
@@ -59,54 +54,12 @@ describe('IssueInvoiceController', function ()
                 return unsuccessfulPromise();
             }
         });
-        spyOn(companyDaoMock, 'findByNip').and.callFake(function (booleanValue)
-        {
-            if (booleanValue === 1234567890) {
-                return successfulPromise(mockTestCompany);
-            } else if (booleanValue === 1224567890) {
-                return successfulPromise(mockFoundTestCompany);
-            } else {
-                return unsuccessfulPromise();
-            }
-        });
-
-
-        spyOn(companyDaoMock, 'getNips').and.callFake(function (nip)
-        {
-            if (nip === 12) {
-                return successfulPromise(nips);
-            } else if (nip === 1233) {
-                return successfulPromise([]);
-            } else {
-                return unsuccessfulPromise('Error with something');
-            }
-        });
-
-
-        fakeModal = {
-            result: {
-                then: function (confirmCallback, cancelCallback)
-                {
-                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
-                    this.confirmCallBack = confirmCallback;
-                    this.cancelCallback = cancelCallback;
-                }
-            }, close: function (item)
-            {
-                //The user clicked OK on the modal dialog, call the stored confirm callback with the selected item
-                this.result.confirmCallBack(item);
-            }, dismiss: function (type)
-            {
-                //The user clicked cancel on the modal dialog, call the stored cancel callback
-                this.result.cancelCallback(type);
-            }
-        };
 
         baseTime = new Date();
         jasmine.clock().mockDate(baseTime);
 
         issueCtrl = $controller('IssueInvoiceController', {
-            InvoiceDAO: invoiceDaoMock, CompanyDAO: companyDaoMock, $uibModal: uibModal,
+            InvoiceDAO: invoiceDaoMock,
             $window: $window
         });
 
@@ -330,20 +283,101 @@ describe('IssueInvoiceController', function ()
 
     });
 
+    describe('checkAccounts', function ()
+    {
+        describe('when paymentMethod is bank transfer', function ()
+        {
+            beforeEach(function ()
+            {
+                issueCtrl.invoiceCompany.paymentMethod = 'bank transfer';
+                issueCtrl.mockedCompany.bankAccounts = {'0' : {}, '1': {}};
+            });
+            it('should return true', function ()
+            {
+                expect(issueCtrl.checkAccounts()).toBeTruthy();
+            });
+        });
+        describe('else', function ()
+        {
+            beforeEach(function ()
+            {
+                issueCtrl.invoiceCompany.paymentMethod = 'cash';
+            });
+            it('should return false', function ()
+            {
+                expect(issueCtrl.checkAccounts()).toBeFalsy();
+            });
+        });
+    });
+
+    describe('checkAccountChosen', function ()
+    {
+        describe('when account is one', function ()
+        {
+            beforeEach(function ()
+            {
+                issueCtrl.mockedCompany.bankAccounts = {'0' : {account: '89778678687'}};
+                issueCtrl.checkAccountChosen();
+            });
+            it('should set invoiceCompany.dealerAccountNr to \'0\'', function ()
+            {
+                expect(issueCtrl.invoiceCompany.dealerAccountNr).toBe(null);
+            });
+        });
+        describe('when more then one account', function ()
+        {
+            beforeEach(function ()
+            {
+                issueCtrl.mockedCompany.bankAccounts = {'0' : {account: '89778678687'}, '1' : {account: '87987987'}};
+                issueCtrl.checkAccountChosen();
+            });
+            it('should set showNotAccountError to true', function ()
+            {
+                expect(issueCtrl.showNotAccountError).toBeTruthy();
+            });
+        });
+    });
+
+    describe('checkTypeTransaction', function ()
+    {
+        describe('when paymentMethod is bank transfer', function ()
+        {
+            beforeEach(function ()
+            {
+                issueCtrl.invoiceCompany.paymentMethod = 'bank transfer';
+            });
+            it('should return true', function ()
+            {
+                expect(issueCtrl.checkTypeTransaction()).toBeTruthy();
+            });
+        });
+        describe('when paymentMethod is cash', function ()
+        {
+            it('should return false', function ()
+            {
+                issueCtrl.invoiceCompany.paymentMethod = 'cash';
+                expect(issueCtrl.checkTypeTransaction()).toBeFalsy();
+            });
+        });
+
+    });
+
     describe('addInvoiceCompany', function ()
     {
         describe('company invoicesDetails exists', function ()
         {
 
-            describe('when contratorType is company', function ()
+            describe('when contractorType is company', function ()
             {
                 beforeEach(function ()
                 {
-
+                    issueCtrl.invoiceCompany.products = {'0' : {editMode: false}};
+                    issueCtrl.mockedCompany.bankAccounts = {'0': {account: '9934868675'}};
                     issueCtrl.companyDetails = mockTestCompany;
                     issueCtrl.createDatePicker.date = new Date('2000-12-15');
                     issueCtrl.invoiceCompany.contractorType = 'company';
                     issueCtrl.executionDatePicker.date = new Date('2001-01-23');
+                    issueCtrl.invoiceCompany.dealerAccountNr = '0';
 
                     issueCtrl.addInvoiceCompany(form);
                 });
@@ -383,89 +417,13 @@ describe('IssueInvoiceController', function ()
                         expect(issueCtrl.issueProductNotAdded).toEqual(true);
                     });
                 });
-
-                describe('when add products', function ()
-                {
-                    describe('when invoice added', function ()
-                    {
-                        beforeEach(function ()
-                        {
-                            spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
-                            {
-                                return successfulPromise();
-                            });
-                            spyOn(form, '$setPristine');
-                            spyOn(issueCtrl, 'getInvoiceNumber');
-                            issueCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
-                            issueCtrl.addInvoiceCompany(form);
-                        });
-                        it('should call InvoiceDAO.issue', function ()
-                        {
-                            expect(invoiceDaoMock.issue).toHaveBeenCalledTimes(1);
-                        });
-                        it('should set issueCompanyNotChosen', function ()
-                        {
-                            expect(issueCtrl.issueCompanyNotChosen).toBeFalsy();
-                        });
-                        it('should set addInvoice', function ()
-                        {
-                            expect(issueCtrl.addInvoice).toBeTruthy();
-                        });
-                        it('should set new date createDatePicker.date', function ()
-                        {
-                            expect(issueCtrl.createDatePicker.date).toEqual(baseTime);
-                        });
-                        it('should set new date executionDatePicker.date', function ()
-                        {
-                            expect(issueCtrl.executionDatePicker.date).toEqual(baseTime);
-                        });
-                        it('should call form setPristine', function ()
-                        {
-                            expect(form.$setPristine).toHaveBeenCalled();
-                        });
-                        it('should reset invoiceCompany', function ()
-                        {
-                            expect(issueCtrl.invoiceCompany)
-                                    .toEqual({products: {}, status: 'unpaid', paymentMethod: 'bank transfer', reverseCharge: false, showAmount: false});
-                        });
-                        it('should call InvoiceDAO.number', function ()
-                        {
-                            expect(invoiceDaoMock.number).toHaveBeenCalled();
-                        });
-                    });
-                    describe('when invoice not added', function ()
-                    {
-                        beforeEach(function ()
-                        {
-                            spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
-                            {
-                                return unsuccessfulPromise({data: 'Unknow Error'});
-                            });
-                            issueCtrl.invoiceCompany.products[0] = {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78};
-                            issueCtrl.addInvoiceCompany(form);
-                        });
-                        it('should set formSubmitted', function ()
-                        {
-                            expect(issueCtrl.formSubmitted).toBeFalsy();
-                        });
-                        it('should set errorMessage', function ()
-                        {
-                            expect(issueCtrl.errorMessage).toEqual('Unknow Error');
-                        });
-                        it('should set formInvalidAlert', function ()
-                        {
-                            expect(issueCtrl.formInvalidAlert).toBeTruthy();
-                        });
-                    });
-                });
-
             });
 
             describe('when contractorType is person', function ()
             {
                 beforeEach(function ()
                 {
-
+                    issueCtrl.mockedCompany.bankAccounts = {'0': {account: '9934868675'}};
                     issueCtrl.companyDetails = mockTestCompany;
                     issueCtrl.createDatePicker.date = new Date('2000-12-15');
                     issueCtrl.invoiceCompany.contractorType = 'person';
@@ -510,6 +468,82 @@ describe('IssueInvoiceController', function ()
             it('should companyNotChosen to true', function ()
             {
                 expect(issueCtrl.issueCompanyNotChosen).toEqual(true);
+            });
+        });
+
+        describe('when invoice added', function ()
+        {
+            beforeEach(function ()
+            {
+                spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
+                {
+                    return successfulPromise();
+                });
+                issueCtrl.companyDetails = mockTestCompany;
+                spyOn(form, '$setPristine');
+                spyOn(issueCtrl, 'getInvoiceNumber');
+                issueCtrl.mockedCompany.bankAccounts = {'0': {account: '9934868675'}};
+                issueCtrl.invoiceCompany.products = {0: {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78} };
+                issueCtrl.addInvoiceCompany(form);
+            });
+            it('should call InvoiceDAO.issue', function ()
+            {
+                expect(invoiceDaoMock.issue).toHaveBeenCalledTimes(1);
+            });
+            it('should set issueCompanyNotChosen', function ()
+            {
+                expect(issueCtrl.issueCompanyNotChosen).toBeFalsy();
+            });
+            it('should set addInvoice', function ()
+            {
+                expect(issueCtrl.addInvoice).toBeTruthy();
+            });
+            it('should set new date createDatePicker.date', function ()
+            {
+                expect(issueCtrl.createDatePicker.date).toEqual(baseTime);
+            });
+            it('should set new date executionDatePicker.date', function ()
+            {
+                expect(issueCtrl.executionDatePicker.date).toEqual(baseTime);
+            });
+            it('should call form setPristine', function ()
+            {
+                expect(form.$setPristine).toHaveBeenCalled();
+            });
+            it('should reset invoiceCompany', function ()
+            {
+                expect(issueCtrl.invoiceCompany)
+                        .toEqual({products: {}, status: 'unpaid', paymentMethod: 'bank transfer', reverseCharge: false, showAmount: false});
+            });
+            it('should call InvoiceDAO.number', function ()
+            {
+                expect(invoiceDaoMock.number).toHaveBeenCalled();
+            });
+        });
+        describe('when invoice not added', function ()
+        {
+            beforeEach(function ()
+            {
+                spyOn(invoiceDaoMock, 'issue').and.callFake(function ()
+                {
+                    return unsuccessfulPromise({data: 'Unknow Error'});
+                });
+                issueCtrl.companyDetails = mockTestCompany;
+                issueCtrl.mockedCompany.bankAccounts = {'0': {account: '9934868675'}};
+                issueCtrl.invoiceCompany.products = {0: {name: 'Product 1', netto: 345.45, vat: 23, amount: 1, brutto: 446.78} };
+                issueCtrl.addInvoiceCompany(form);
+            });
+            it('should set formSubmitted', function ()
+            {
+                expect(issueCtrl.formSubmitted).toBeFalsy();
+            });
+            it('should set errorMessage', function ()
+            {
+                expect(issueCtrl.errorMessage).toEqual('Unknow Error');
+            });
+            it('should set formInvalidAlert', function ()
+            {
+                expect(issueCtrl.formInvalidAlert).toBeTruthy();
             });
         });
 

@@ -21,6 +21,7 @@
                      });
          }
 
+
     }
     angular.module('app')
         .controller('ContractorDetailsController', ['$routeParams','CompanyDAO','Person',ContractorDetailsController]);

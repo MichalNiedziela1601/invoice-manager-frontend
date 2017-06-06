@@ -22,7 +22,9 @@
             {type: 'bank transfer'}
         ];
         ctrl.showBox = false;
-
+        ctrl.accountNr = null;
+        ctrl.showAccountNotChosen = false;
+        ctrl.showChooseAccount = false;
 
         function createSummary(details)
         {
@@ -51,6 +53,11 @@
             });
         }
 
+        ctrl.checkAccounts = function ()
+        {
+            ctrl.showChooseAccount = ('bank transfer' === ctrl.details.paymentMethod);
+
+        };
 
         function getDetails()
         {
@@ -61,15 +68,20 @@
                 if ('sell' === ctrl.details.type) {
                     ctrl.contractor = ctrl.details.companyRecipent ? ctrl.details.companyRecipent : ctrl.details.personRecipent;
                     ctrl.details.contractorType = ctrl.details.companyRecipent ? 'company' : 'person';
+
                 } else if ('buy' === ctrl.details.type) {
                     ctrl.contractor = ctrl.details.companyDealer ? ctrl.details.companyDealer : ctrl.details.personDealer;
                     ctrl.details.contractorType = ctrl.details.companyDealer ? 'company' : 'person';
                 }
 
+                ctrl.dealer = ctrl.details.companyDealer ? ctrl.details.companyDealer : ctrl.details.personDealer;
+                ctrl.accountNr = ctrl.details.dealerAccountNr;
+
                 ctrl.tooltip = ('unpaid' === ctrl.details.status) ? 'Mark as paid' : 'Mark as unpaid';
                 if (!ctrl.details.reverseCharge) {
                     createSummary(ctrl.details);
                 }
+                ctrl.checkAccounts();
 
                 ctrl.createDatePicker = {
                     date: new Date(ctrl.details.createDate), opened: false, options: {
@@ -146,35 +158,54 @@
             });
         }
 
+        function checkTypeTransaction()
+        {
+            if (ctrl.details.paymentMethod) {
+                if ('bank transfer' === ctrl.details.paymentMethod) {
+                    return !!ctrl.details.dealerAccountNr;
+                } else if ('cash' === ctrl.details.paymentMethod) {
+                    ctrl.details.dealerAccountNr = null;
+                    return true;
+                }
+            }
+
+        }
+
+
         function editInvoice(form)
         {
-            if(Object.keys(ctrl.details.products).length > 0){
-                if (form.$valid) {
-                    ctrl.details.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
-                    ctrl.details.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
-                    ctrl.details.companyDealer = _.get(ctrl.details, 'companyDealer.id');
-                    ctrl.details.companyRecipent = _.get(ctrl.details, 'companyRecipent.id');
-                    ctrl.details.personDealer = _.get(ctrl.details, 'personDealer.id');
-                    ctrl.details.personRecipent = _.get(ctrl.details, 'personRecipent.id');
-                    changeContractor();
-                    ctrl.showLoader = true;
-                    InvoiceDetailsDAO.update(ctrl.id, ctrl.details).then(function ()
-                    {
-                        ctrl.changeNumber = true;
-                        ctrl.showLoader = false;
-                        ctrl.summary = [];
-                        ctrl.showBox = false;
-                        ctrl.getDetails();
-                        ctrl.showEdit();
-                    })
-                            .catch(function (error)
-                            {
-                                ctrl.changeNumber = true;
-                                ctrl.showLoader = false;
-                                ctrl.getDetails();
-                                ctrl.errorMessage = error.data || error.message || error;
-                                ctrl.formInvalidAlert = true;
-                            });
+            if (Object.keys(ctrl.details.products).length > 0) {
+                if (checkTypeTransaction()) {
+                    if (form.$valid) {
+                        ctrl.details.createDate = ctrl.createDatePicker.date.toISOString().slice(0, 10);
+                        ctrl.details.executionEndDate = ctrl.executionDatePicker.date.toISOString().slice(0, 10);
+                        ctrl.details.companyDealer = _.get(ctrl.details, 'companyDealer.id');
+                        ctrl.details.companyRecipent = _.get(ctrl.details, 'companyRecipent.id');
+                        ctrl.details.personDealer = _.get(ctrl.details, 'personDealer.id');
+                        ctrl.details.personRecipent = _.get(ctrl.details, 'personRecipent.id');
+
+                        changeContractor();
+                        ctrl.showLoader = true;
+                        InvoiceDetailsDAO.update(ctrl.id, ctrl.details).then(function ()
+                        {
+                            ctrl.changeNumber = true;
+                            ctrl.showLoader = false;
+                            ctrl.summary = [];
+                            ctrl.showBox = false;
+                            ctrl.getDetails();
+                            ctrl.showEdit();
+                        })
+                                .catch(function (error)
+                                {
+                                    ctrl.changeNumber = true;
+                                    ctrl.showLoader = false;
+                                    ctrl.getDetails();
+                                    ctrl.errorMessage = error.data || error.message || error;
+                                    ctrl.formInvalidAlert = true;
+                                });
+                    }
+                } else {
+                    ctrl.showAccountNotChosen = true;
                 }
             } else {
                 ctrl.productNotChoosen = true;
@@ -222,18 +253,23 @@
 
         ctrl.checkAdvanced = function (form)
         {
-           if(ctrl.details.advance > Number(ctrl.details.bruttoValue)){
-               form.advance.$error.validationError = true;
-               form.$setValidity('advance',false);
-           } else {
-               form.advance.$error.validationError = false;
-               form.$setValidity('advance',true);
-           }
+            if (ctrl.details.advance > Number(ctrl.details.bruttoValue)) {
+                form.advance.$error.validationError = true;
+                form.$setValidity('advance', false);
+            } else {
+                form.advance.$error.validationError = false;
+                form.$setValidity('advance', true);
+            }
         };
 
-        ctrl.toogleChangeNumber = function()
+        ctrl.toogleChangeNumber = function ()
         {
             ctrl.changeNumber = !ctrl.changeNumber;
+        };
+
+        ctrl.closeAccountNotChosen = function ()
+        {
+            ctrl.showAccountNotChosen = false;
         };
 
         ctrl.getInvoiceNumber = getInvoiceNumber;

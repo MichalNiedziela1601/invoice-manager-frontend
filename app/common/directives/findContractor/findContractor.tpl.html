@@ -4,7 +4,7 @@
             <div class="findCompanyInput">
                 <div class="row well">
 
-                    <label class="col-sm-5">Find company by NIP or shortcut:</label>
+                    <label class="col-sm-5">Find company:</label>
                     <div class="input-group col-md-6">
                         <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.companyModel" placeholder="NIP contractors or shortcut"
                                                            uib-typeahead="companies.nip for companies in findContractorCtrl.findCompaniesByNip($viewValue)"
@@ -19,12 +19,13 @@
                         </div>
 
                     </div>
+                    <div><button class="btn btn-xs btn-primary" ng-click="findContractorCtrl.toggleShowCompany()">Add new company</button></div>
                 </div>
             </div>
             <div>
                 <div class="row well">
 
-                    <label class="col-sm-5">Find person by Last name:</label>
+                    <label class="col-sm-5">Find person:</label>
                     <div class="input-group col-md-6">
                         <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.personModel" placeholder="Last name"
                                                            uib-typeahead="person.lastName for persons in findContractorCtrl.findPersonByLastName($viewValue)"
@@ -33,12 +34,13 @@
                                                            typeahead-template-url="common/directives/findContractor/getPerson.html">
                             <div ng-show="findContractorCtrl.noResultsPerson">
                                 <i class="glyphicon glyphicon-remove"></i>
-                                <p class="text-justify">Company not found,<br>
+                                <p class="text-justify">Person not found,<br>
                                     to add new company click <a href="" ng-click="findContractorCtrl.toggleShowPerson()">here</a></p>
                             </div>
                         </div>
 
                     </div>
+                    <div><button class="btn btn-xs btn-primary" ng-click="findContractorCtrl.toggleShowPerson()">Add new person</button></div>
                 </div>
             </div>
         </div>
@@ -61,20 +63,34 @@
                             <td>Regon</td>
                             <td>{{findContractorCtrl.company.regon}}</td>
                         </tr>
-                        <tr>
+                        <tr ng-if="'GB' !== findContractorCtrl.company.address.countryCode">
                             <td>Address</td>
                             <td>{{findContractorCtrl.company.address.street}} {{findContractorCtrl.company.address.buildNr}}<span
                                     ng-if="findContractorCtrl.company.address.flatNr">{{'/'+findContractorCtrl.company.address.flatNr}}</span>
                                 <p>{{findContractorCtrl.company.address.postCode}} {{findContractorCtrl.company.address.city }}</p>
                             </td>
                         </tr>
-                        <tr ng-if="findContractorCtrl.company.hasOwnProperty('bankName') && findContractorCtrl.company.bankName">
-                            <td>Bank Name</td>
-                            <td>{{findContractorCtrl.company.bankName}}</td>
+                        <tr ng-if="'GB' === findContractorCtrl.company.address.countryCode">
+                            <td>Address</td>
+                            <td>{{findContractorCtrl.company.address.buildNr}}<span
+                                    ng-if="findContractorCtrl.company.address.flatNr">{{'/'+findContractorCtrl.company.address.flatNr}}</span>, {{findContractorCtrl.company.address.street}},
+                                <p>{{findContractorCtrl.company.address.postCode}} {{findContractorCtrl.company.address.city }}</p>
+                            </td>
                         </tr>
-                        <tr ng-if="findContractorCtrl.company.hasOwnProperty('bankAccount') && findContractorCtrl.company.bankAccount">
+                        <tr ng-if="findContractorCtrl.checkAccount()">
+                            <td>Choose account</td>
+                            <td>
+                                <select ng-model="findContractorCtrl.accountNr" class="form-control"
+                                        ng-options="key as (value.name + ' - ' + value.account) for (key,value) in findContractorCtrl.company.bankAccounts"></select>
+                            </td>
+                        </tr>
+                        <tr ng-if="findContractorCtrl.accountNr">
+                            <td>Bank Name</td>
+                            <td>{{findContractorCtrl.company.bankAccounts[findContractorCtrl.accountNr].bankName}}</td>
+                        </tr>
+                        <tr ng-if="findContractorCtrl.accountNr">
                             <td>Bank Account</td>
-                            <td class="wrap-word">{{findContractorCtrl.company.bankAccount}}</td>
+                            <td class="wrap-word">{{findContractorCtrl.company.bankAccounts[findContractorCtrl.accountNr].account}}</td>
                         </tr>
                     </table>
                 </div>
@@ -112,25 +128,17 @@
             </div>
 
             <div class="form-group" ng-class="{'has-error' : companyForm.companyNip.$invalid}">
-                <label class="sr-only">NIP*</label>
-                <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"
-                       ng-model="findContractorCtrl.company.nip" required nip-mask ng-change="findContractorCtrl.validateNip()">
-                <div ng-messages="companyForm.companyNip.$error" class="input-error">
-                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                    <div ng-message="pattern">Company's nip required length is 10</div>
-                </div>
+                <label class="sr-only">NIP</label>
+                <input type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"
+                       ng-model="findContractorCtrl.company.nip" ng-change="findContractorCtrl.validateNip()">
                 <div ng-show="companyForm.companyNip.$error" class="input-error">
                     <div ng-show="findContractorCtrl.showAlert">Nip already exsist</div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="sr-only">Regon</label>
-                <input pattern="[0-9]{10}" class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
+                <input class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
                        ng-model="findContractorCtrl.company.regon">
-                <div ng-messages="companyForm.companyRegon.$error" class="input-error">
-                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                    <div ng-message="pattern">Company's regon required length is 10</div>
-                </div>
             </div>
 
             <div class="form-group" ng-class="{'has-error' : companyForm.companyStreet.$invalid}">
@@ -175,23 +183,28 @@
                     <div ng-message="minlength">Company's street required min. length is 2</div>
                 </div>
             </div>
-            <div class="form-group" ng-class="{'has-error' : companyForm.bankName.$invalid}">
-                <label class="sr-only">Bank Name*</label>
-                <input type="text" class="form-control" id="bankName" name="bankName" placeholder="Bank Name" ng-model="findContractorCtrl.company.bankName"
-                       required>
-                <div ng-messages="companyForm.bankName.$error" class="input-error">
-                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                    <div ng-message="minlength">Company's bank name required min. length is 2</div>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{'has-error' : companyForm.bankAccount.$invalid}">
-                <label class="sr-only">Bank Account*</label>
-                <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="Bank Account"
-                       ng-model="findContractorCtrl.company.bankAccount" required>
-                <div ng-messages="companyForm.bankAccount.$error" class="input-error">
+            <div class="form-group" ng-class="{'has-error' : companyForm.country.$invalid}">
+                <label class="sr-only">Country*</label>
+                <input type="text" class="form-control" id="bankAccount" name="country" placeholder="Country"
+                       ng-model="findContractorCtrl.company.address.country" required>
+                <div ng-messages="companyForm.country.$error" class="input-error">
                     <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                 </div>
             </div>
+            <div class="form-group" ng-class="{'has-error' : companyForm.countryCode.$invalid}">
+                <label class="sr-only">Country Code*</label>
+                <input type="text" class="form-control" id="countryCode" name="countryCode" placeholder="Country Code"
+                       ng-model="findContractorCtrl.company.address.countryCode" required capitalize="">
+                <div ng-messages="companyForm.countryCode.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-9 col-xs-12 mar-bottom-1">
+                <add-bank-account accounts="findContractorCtrl.company.bankAccounts"></add-bank-account>
+            </div>
+
 
             <div class="col-sm-9 col-xs-12">
                 <div ng-show="findContractorCtrl.invalidFormAlert" uib-alert class="alert-danger" id="alert" role="alert"
@@ -230,8 +243,8 @@
             </div>
             <div class="form-group" ng-class="{'has-error' : personForm.last_name.$invalid}">
                 <label class="sr-only">Last Name*</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name"
-                       ng-model="findContractorCtrl.company.lastName" required minlength="2">
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name" ng-model="findContractorCtrl.company.lastName"
+                       required minlength="2">
                 <div ng-messages="personForm.last_name.$error" class="input-error">
                     <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                     <div ng-message="minlength">Last name required min. length is 2</div>
@@ -298,28 +311,33 @@
 
             <div class="form-group" ng-class="{'has-error' : personForm.cityPerson.$invalid}">
                 <label class="sr-only">City*</label>
-                <input type="text" class="form-control" id="city_pers" name="cityPerson" placeholder="City" ng-model="findContractorCtrl.company.address.city" required>
+                <input type="text" class="form-control" id="city_pers" name="cityPerson" placeholder="City" ng-model="findContractorCtrl.company.address.city"
+                       required>
                 <div ng-messages="personForm.cityPerson.$error" class="input-error">
                     <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                     <div ng-message="minlength">Company's street required min. length is 2</div>
                 </div>
             </div>
-            <div class="form-group" ng-class="{'has-error' : personForm.bankNamePers.$invalid}">
-                <label class="sr-only">Bank Name*</label>
-                <input type="text" class="form-control" id="bankNamePers" name="bankNamePers" placeholder="Bank Name" ng-model="findContractorCtrl.company.bankName"
-                       required>
-                <div ng-messages="personForm.bankNamePers.$error" class="input-error">
-                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                    <div ng-message="minlength">Company's bank name required min. length is 2</div>
+            <div class="form-group" ng-class="{'has-error' : companyForm.country.$invalid}">
+                <label class="sr-only">Country*</label>
+                <input type="text" class="form-control" id="countryPerson" name="countryPerson" placeholder="Country"
+                       ng-model="findContractorCtrl.company.address.country" required>
+                <div ng-messages="companyForm.countryPerson.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                 </div>
             </div>
-            <div class="form-group" ng-class="{'has-error' : personForm.bankAccountPers.$invalid}">
-                <label class="sr-only">Bank Account*</label>
-                <input type="text" class="form-control" id="bankAccountPers" name="bankAccountPers" placeholder="Bank Account"
-                       ng-model="findContractorCtrl.company.bankAccount" required>
-                <div ng-messages="personForm.bankAccountPers.$error" class="input-error">
-                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+            <div class="form-group" ng-class="{'has-error' : companyForm.countryCode.$invalid}">
+                <label class="sr-only">Country Code*</label>
+                <input type="text" class="form-control" id="countryCodePerson" name="countryCodePerson" placeholder="Country Code"
+                       ng-model="findContractorCtrl.company.address.countryCode" required capitalize="">
+                <div ng-messages="companyForm.countryCodePerson.$error" class="input-error">
+                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                 </div>
+            </div>
+
+
+            <div class="col-sm-9 col-xs-12 mar-bottom-1">
+                <add-bank-account accounts="findContractorCtrl.company.bankAccounts"></add-bank-account>
             </div>
 
             <div class="col-sm-9 col-xs-12">
