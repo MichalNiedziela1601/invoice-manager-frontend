@@ -37,7 +37,6 @@
             templateUrl: 'modules/invoices/list/invoices.tpl.html',
             controller: 'InvoicesController',
             controllerAs: 'invoicesCtrl',
-            css: '/modules/invoices/list/invoices.css',
             requireAuth: true
         });
         $routeProvider.when('/invoices/details/:id', {
@@ -51,7 +50,6 @@
             templateUrl: 'modules/registration/registrationCompany.tpl.html',
             controller: 'RegistrationCompanyController',
             controllerAs: 'registrationCompanyCtrl',
-            css: '/modules/registration/registrationCompany.css'
         });
 
         $routeProvider.when('/user', {

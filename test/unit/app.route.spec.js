@@ -88,10 +88,6 @@ describe('Routes', function ()
         {
             expect(route.routes['/invoices'].controllerAs).toBe('invoicesCtrl');
         });
-        it('should has \'invoices\' as css ', function ()
-        {
-            expect(route.routes['/invoices'].css).toBe('/modules/invoices/list/invoices.css');
-        });
     });
     describe('/invoices/invoicesDetails/:id', function ()
     {
@@ -121,10 +117,6 @@ describe('Routes', function ()
         it('should has \'registration\' as controller shortcut', function ()
         {
             expect(route.routes['/registration'].controllerAs).toBe('registrationCompanyCtrl');
-        });
-        it('should has \'registration\' as css', function ()
-        {
-            expect(route.routes['/registration'].css).toBe('/modules/registration/registrationCompany.css');
         });
     });
     describe('/user', function ()

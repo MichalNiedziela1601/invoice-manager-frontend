@@ -4,7 +4,7 @@
 
     function FindContractorDirective()
     {
-        function controllerFn($window, $timeout, CompanyDAO, Person)
+        function controllerFn($window, CompanyDAO, Person)
         {
             /*jshint validthis:true */
             var ctrl = this;
@@ -15,16 +15,41 @@
             ctrl.errorMessage = null;
             ctrl.showError = false;
             ctrl.userInfo = JSON.parse($window.sessionStorage.userInfo);
+            ctrl.companies = [];
+            ctrl.persons = [];
 
-            ctrl.checkAccount = function(){
-                if(ctrl.company.bankAccounts){
+            ctrl.getCompanies = function ()
+            {
+                CompanyDAO.query().then(function (data)
+                {
+                    data.map(function(company,index){
+                        if(ctrl.userInfo.nip === company.nip){
+                            data.splice(index,1);
+                        }
+                    });
+                    ctrl.companies = data;
+                });
+            };
+
+            ctrl.getPersons = function ()
+            {
+                Person.getPersons().then(function (data)
+                {
+                    ctrl.persons = data;
+                });
+            };
+
+            ctrl.checkAccount = function ()
+            {
+                if (ctrl.company && ctrl.company.bankAccounts) {
                     return Object.keys(ctrl.company.bankAccounts).length > 1;
                 }
                 return true;
             };
 
-            ctrl.checkAccountChosen = function(){
-                if(!ctrl.checkAccount()){
+            ctrl.checkAccountChosen = function ()
+            {
+                if (!ctrl.checkAccount()) {
                     ctrl.accountNr = '0';
                 } else {
                     ctrl.accountNr = null;
@@ -50,32 +75,12 @@
                 });
             };
 
-            ctrl.findCompaniesByNip = function (nip)
-            {
-                return CompanyDAO.getNips(nip).then(function (response)
-                {
-                    response.map(function(company,index){
-                        if(ctrl.userInfo.nip === company.nip){
-                            response.splice(index,1);
-                        }
-                    });
-                    return response;
-                });
-            };
 
             ctrl.onSelectCompany = function ($item)
             {
                 ctrl.idCompany = $item.id;
                 ctrl.contractorType = 'company';
                 ctrl.findContractor();
-            };
-
-            ctrl.findPersonByLastName = function (lastName)
-            {
-                return Person.findByName(lastName).then(function (result)
-                {
-                    return result;
-                });
             };
 
             ctrl.onSelectPerson = function ($item)
@@ -121,7 +126,7 @@
             function addCompany(form)
             {
                 if (form.$valid) {
-                    if(undefined !== ctrl.company.regon && 0 === ctrl.company.regon.length){
+                    if (_.isEmpty(ctrl.company.regon)) {
                         delete ctrl.company.regon;
                     }
                     CompanyDAO.addCompany(ctrl.company).then(function (data)
@@ -137,7 +142,7 @@
                             {
                                 console.error(error);
                                 ctrl.showError = true;
-                                ctrl.errorMessage = error.data || error.data.message || error;
+                                ctrl.errorMessage = error.data.message || error.data ||  error;
                             });
                 } else {
                     ctrl.invalidFormAlert = true;
@@ -157,7 +162,7 @@
 
             function validateNip()
             {
-                if (ctrl.company.nip || 9 < ctrl.company.nip.toString().length) {
+                if (ctrl.company.nip && 9 < ctrl.company.nip.toString().length) {
                     CompanyDAO.findByNip(ctrl.company.nip).then(function ()
                     {
                         ctrl.showAlert = true;
@@ -170,7 +175,7 @@
 
             ctrl.validateNipPerson = function ()
             {
-                if (ctrl.person.nip || 9 < ctrl.person.nip.length) {
+                if (ctrl.person.nip && 9 < ctrl.person.nip.toString().length) {
                     Person.findByNip(ctrl.person.nip).then(function ()
                     {
                         ctrl.showAlert = true;
@@ -185,55 +190,48 @@
             ctrl.validateShortcut = function ()
             {
                 if (ctrl.company.shortcut) {
-                    $timeout(function ()
-                    {
-                        CompanyDAO.findShortcut(ctrl.company.shortcut).then(function (result)
-                        {
-                            ctrl.showShortcut = !!result[0];
-                        })
-                                .catch(function (error)
-                                {
-                                    console.error(error);
-                                });
-                    }, 400);
 
+                    CompanyDAO.findShortcut(ctrl.company.shortcut).then(function (result)
+                    {
+                        ctrl.showShortcut = !!result[0];
+                    })
+                            .catch(function (error)
+                            {
+                                console.error(error);
+                            });
                 }
+
             };
 
             ctrl.validateShortcutPerson = function ()
             {
-                if ( ctrl.company.shortcut) {
-                    $timeout(function ()
-                    {
-                        Person.findShortcut(ctrl.company.shortcut).then(function (result)
-                        {
-                            ctrl.showShortcut = !!result[0];
-                        })
-                                .catch(function (error)
-                                {
-                                    console.error(error);
-                                });
-                    }, 400);
+                if (ctrl.company.shortcut) {
 
+                    Person.findShortcut(ctrl.company.shortcut).then(function (result)
+                    {
+                        ctrl.showShortcut = !!result[0];
+                    })
+                            .catch(function (error)
+                            {
+                                console.error(error);
+                            });
                 }
             };
 
-            ctrl.closeShowError = function(){
+            ctrl.closeShowError = function ()
+            {
                 ctrl.showError = false;
             };
 
-            ctrl.addPerson = function(form)
+            ctrl.addPerson = function (form)
             {
                 if (form.$valid) {
-                    if (undefined !== ctrl.company.regon && 0 === ctrl.company.regon.length) {
-                        delete ctrl.company.regon;
-                    }
                     Person.addPerson(ctrl.company).then(function (result)
                     {
                         ctrl.invalidFormAlert = false;
                         form.$setPristine();
                         ctrl.contractorType = 'person';
-                        Person.getById(result.id).then(function(person)
+                        Person.getById(result.id).then(function (person)
                         {
                             ctrl.showBox = true;
                             ctrl.showAlert = false;
@@ -244,13 +242,21 @@
                             .catch(function (error)
                             {
                                 ctrl.showError = true;
-                                ctrl.errorMessage = error.data || error.data.message || error;
+                                ctrl.errorMessage = error.data.message || error.data || error;
                             });
                 } else {
                     ctrl.invalidFormAlert = true;
                     ctrl.addComp = false;
                 }
             };
+
+            function init()
+            {
+                ctrl.getCompanies();
+                ctrl.getPersons();
+            }
+
+            init();
 
             ctrl.validateNip = validateNip;
             ctrl.addCompany = addCompany;

@@ -5,44 +5,46 @@
                 <div class="row well">
 
                     <label class="col-sm-5">Find company:</label>
-                    <div class="input-group col-md-6">
-                        <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.companyModel" placeholder="NIP contractors or shortcut"
-                                                           uib-typeahead="companies.nip for companies in findContractorCtrl.findCompaniesByNip($viewValue)"
-                                                           typeahead-no-results="findContractorCtrl.noResultsCompany" class="form-control"
-                                                           typeahead-on-select="findContractorCtrl.onSelectCompany($item,$model,$label)"
-                                                           typeahead-template-url="common/directives/findContractor/getNips.tpl.html">
-                            <div ng-show="findContractorCtrl.noResultsCompany">
-                                <i class="glyphicon glyphicon-remove"></i>
-                                <p class="text-justify">Company not found,<br>
-                                    to add new company click <a href="" ng-click="findContractorCtrl.toggleShowCompany()">here</a></p>
-                            </div>
-                        </div>
+                    <div class="col-md-7">
+
+                            <ui-select ng-model="findContractorCtrl.selectedCompany" theme="bootstrap" on-select="findContractorCtrl.onSelectCompany($item)">
+                                <ui-select-match>{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="company.name as company in findContractorCtrl.companies | filter: $select.search"
+                                refresh="findContractorCtrl.getCompanies()">
+                                    <div ng-bind-html="company.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+
+                            </ui-select>
 
                     </div>
-                    <div><button class="btn btn-xs btn-primary" ng-click="findContractorCtrl.toggleShowCompany()">Add new company</button></div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-xs btn-primary" ng-click="findContractorCtrl.toggleShowCompany()">Add new company</button>
+                    </div>
                 </div>
             </div>
             <div>
                 <div class="row well">
 
                     <label class="col-sm-5">Find person:</label>
-                    <div class="input-group col-md-6">
-                        <div class="typeahead-demo"><input type="text" ng-model="findContractorCtrl.personModel" placeholder="Last name"
-                                                           uib-typeahead="person.lastName for persons in findContractorCtrl.findPersonByLastName($viewValue)"
-                                                           typeahead-no-results="findContractorCtrl.noResultsPerson" class="form-control"
-                                                           typeahead-on-select="findContractorCtrl.onSelectPerson($item,$model,$label)"
-                                                           typeahead-template-url="common/directives/findContractor/getPerson.html">
-                            <div ng-show="findContractorCtrl.noResultsPerson">
-                                <i class="glyphicon glyphicon-remove"></i>
-                                <p class="text-justify">Person not found,<br>
-                                    to add new company click <a href="" ng-click="findContractorCtrl.toggleShowPerson()">here</a></p>
-                            </div>
-                        </div>
+                    <div class="col-md-7">
+
+                            <ui-select ng-model="findContractorCtrl.selectedPerson" theme="bootstrap" on-select="findContractorCtrl.onSelectPerson($item)">
+                                <ui-select-match>{{$select.selected.lastName}} {{$select.selected.firstName}}</ui-select-match>
+                                <ui-select-choices repeat="(person.lastName + ' ' + person.firstName) as person in findContractorCtrl.persons | filter: $select.search"
+                                refresh="findContractorCtrl.getPersons()">
+                                    <div ng-bind-html="(person.lastName + ' ' + person.firstName) | highlight: $select.search"></div>
+                                </ui-select-choices>
+
+                            </ui-select>
+
 
                     </div>
-                    <div><button class="btn btn-xs btn-primary" ng-click="findContractorCtrl.toggleShowPerson()">Add new person</button></div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-xs btn-primary" ng-click="findContractorCtrl.toggleShowPerson()">Add new person</button>
+                    </div>
                 </div>
             </div>
+
         </div>
 
         <div class="col-lg-6 col-md-12 findCompanyInput">
@@ -72,8 +74,8 @@
                         </tr>
                         <tr ng-if="'GB' === findContractorCtrl.company.address.countryCode">
                             <td>Address</td>
-                            <td>{{findContractorCtrl.company.address.buildNr}}<span
-                                    ng-if="findContractorCtrl.company.address.flatNr">{{'/'+findContractorCtrl.company.address.flatNr}}</span>, {{findContractorCtrl.company.address.street}},
+                            <td>{{findContractorCtrl.company.address.buildNr}}<span ng-if="findContractorCtrl.company.address.flatNr">{{'/'+findContractorCtrl.company.address.flatNr}}</span>,
+                                {{findContractorCtrl.company.address.street}},
                                 <p>{{findContractorCtrl.company.address.postCode}} {{findContractorCtrl.company.address.city }}</p>
                             </td>
                         </tr>
@@ -129,16 +131,15 @@
 
             <div class="form-group" ng-class="{'has-error' : companyForm.companyNip.$invalid}">
                 <label class="sr-only">NIP</label>
-                <input type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"
-                       ng-model="findContractorCtrl.company.nip" ng-change="findContractorCtrl.validateNip()">
+                <input type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP" ng-model="findContractorCtrl.company.nip"
+                       ng-change="findContractorCtrl.validateNip()">
                 <div ng-show="companyForm.companyNip.$error" class="input-error">
                     <div ng-show="findContractorCtrl.showAlert">Nip already exsist</div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="sr-only">Regon</label>
-                <input class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
-                       ng-model="findContractorCtrl.company.regon">
+                <input class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon" ng-model="findContractorCtrl.company.regon">
             </div>
 
             <div class="form-group" ng-class="{'has-error' : companyForm.companyStreet.$invalid}">
@@ -201,7 +202,7 @@
             </div>
 
 
-            <div class="col-sm-9 col-xs-12 mar-bottom-1">
+            <div class="col-xs-12 mar-bottom-1">
                 <add-bank-account accounts="findContractorCtrl.company.bankAccounts"></add-bank-account>
             </div>
 
@@ -266,11 +267,8 @@
 
             <div class="form-group" ng-class="{'has-error' : personForm.nip_person.$invalid}">
                 <label class="sr-only">NIP</label>
-                <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_person" name="personNip" placeholder="NIP"
-                       ng-model="findContractorCtrl.company.nip" nip-mask ng-change="findContractorCtrl.validateNipPerson()">
-                <div ng-messages="personForm.personNip.$error" class="input-error">
-                    <div ng-message="pattern">Company's nip required length is 10</div>
-                </div>
+                <input type="text" class="form-control" id="nip_person" name="personNip" placeholder="NIP"
+                       ng-model="findContractorCtrl.company.nip" ng-change="findContractorCtrl.validateNipPerson()">
                 <div ng-show="personForm.personNip.$error" class="input-error">
                     <div ng-show="findContractorCtrl.showAlert">Nip already exsist</div>
                 </div>
@@ -340,7 +338,12 @@
                 <add-bank-account accounts="findContractorCtrl.company.bankAccounts"></add-bank-account>
             </div>
 
-            <div class="col-sm-9 col-xs-12">
+
+            <div class="col-xs-12 mar-bottom-1">
+                <add-bank-account accounts="findContractorCtrl.company.bankAccounts"></add-bank-account>
+            </div>
+
+            <div class="col-xs-12">
                 <div ng-show="findContractorCtrl.invalidFormAlert" uib-alert class="alert-danger" role="alert"
                      close="findContractorCtrl.closeInvalidFormAlert()">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

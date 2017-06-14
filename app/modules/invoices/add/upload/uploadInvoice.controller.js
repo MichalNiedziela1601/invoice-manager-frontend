@@ -82,7 +82,7 @@
 
         function checkTypeTansaction(){
             if('bank transfer' === ctrl.invoiceCompany.paymentMethod){
-                return !!ctrl.invoiceCompany.dealerAccountNr;
+                return (ctrl.companyDetails.bankAccounts && Object.keys(ctrl.companyDetails.bankAccounts).length > 0 && !!ctrl.invoiceCompany.dealerAccountNr);
             } else if ('cash' === ctrl.invoiceCompany.paymentMethod) {
                 ctrl.invoiceCompany.dealerAccountNr = null;
                 return true;

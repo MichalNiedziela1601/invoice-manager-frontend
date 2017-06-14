@@ -251,8 +251,7 @@ describe('AddCompanyDirective', function ()
                 {
                     it('should be called with controller.company', function ()
                     {
-                        expect(companyDaoMock.updateCompany)
-                                .toHaveBeenCalledWith({name: 'Jakub', nip: 1234567890, bankAccounts: {0: {account: '787348973249'}}});
+                        expect(companyDaoMock.updateCompany).toHaveBeenCalledWith({name: 'Jakub', nip: 1234567890, bankAccounts: {0: {account: '787348973249'}}});
                     });
                     it('should set invalidFormAlert to false', function ()
                     {

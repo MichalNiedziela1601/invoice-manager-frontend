@@ -71,4 +71,32 @@ describe('InvoiceListController', function ()
             expect(invoiceCtrl.invoicesListBuy).toEqual(invoices[1]);
         });
     });
+
+    describe('applyGlobalSearchSell', function ()
+    {
+        beforeEach(function ()
+        {
+            invoiceCtrl.globalSearchTermSell = 'Lublin';
+            spyOn(invoiceCtrl.sellTable,'filter');
+            invoiceCtrl.applyGlobalSearchSell();
+        });
+        it('should call companyTable.filter with term', function ()
+        {
+            expect(invoiceCtrl.sellTable.filter).toHaveBeenCalled();
+        });
+    });
+
+    describe('applyGlobalSearchBuy', function ()
+    {
+        beforeEach(function ()
+        {
+            invoiceCtrl.globalSearchTermBuy = 'Lublin';
+            spyOn(invoiceCtrl.buyTable,'filter');
+            invoiceCtrl.applyGlobalSearchBuy();
+        });
+        it('should call companyTable.filter with term', function ()
+        {
+            expect(invoiceCtrl.buyTable.filter).toHaveBeenCalled();
+        });
+    });
 });

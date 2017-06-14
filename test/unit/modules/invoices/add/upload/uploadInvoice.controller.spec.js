@@ -8,7 +8,6 @@ describe('UploadInvoiceController', function ()
     var uibModal;
     var mockTestCompany;
     var mockFoundTestCompany;
-    var fakeModal;
     var baseTime;
     var nips;
     var form;
@@ -37,7 +36,16 @@ describe('UploadInvoiceController', function ()
             }
         };
         mockTestCompany = {
-            id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
+            id: 1,
+            name: 'Firma 1',
+            nip: 1234567890,
+            regon: 6789567,
+            street: 'Spokojna',
+            buildNr: 4,
+            flatNr: 3,
+            postCode: 33 - 100,
+            city: 'Tarnów',
+            bankAccounts: {'0' : { name: 'PLN', account: '893748957349857349'}}
         };
 
 
@@ -76,37 +84,6 @@ describe('UploadInvoiceController', function ()
                 return unsuccessfulPromise();
             }
         });
-
-
-        spyOn(companyDaoMock, 'getNips').and.callFake(function (nip)
-        {
-            if (nip === 12) {
-                return successfulPromise(nips);
-            } else if (nip === 1233) {
-                return successfulPromise([]);
-            } else {
-                return unsuccessfulPromise('Error with something');
-            }
-        });
-
-        fakeModal = {
-            result: {
-                then: function (confirmCallback, cancelCallback)
-                {
-                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
-                    this.confirmCallBack = confirmCallback;
-                    this.cancelCallback = cancelCallback;
-                }
-            }, close: function (item)
-            {
-                //The user clicked OK on the modal dialog, call the stored confirm callback with the selected item
-                this.result.confirmCallBack(item);
-            }, dismiss: function (type)
-            {
-                //The user clicked cancel on the modal dialog, call the stored cancel callback
-                this.result.cancelCallback(type);
-            }
-        };
 
         UploadMock = jasmine.createSpyObj('Upload', ['upload']);
 
