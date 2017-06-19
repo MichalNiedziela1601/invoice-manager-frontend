@@ -15,15 +15,32 @@
             ctrl.errorMessage = null;
             ctrl.showError = false;
             ctrl.userInfo = JSON.parse($window.sessionStorage.userInfo);
+
+            ctrl.checkAccount = function(){
+                if(ctrl.company.bankAccounts){
+                    return Object.keys(ctrl.company.bankAccounts).length > 1;
+                }
+                return true;
+            };
+
+            ctrl.checkAccountChosen = function(){
+                if(!ctrl.checkAccount()){
+                    ctrl.accountNr = '0';
+                } else {
+                    ctrl.accountNr = null;
+                }
+            };
+
             ctrl.findContractor = function ()
             {
-                CompanyDAO.findByNip(ctrl.nipContractor).then(function (result)
+                CompanyDAO.getById(ctrl.idCompany).then(function (result)
                 {
                     ctrl.company = result;
                     ctrl.companyModel = null;
                     ctrl.showBox = true;
                     ctrl.showAlert = false;
-                    ctrl.nipContractor = null;
+                    ctrl.idCompany = null;
+                    ctrl.checkAccountChosen();
                     ctrl.showFind();
                 }).catch(function ()
                 {
@@ -48,7 +65,7 @@
 
             ctrl.onSelectCompany = function ($item)
             {
-                ctrl.nipContractor = $item.nip;
+                ctrl.idCompany = $item.id;
                 ctrl.contractorType = 'company';
                 ctrl.findContractor();
             };
@@ -70,6 +87,7 @@
                     ctrl.showAlert = false;
                     ctrl.company = data;
                     ctrl.contractorType = 'person';
+                    ctrl.checkAccountChosen();
                 });
             };
 
@@ -106,11 +124,12 @@
                     if(undefined !== ctrl.company.regon && 0 === ctrl.company.regon.length){
                         delete ctrl.company.regon;
                     }
-                    CompanyDAO.addCompany(ctrl.company).then(function ()
+                    CompanyDAO.addCompany(ctrl.company).then(function (data)
                     {
+
                         ctrl.invalidFormAlert = false;
                         form.$setPristine();
-                        ctrl.nipContractor = ctrl.company.nip;
+                        ctrl.idCompany = data.id;
                         ctrl.contractorType = 'company';
                         ctrl.findContractor();
                     })
@@ -246,7 +265,8 @@
             bindToController: {
                 company: '=',
                 contractorType: '=',
-                showBox: '='
+                showBox: '=',
+                accountNr: '='
             },
             controller: controllerFn,
             controllerAs: 'findContractorCtrl'

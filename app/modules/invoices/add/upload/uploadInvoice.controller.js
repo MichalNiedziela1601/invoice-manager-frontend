@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    function UploadInvoiceController(Upload, InvoiceDAO, CompanyDAO, $uibModal, $window)
+    function UploadInvoiceController(Upload, InvoiceDAO, $window)
     {
         var ctrl = this;
         ctrl.showAddInvoice = false;
@@ -15,9 +15,9 @@
             status: 'unpaid',
             products: {},
             reverseCharge: false,
-            paymentMethod: ctrl.payment[1].type
+            paymentMethod: ctrl.payment[1].type,
+            dealerAccountNr: null
         };
-        ctrl.invoicePerson = {};
         ctrl.companyDetails = null;
         ctrl.url = true;
         ctrl.companyNotChosen = false;
@@ -26,6 +26,7 @@
         ctrl.formSubmitted = false;
         ctrl.showLoader = false;
         ctrl.showBox = false;
+        ctrl.showAccountNotChosen = false;
 
         ctrl.createDatePicker = {
             date: new Date(), opened: false, options: {
@@ -79,6 +80,15 @@
             }
         };
 
+        function checkTypeTansaction(){
+            if('bank transfer' === ctrl.invoiceCompany.paymentMethod){
+                return !!ctrl.invoiceCompany.dealerAccountNr;
+            } else if ('cash' === ctrl.invoiceCompany.paymentMethod) {
+                ctrl.invoiceCompany.dealerAccountNr = null;
+                return true;
+            }
+        }
+
         function addInvoiceCompany(form)
         {
             if (ctrl.companyDetails) {
@@ -100,34 +110,38 @@
                     }
                 };
                 if (form.$valid) {
-                    if (!ctrl.formSubmitted) {
-                        ctrl.formSubmitted = true;
-                        ctrl.showLoader = true;
-                        Upload.upload(ctrl.fileToUpload).then(function ()
-                        {
-                            ctrl.showLoader = false;
-                            ctrl.companyNotChosen = false;
-                            ctrl.addInvoice = true;
-                            ctrl.createDatePicker.date = new Date();
-                            ctrl.executionDatePicker.date = new Date();
-                            ctrl.invoiceCompany = {
-                                status: 'unpaid',
-                                products: {},
-                                reverseCharge: false,
-                                paymentMethod: ctrl.payment[1].type
-                            };
-                            ctrl.file = null;
-                            form.$setPristine();
-                            ctrl.formSubmitted = false;
-                            ctrl.showBox = false;
-                            ctrl.getInvoiceNumber();
-                        }).catch(function (error)
-                        {
-                            ctrl.showLoader = false;
-                            ctrl.errorMessage = error.data;
-                            ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
-                            ctrl.formSubmitted = false;
-                        });
+                    if(checkTypeTansaction()) {
+                        if (!ctrl.formSubmitted) {
+                            ctrl.formSubmitted = true;
+                            ctrl.showLoader = true;
+                            Upload.upload(ctrl.fileToUpload).then(function ()
+                            {
+                                ctrl.showLoader = false;
+                                ctrl.companyNotChosen = false;
+                                ctrl.addInvoice = true;
+                                ctrl.createDatePicker.date = new Date();
+                                ctrl.executionDatePicker.date = new Date();
+                                ctrl.invoiceCompany = {
+                                    status: 'unpaid',
+                                    products: {},
+                                    reverseCharge: false,
+                                    paymentMethod: ctrl.payment[1].type
+                                };
+                                ctrl.file = null;
+                                form.$setPristine();
+                                ctrl.formSubmitted = false;
+                                ctrl.showBox = false;
+                                ctrl.getInvoiceNumber();
+                            }).catch(function (error)
+                            {
+                                ctrl.showLoader = false;
+                                ctrl.errorMessage = error.data;
+                                ctrl.formInvalidAlert = !ctrl.formInvalidAlert;
+                                ctrl.formSubmitted = false;
+                            });
+                        }
+                    } else {
+                        ctrl.showAccountNotChosen = true;
                     }
                 }
             } else {
@@ -156,6 +170,10 @@
             ctrl.mockedCompany = angular.fromJson($window.sessionStorage.getItem('userInfo') || {});
         }
 
+        ctrl.closeAccountNotChosen = function(){
+            ctrl.showAccountNotChosen = false;
+        };
+
         getInvoiceNumber();
         getUserInfo();
 
@@ -168,6 +186,6 @@
 
     }
 
-    angular.module('app').controller('UploadInvoiceController', ['Upload', 'InvoiceDAO', 'CompanyDAO', '$uibModal', '$window', UploadInvoiceController]);
+    angular.module('app').controller('UploadInvoiceController', ['Upload', 'InvoiceDAO', '$window', UploadInvoiceController]);
 
 })();

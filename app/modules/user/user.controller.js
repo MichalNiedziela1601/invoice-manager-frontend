@@ -21,12 +21,7 @@
         function getInfoUser(){
             ctrl.userInfo = JSON.parse($window.sessionStorage.userInfo);
             ctrl.userAddressData = ctrl.userInfo.address;
-            ctrl.userAccountData =
-            {
-                bankName: ctrl.userInfo.bankName,
-                bankAccount: ctrl.userInfo.bankAccount,
-                swift: ctrl.userInfo.swift
-            };
+            ctrl.userAccountData = ctrl.userInfo.bankAccounts;
         }
 
         ctrl.addAddress = function (form)
@@ -60,6 +55,7 @@
                         $window.sessionStorage.setItem('userInfo', angular.toJson(data));
                         getInfoUser();
                         ctrl.accountEdit = true;
+                        form.$setPristine();
                     });
                 })
                         .catch(function(error) {
@@ -122,6 +118,16 @@
         ctrl.toggleAccountEdit = function ()
         {
             ctrl.accountEdit = !ctrl.accountEdit;
+        };
+
+        ctrl.addNewAccount = function(){
+            var length = Object.keys(ctrl.userAccountData).length;
+            ctrl.userAccount = {
+                bankName: ctrl.userAccountData[0].bankName || null,
+                swift: ctrl.userAccountData[0].swift || null
+            };
+            ctrl.userAccountData[length] = ctrl.userAccount;
+            ctrl.toggleAccountEdit();
         };
 
 

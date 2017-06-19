@@ -38,20 +38,45 @@ describe('FindContractorDirective', function ()
         mockFoundTestCompany = JSON.parse($window.sessionStorage.getItem('userInfo'));
 
         mockTestCompany = {
-            id: 1, name: 'Firma 1', nip: 1234567890, regon: 6789567, street: 'Spokojna', buildNr: 4, flatNr: 3, postCode: 33 - 100, city: 'Tarnów'
+            id: 1,
+            name: 'Firma 1',
+            nip: 1234567890,
+            regon: 6789567,
+            street: 'Spokojna',
+            buildNr: 4,
+            flatNr: 3,
+            postCode: '33-100',
+            city: 'Tarnów',
+            country: 'Poland',
+            bankAccounts: {
+                '0' : {
+                    editMode: false,
+                    account: '3423423423'
+                }
+            }
         };
         nips = [
-            {nip: 1234567890},
-            {nip: 1224567890}
+            {nip: 1234567890, id: 1},
+            {nip: 1224567890, id: 2}
         ];
 
         personsMock = [
-            {id: 1, firstName: 'Jan', lastName: 'Kowalski'},
-            {id: 2, firstName: 'Karol', lastName: 'Medrzewski'}
+            {id: 1, firstName: 'Jan', lastName: 'Kowalski', bankAccounts: {
+                '0' : {
+                    editMode: false,
+                    account: '3423423423'
+                }
+            }},
+            {id: 2, firstName: 'Karol', lastName: 'Medrzewski', bankAccounts: {
+                '0' : {
+                    editMode: false,
+                    account: '3423423423'
+                }
+            }}
         ];
-        spyOn(companyDaoMock, 'findByNip').and.callFake(function (booleanValue)
+        spyOn(companyDaoMock, 'getById').and.callFake(function (id)
         {
-            if (booleanValue === 1234567890) {
+            if (id === 1) {
                 return successfulPromise(mockTestCompany);
             } else {
                 return unsuccessfulPromise();
@@ -106,19 +131,97 @@ describe('FindContractorDirective', function ()
             });
         });
 
-        describe('findContractor', function ()
+        describe('checkAccount', function ()
         {
-            describe('contractor nip is valid', function ()
+            describe('when account exists', function ()
+            {
+                describe('when accounts lenght greaten then 1', function ()
+                {
+                    beforeEach(function ()
+                    {
+                        controller.company = {
+                            bankAccounts: {'0': {account: '849374934'}, '1': {account: '7943853953495'}}
+                        };
+
+                    });
+                    it('should return true', function ()
+                    {
+                        expect(controller.checkAccount()).toBeTruthy();
+                    });
+                });
+                describe('when accounts length equal 1', function ()
+                {
+                    beforeEach(function ()
+                    {
+                        controller.company = {
+                            bankAccounts: {'0': {account: '849374934'}}
+                        };
+
+                    });
+                    it('should return true', function ()
+                    {
+                        expect(controller.checkAccount()).toBeFalsy();
+                    });
+                });
+            });
+            describe('when accounts null', function ()
             {
                 beforeEach(function ()
                 {
-                    controller.nipContractor = 1234567890;
+                    controller.company = {};
+                });
+                it('should return true', function ()
+                {
+                    expect(controller.checkAccount()).toBeTruthy();
+                });
+            });
+        });
+
+        describe('checkAccountChosen', function ()
+        {
+            describe('when account exists and length is 1', function ()
+            {
+                beforeEach(function ()
+                {
+                    controller.company = {
+                        bankAccounts : {'0': {}}
+                    };
+                    controller.checkAccountChosen();
+                });
+                it('should set accountNr to 0', function ()
+                {
+                    expect(controller.accountNr).toBe('0');
+                });
+            });
+            describe('when checkAccount return true', function ()
+            {
+                beforeEach(function ()
+                {
+                    controller.company = {
+                        bankAccounts : {'0': {}, '1': {}}
+                    };
+                    controller.checkAccountChosen();
+                });
+                it('should set accountNr to null', function ()
+                {
+                    expect(controller.accountNr).toBeNull();
+                });
+            });
+        });
+
+        describe('findContractor', function ()
+        {
+            describe('contractor id is valid', function ()
+            {
+                beforeEach(function ()
+                {
+                    controller.idCompany = 1;
                     controller.findContractor();
                 });
 
                 it('should call findByNip function', function ()
                 {
-                    expect(companyDaoMock.findByNip).toHaveBeenCalledWith(1234567890);
+                    expect(companyDaoMock.getById).toHaveBeenCalledWith(1);
                 });
                 it('should set showBox to false', function ()
                 {
@@ -136,23 +239,19 @@ describe('FindContractorDirective', function ()
                 {
                     expect(controller.company).toEqual(mockTestCompany);
                 });
-                it('should set nipContractor to null', function ()
-                {
-                    expect(controller.nipContractor).toBeNull();
-                });
             });
 
             describe('contractor nip is invalid', function ()
             {
                 beforeEach(function ()
                 {
-                    controller.nipContractor = 9999999999;
+                    controller.idCompany = 3;
                     controller.findContractor();
                 });
 
                 it('should call findByNip function', function ()
                 {
-                    expect(companyDaoMock.findByNip).toHaveBeenCalledWith(9999999999);
+                    expect(companyDaoMock.getById).toHaveBeenCalledWith(3);
                 });
                 it('should set showBox to false', function ()
                 {
@@ -222,7 +321,7 @@ describe('FindContractorDirective', function ()
                 });
                 it('should set nipContractor', function ()
                 {
-                    expect(controller.nipContractor).toBe(nips[0].nip);
+                    expect(controller.idCompany).toBe(nips[0].id);
                 });
                 it('should set contractorType', function ()
                 {
@@ -258,7 +357,12 @@ describe('FindContractorDirective', function ()
 
         describe('onSelectPerson', function ()
         {
-            var personMock = {id: 1, firstName: 'Jan', lastName: 'Kowalski', addressId: 4};
+            var personMock = {id: 1, firstName: 'Jan', lastName: 'Kowalski', addressId: 4, bankAccounts: {
+                '0' : {
+                    editMode: false,
+                    account: '3423423423'
+                }
+            }};
             beforeEach(function ()
             {
                 spyOn(personDaoMock, 'getById').and.callFake(function ()
@@ -348,7 +452,7 @@ describe('FindContractorDirective', function ()
             {
                 spyOn(companyDaoMock, 'addCompany').and.callFake(function ()
                 {
-                    return successfulPromise(mockFoundTestCompany);
+                    return successfulPromise({id: 1});
                 });
                 form = {};
                 form.$valid = true;
@@ -357,7 +461,7 @@ describe('FindContractorDirective', function ()
                 controller.company = {name: 'Jakub', nip: 1234567890};
                 controller.addCompany(form);
             });
-            it('should set company to empty  ', function ()
+            it('should set company to find by id  ', function ()
             {
                 expect(controller.company)
                         .toEqual({
@@ -368,8 +472,15 @@ describe('FindContractorDirective', function ()
                             street: 'Spokojna',
                             buildNr: 4,
                             flatNr: 3,
-                            postCode: -67,
-                            city: 'Tarnów'
+                            postCode: '33-100',
+                            city: 'Tarnów',
+                            country: 'Poland',
+                            bankAccounts: {
+                                '0' : {
+                                    editMode: false,
+                                    account: '3423423423'
+                                }
+                            }
                         });
             });
             describe('companyDAO.addCompany should be called with ', function ()
@@ -386,9 +497,9 @@ describe('FindContractorDirective', function ()
                 {
                     expect(form.$setPristine).toHaveBeenCalled();
                 });
-                it('should set nipContractor', function ()
+                it('should set idCompany', function ()
                 {
-                    expect(controller.nipContractor).toBeNull();
+                    expect(controller.idCompany).toBeNull();
                 });
                 it('should set contractorType to company', function ()
                 {
@@ -467,10 +578,18 @@ describe('FindContractorDirective', function ()
     describe('vallidateNip', function ()
     {
 
-        describe('findByNip with valid value', function ()
+        describe('findByNip with invalid value', function ()
         {
             beforeEach(function ()
             {
+                spyOn(companyDaoMock, 'findByNip').and.callFake(function (nip)
+                {
+                    if (nip === 1234567890) {
+                        return successfulPromise(mockTestCompany);
+                    } else {
+                        return unsuccessfulPromise();
+                    }
+                });
                 controller.company = {nip: 1234567890};
 
                 controller.validateNip();
@@ -489,6 +608,14 @@ describe('FindContractorDirective', function ()
         {
             beforeEach(function ()
             {
+                spyOn(companyDaoMock, 'findByNip').and.callFake(function (nip)
+                {
+                    if (nip === 1234567890) {
+                        return successfulPromise(mockTestCompany);
+                    } else {
+                        return unsuccessfulPromise();
+                    }
+                });
                 controller.company = {nip: 12345890};
                 controller.validateNip();
             });

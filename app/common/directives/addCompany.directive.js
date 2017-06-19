@@ -4,13 +4,14 @@
 
     function AddCompanyDirective(CompanyDAO, Person)
     {
-        function controller($scope,$timeout)
+        function controller($scope, $timeout)
         {
             /*jshint validthis:true */
             var ctrl = this;
             ctrl.addComp = false;
             ctrl.personAdded = false;
             ctrl.invalidFormAlert = false;
+            ctrl.company = {bankAccounts: {}};
 
             $scope.$watchCollection(angular.bind(this, function ()
             {
@@ -23,19 +24,25 @@
                     ctrl.disableCompany = false;
                     ctrl.disableFormCompany = true;
                     ctrl.disableFormPerson = true;
+                    ctrl.accounts = ctrl.company ? ctrl.company.bankAccounts : null;
                 } else if ('person' === newVal[0]) {
-                    ctrl.person = newVal[1];
-                    ctrl.company = null;
+                    ctrl.person = oldVal[1];
                     ctrl.activeTab = 1;
                     ctrl.disableCompany = true;
                     ctrl.disablePerson = false;
                     ctrl.disableFormCompany = true;
                     ctrl.disableFormPerson = true;
+                    ctrl.accounts = ctrl.person ? ctrl.person.bankAccounts : null;
                 }
             });
+
             function addCompany(form)
             {
+                ctrl.company.bankAccounts = ctrl.accounts;
                 if (form.$valid) {
+                    if (undefined !== ctrl.company.regon && 0 === ctrl.company.regon.length) {
+                        delete ctrl.company.regon;
+                    }
                     if (!ctrl.edit) {
                         CompanyDAO.addCompany(ctrl.company).then(function ()
                         {
@@ -43,6 +50,7 @@
                             form.$setPristine();
                             ctrl.addComp = true;
                             ctrl.company = {};
+                            ctrl.accounts = {};
                         }).catch(function (error)
                         {
                             console.error(error);
@@ -110,7 +118,7 @@
             ctrl.validateShortcut = function ()
             {
                 if (ctrl.company.shortcut) {
-                    $timeout(function()
+                    $timeout(function ()
                     {
                         CompanyDAO.findShortcut(ctrl.company.shortcut).then(function (result)
                         {
@@ -121,7 +129,7 @@
                                     console.error(error);
                                 });
 
-                    },400);
+                    }, 400);
 
                 }
             };
@@ -146,6 +154,7 @@
 
             ctrl.addPerson = function (form)
             {
+                ctrl.person.bankAccounts = ctrl.accounts;
                 if (form.$valid) {
                     if (!ctrl.edit) {
                         Person.addPerson(ctrl.person).then(function ()
@@ -155,6 +164,7 @@
                             form.$setPristine();
                             ctrl.showAlert = false;
                             ctrl.person = {};
+                            ctrl.accounts = {};
 
                         })
                                 .catch(function (error)
@@ -184,25 +194,27 @@
                 }
             };
 
-            ctrl.toggleEditCompany = function()
+            ctrl.toggleEditCompany = function ()
             {
                 ctrl.disableFormCompany = !ctrl.disableFormCompany;
                 ctrl.copyComp = angular.copy(ctrl.company);
 
             };
 
-            ctrl.cancelCompany = function(){
+            ctrl.cancelCompany = function ()
+            {
                 ctrl.disableFormCompany = !ctrl.disableFormCompany;
                 ctrl.company = ctrl.copyComp;
             };
 
-            ctrl.toggleEditPerson = function()
+            ctrl.toggleEditPerson = function ()
             {
                 ctrl.disableFormPerson = !ctrl.disableFormPerson;
                 ctrl.copyPers = angular.copy(ctrl.person);
             };
 
-            ctrl.cancelPerson = function(){
+            ctrl.cancelPerson = function ()
+            {
                 ctrl.person = ctrl.copyPers;
                 ctrl.disableFormPerson = !ctrl.disableFormPerson;
             };
@@ -212,7 +224,8 @@
                 ctrl.personAdded = false;
             };
 
-            ctrl.closeShowError = function(){
+            ctrl.closeShowError = function ()
+            {
                 ctrl.showError = false;
             };
 
@@ -227,7 +240,7 @@
             replace: true,
             bindToController: {
                 company: '=',
-                edit: '=',
+                edit: '@',
                 type: '='
             },
             transclude: true,

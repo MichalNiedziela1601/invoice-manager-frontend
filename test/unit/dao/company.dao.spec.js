@@ -9,7 +9,31 @@ describe('CompanyDAO', function ()
 
     function transformAddress(address)
     {
-        return address.street + ' ' + address.buildNr + '' + (address.flatNr ? '/' + address.flatNr : '') + ' ' + address.postCode + ' ' + address.city;
+        if ('GB' !== address.countryCode) {
+            return address.street +
+                    ' ' +
+                    address.buildNr +
+                    '' +
+                    (address.flatNr ? '/' + address.flatNr : '') +
+                    ', ' +
+                    address.postCode +
+                    ' ' +
+                    address.city +
+                    ', ' +
+                    address.country;
+        } else {
+            return address.buildNr +
+                    '' +
+                    (address.flatNr ? '/' + address.flatNr : '') +
+                    ', ' +
+                    address.street +
+                    ', ' +
+                    address.postCode +
+                    ' ' +
+                    address.city +
+                    ', ' +
+                    address.country;
+        }
     }
 
     beforeEach(module('app'));
@@ -48,8 +72,14 @@ describe('CompanyDAO', function ()
         beforeEach(function ()
         {
             mockResponse = [
-                {name: 'Firma 1', address: {street: 'Spokojna', buildNr: '45', flatNr: '4', postCode: '33-100', city: 'Tarnów'}},
-                {name: 'Firma 2', address: {street: 'Krakowska', buildNr: '4', postCode: '33-100', city: 'Tarnów'}}
+                {
+                    name: 'Firma 1',
+                    address: {street: 'Spokojna', buildNr: '45', flatNr: '4', postCode: '33-100', city: 'Tarnów', country: 'Poland', countryCode: 'PL'}
+                },
+                {
+                    name: 'Firma 2',
+                    address: {street: 'Krakowska', buildNr: '4', postCode: '33-100', city: 'Tarnów', country: 'Poland', countryCode: 'GB'}
+                }
             ];
         });
         it('should return array of companies', function ()
@@ -115,7 +145,8 @@ describe('CompanyDAO', function ()
             {
                 mockResponse = [{id: 4}];
                 httpBackend.expectGET('/api/company/shortcut?shortcut=MELEX').respond(200, mockResponse);
-               companyDAOMock.findShortcut({shortcut: 'MELEX'}).then(function(data){
+                companyDAOMock.findShortcut({shortcut: 'MELEX'}).then(function (data)
+                {
                     httpBackend.flush();
                     expect(data[0].id).toBe(4);
                 });
@@ -127,7 +158,8 @@ describe('CompanyDAO', function ()
             {
                 mockResponse = [];
                 httpBackend.expectGET('/api/company/shortcut?shortcut=JAN').respond(200, mockResponse);
-                companyDAOMock.findShortcut({shortcut: 'JAN'}).then(function(data){
+                companyDAOMock.findShortcut({shortcut: 'JAN'}).then(function (data)
+                {
                     httpBackend.flush();
                     expect(data).toEqual();
                 });
@@ -138,7 +170,35 @@ describe('CompanyDAO', function ()
 
     describe('getById', function ()
     {
+        it('should return company', function ()
+        {
+            mockResponse =
+            {id: 1, name: 'Firma test', nip: 1234567890, addressId: 1, address: {street: 'TEst', buildNr: '4', postCode: '44-444', city: 'Test'}};
+            httpBackend.expectGET('/api/company/id?id=1').respond(200, mockResponse);
+            companyDAOMock.getById(1).then(function (data)
+            {
+                httpBackend.flush();
+                expect(data).toEqual(mockResponse);
+            });
+            scope.$digest();
+        });
+    });
 
+    describe('update', function ()
+    {
+        it('should return code 200', function ()
+        {
+            var responseStatus;
+            httpBackend.whenPUT('/api/company').respond(200, {status: 200});
+            var response = companyDAOMock.updateCompany({name: 'New Firm name'}).then(function (data)
+            {
+                responseStatus = data;
+            });
+            httpBackend.flush();
+            scope.$digest();
+            expect(responseStatus.status).toEqual(200);
+            return response;
+        });
     });
 
 

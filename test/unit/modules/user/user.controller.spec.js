@@ -20,9 +20,7 @@ describe('UserController', function ()
             'regon': 6189567,
             'addressId': 2,
             'googleCompanyId': null,
-            'bankAccount': '98753091857947708385263947',
-            'bankName' : 'Alior Bank',
-            'swift': 'INGBPLPW',
+            'bankAccounts': {'0' : { account: '98753091857947708385263947', name: 'PLN', bankName: 'ALior', swift: 'BIGPLPW'} },
             'email': 'user@gmail.com',
             'address': {'id': 2, 'street': 'Krakowska', 'buildNr': '4', 'flatNr': null, 'postCode': '33-120', 'city': 'City 1'}
         };
@@ -101,15 +99,7 @@ describe('UserController', function ()
         });
         it('should set userAccountData.bankName', function ()
         {
-            expect(userCtrl.userAccountData.bankName).toBe(companyMock.bankName);
-        });
-        it('should set userAccountData.bankAccount', function ()
-        {
-            expect(userCtrl.userAccountData.bankAccount).toBe(companyMock.bankAccount);
-        });
-        it('should set userAccountData.swift', function ()
-        {
-            expect(userCtrl.userAccountData.swift).toBe(companyMock.swift);
+            expect(userCtrl.userAccountData).toEqual(companyMock.bankAccounts);
         });
     });
 
@@ -172,8 +162,10 @@ describe('UserController', function ()
             beforeEach(function ()
             {
                 form = {
-                    $valid: true
+                    $valid: true,
+                    $setPristine: angular.noop
                 };
+                spyOn(form,'$setPristine');
                 userCtrl.addAccountData(form);
             });
             it('should call userDao.addAccountData', function ()
@@ -378,6 +370,18 @@ describe('UserController', function ()
         it('should set accountEdit', function ()
         {
             expect(userCtrl.accountEdit).toBeFalsy();
+        });
+    });
+
+    describe('addNewAccount', function ()
+    {
+        beforeEach(function ()
+        {
+            userCtrl.addNewAccount();
+        });
+        it('should set userAccountData', function ()
+        {
+            expect(userCtrl.userAccountData[1]).toEqual({ bankName: 'ALior', swift: 'BIGPLPW' });
         });
     });
 

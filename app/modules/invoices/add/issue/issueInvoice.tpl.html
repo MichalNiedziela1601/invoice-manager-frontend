@@ -3,7 +3,7 @@
 
 
         <find-contractor company="issueInvoiceCtrl.companyDetails" contractor-type="issueInvoiceCtrl.invoiceCompany.contractorType"
-                         show-box="issueInvoiceCtrl.showBox"></find-contractor>
+                         show-box="issueInvoiceCtrl.showBox" account-nr="issueInvoiceCtrl.invoiceCompany.recipentAccountNr"></find-contractor>
 
         <div class="row">
             <div class="col-md-12 tabs-top-marg box-relative">
@@ -32,7 +32,7 @@
                             </p>
                         </div>
 
-                        <label for="invoice_expire_date" class="col-lg-1 col-md-2 col-sm-3 control-label">Expire date</label>
+                        <label for="invoice_expire_date" class="col-lg-1 col-md-2 col-sm-3 control-label">Pay date</label>
                         <div class="col-lg-2 col-md-3 col-sm-3">
                             <p class="input-group">
                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="issueInvoiceCtrl.executionDatePicker.date"
@@ -78,7 +78,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-2 col-sm-2 pd-top-5px"><label><input type="radio" ng-model="issueInvoiceCtrl.invoiceCompany.language" name="language" value="en"
+                        <div class="col-lg-2 col-sm-2 pd-top-5px"><b>Language: </b><label><input type="radio" ng-model="issueInvoiceCtrl.invoiceCompany.language" name="language" value="en"
                                                                      ng-required="!issueInvoiceCtrl.invoiceCompany.language">EN</label>
                             <label><input type="radio" ng-model="issueInvoiceCtrl.invoiceCompany.language" name="language" value="pl"
                                           ng-required="!issueInvoiceCtrl.invoiceCompany.language">PL</label>
@@ -114,6 +114,20 @@
                         <div class="col-lg-2 col-sm-3 pd-top-5px"><input type="text" id="currency" ng-model="issueInvoiceCtrl.invoiceCompany.currency" name="currency"
                                                               placeholder="Currency" class="form-control" required capitalize>
                             <div ng-messages="issueCompany.currency.$error" class="input-error" role="alert">
+                                <div ng-if="issueCompany.$submitted" ng-message="required">
+                                    Please enter a value for this field
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="issueInvoiceCtrl.checkAccounts()">
+                        <label for="dealerAccount" class="col-lg-2 col-md-2 col-sm-3 control-label">Choose account</label>
+                        <div class="col-sm-4">
+                            <select ng-model="issueInvoiceCtrl.invoiceCompany.dealerAccountNr"
+                                    ng-options="key as (value.name + ' - ' + value.account) for (key,value) in issueInvoiceCtrl.mockedCompany.bankAccounts"
+                            class="form-control" name="dealerAccount" ng-required="issueInvoiceCtrl.checkTypeTransaction()" id="dealerAccount"></select>
+                            <div ng-messages="issueCompany.dealerAccount.$error" class="input-error" role="alert">
                                 <div ng-if="issueCompany.$submitted" ng-message="required">
                                     Please enter a value for this field
                                 </div>

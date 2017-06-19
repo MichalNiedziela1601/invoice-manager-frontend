@@ -139,12 +139,8 @@ describe('UploadInvoiceController', function ()
         it('should set invoiceCompany variable', function ()
         {
             expect(uploadCtrl.invoiceCompany).toEqual({
-                status: 'unpaid', products: {}, reverseCharge: false, paymentMethod: 'bank transfer'
+                status: 'unpaid', products: {}, reverseCharge: false, paymentMethod: 'bank transfer', dealerAccountNr: null
             });
-        });
-        it('should set invoicePerson variable to empty object', function ()
-        {
-            expect(uploadCtrl.invoicePerson).toEqual({});
         });
         it('should set companyDetails variable to empty object', function ()
         {
@@ -258,6 +254,7 @@ describe('UploadInvoiceController', function ()
                 {
                     return successfulPromise();
                 });
+                uploadCtrl.invoiceCompany.dealerAccountNr = '0';
                 uploadCtrl.companyDetails = mockTestCompany;
                 uploadCtrl.invoiceCompany.contractorType = 'company';
                 uploadCtrl.createDatePicker.date = new Date('2000-12-15');
@@ -313,6 +310,7 @@ describe('UploadInvoiceController', function ()
                 {
                     return successfulPromise();
                 });
+                uploadCtrl.invoiceCompany.dealerAccountNr = '0';
                 uploadCtrl.companyDetails = mockTestCompany;
                 uploadCtrl.invoiceCompany.contractorType = 'person';
                 uploadCtrl.createDatePicker.date = new Date('2000-12-15');
@@ -380,6 +378,7 @@ describe('UploadInvoiceController', function ()
                 {
                     return unsuccessfulPromise({data: 'error'});
                 });
+                uploadCtrl.invoiceCompany.dealerAccountNr = '0';
                 uploadCtrl.companyDetails = mockTestCompany;
                 uploadCtrl.createDatePicker.date = new Date('2000-12-15');
                 uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
@@ -397,6 +396,41 @@ describe('UploadInvoiceController', function ()
             it('should set formSubmitted', function ()
             {
                 expect(uploadCtrl.formSubmitted).toBeFalsy();
+            });
+        });
+
+        describe('when dealer account not chosen', function ()
+        {
+            beforeEach(function ()
+            {
+
+                uploadCtrl.companyDetails = mockTestCompany;
+                uploadCtrl.createDatePicker.date = new Date('2000-12-15');
+                uploadCtrl.executionDatePicker.date = new Date('2001-01-23');
+
+                uploadCtrl.addInvoiceCompany(form);
+            });
+            it('should set showAccountNotChosen to true', function ()
+            {
+                expect(uploadCtrl.showAccountNotChosen).toBeTruthy();
+            });
+        });
+        describe('when paymentMethod is cash', function ()
+        {
+            beforeEach(function ()
+            {
+                uploadCtrl.companyDetails = mockTestCompany;
+                uploadCtrl.invoiceCompany.paymentMethod = 'cash';
+                UploadMock.upload.and.callFake(function ()
+                {
+                    return unsuccessfulPromise({data: 'error'});
+                });
+
+                uploadCtrl.addInvoiceCompany(form);
+            });
+            it('should set dealerAccountNr to null', function ()
+            {
+                expect(uploadCtrl.invoiceCompany.dealerAccountNr).toBeNull();
             });
         });
     });
@@ -460,6 +494,18 @@ describe('UploadInvoiceController', function ()
             {
                 expect(uploadCtrl.invoiceCompany.invoiceNr).toEqual('FV 2013/4/1');
             });
+        });
+    });
+
+    describe('closeAccountNotChosen', function ()
+    {
+        beforeEach(function ()
+        {
+            uploadCtrl.closeAccountNotChosen();
+        });
+        it('should set showAccountNotChosen to false', function ()
+        {
+            expect(uploadCtrl.showAccountNotChosen).toBeFalsy();
         });
     });
 });

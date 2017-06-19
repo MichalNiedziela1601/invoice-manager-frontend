@@ -1,328 +1,356 @@
 <div class="add-comp-width">
-    <uib-tabset  active="addCompDCtrl.activeTab">
+    <uib-tabset active="addCompDCtrl.activeTab">
         <uib-tab heading="Add company" index="0" disable="addCompDCtrl.disableCompany">
             <h2 class="page-header text-center">{{addCompDCtrl.edit ? 'Edit company' : 'Add new company'}}</h2>
 
-            <div class="row"><div class="col-md-10 col-xs-12">
+            <div class="row">
+                <div class="col-md-10 col-xs-12">
 
-                <form class="form-horizontal" name="companyForm" ng-submit="addCompDCtrl.addCompany(companyForm)" novalidate ng-class="{'disabled': addCompDCtrl.disableFormCompany}">
-                    <div class="form-group">
-                        <label for="name_company" class="col-sm-3 control-label">Company Name*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name_company" name="companyName" placeholder="Company name" ng-model="addCompDCtrl.company.name"
-                                   required minlength="2">
-                            <div ng-messages="companyForm.companyName.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">Company's name required min. length is 2</div>
+                    <form class="form-horizontal" name="companyForm" ng-submit="addCompDCtrl.addCompany(companyForm)" novalidate
+                          ng-class="{'disabled': addCompDCtrl.disableFormCompany}">
+                        <div class="form-group">
+                            <label for="name_company" class="col-sm-3 control-label">Company Name*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name_company" name="companyName" placeholder="Company name"
+                                       ng-model="addCompDCtrl.company.name" required minlength="2">
+                                <div ng-messages="companyForm.companyName.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">Company's name required min. length is 2</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="shortcut" class="col-sm-3 control-label">Company Shortcut*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Company shortcut" ng-model="addCompDCtrl.company.shortcut"
-                                   required minlength="2" ng-change="addCompDCtrl.validateShortcut()" required>
-                            <div ng-messages="companyForm.shortcut.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">Company's shortcut required min. length is 2</div>
-                            </div>
-                            <div ng-show="companyForm.shortcut.$error" class="input-error" role="alert">
-                                <div ng-show="addCompDCtrl.showShortcut">Shortcut already exists</div>
+                        <div class="form-group">
+                            <label for="shortcut" class="col-sm-3 control-label">Company Shortcut*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Company shortcut"
+                                       ng-model="addCompDCtrl.company.shortcut" required minlength="2" ng-change="addCompDCtrl.validateShortcut()" required>
+                                <div ng-messages="companyForm.shortcut.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">Company's shortcut required min. length is 2</div>
+                                </div>
+                                <div ng-show="companyForm.shortcut.$error" class="input-error" role="alert">
+                                    <div ng-show="addCompDCtrl.showShortcut">Shortcut already exists</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="nip_comp" class="col-sm-3 control-label">NIP*</label>
-                        <div class="col-sm-9">
-                            <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP"
-                                   ng-model="addCompDCtrl.company.nip" required nip-mask ng-change="addCompDCtrl.validateNip()">
-                            <div ng-messages="companyForm.companyNip.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="pattern">Company's nip required length is 10</div>
-                            </div>
-                            <div ng-show="companyForm.companyNip.$error" style="color:maroon" role="alert">
-                                <div ng-show="addCompDCtrl.showAlert">Nip already exsist</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="regon_comp" class="col-sm-3 control-label">Regon</label>
-                        <div class="col-sm-9">
-                            <input pattern="[0-9]{10}" class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
-                                   ng-model="addCompDCtrl.company.regon">
-                            <div ng-messages="companyForm.companyRegon.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="pattern">Company's regon required length is 10</div>
-                            </div>
-                        </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="nip_comp" class="col-sm-3 control-label">NIP</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="nip_comp" name="companyNip" placeholder="NIP" ng-model="addCompDCtrl.company.nip"
+                                       ng-change="addCompDCtrl.validateNip()">
 
-                    <div class="form-group">
-                        <label for="street" class="col-sm-3 control-label">Street*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="street" name="companyStreet" placeholder="Street" ng-model="addCompDCtrl.company.address.street"
-                                   required minlength="2">
-                            <div ng-messages="companyForm.companyStreet.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">Company's street required min. length is 2</div>
+                                <div ng-show="companyForm.companyNip.$error" style="color:maroon" role="alert">
+                                    <div ng-show="addCompDCtrl.showAlert">Nip already exsist</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="regon_comp" class="col-sm-3 control-label">Regon</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="regon_comp" name="companyRegon" placeholder="Regon"
+                                       ng-model="addCompDCtrl.company.regon">
 
-                    <div class="form-group">
-                        <label for="build_nr" class="col-sm-3 control-label">Build number*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="build_nr" name="build_nr" placeholder="Build number" ng-model="addCompDCtrl.company.address.buildNr" required>
-                            <div ng-messages="companyForm.build_nr.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="flat_nr" class="col-sm-3 control-label">Flat number</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="flat_nr" placeholder="Flat number" ng-model="addCompDCtrl.company.address.flatNr">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="post_code" class="col-sm-3 control-label">Post code*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="post_code" name="companyPostcode" placeholder="Post code"
-                                   ng-model="addCompDCtrl.company.address.postCode" required>
-                            <div ng-messages="companyForm.companyPostcode.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                        <div class="form-group">
+                            <label for="street" class="col-sm-3 control-label">Street*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="street" name="companyStreet" placeholder="Street"
+                                       ng-model="addCompDCtrl.company.address.street" required minlength="2">
+                                <div ng-messages="companyForm.companyStreet.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">Company's street required min. length is 2</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="city" class="col-sm-3 control-label">City*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="city" name="city" placeholder="City" ng-model="addCompDCtrl.company.address.city" required>
-                            <div ng-messages="companyForm.city.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">Company's street required min. length is 2</div>
+                        <div class="form-group">
+                            <label for="build_nr" class="col-sm-3 control-label">Build number*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="build_nr" name="build_nr" placeholder="Build number"
+                                       ng-model="addCompDCtrl.company.address.buildNr" required>
+                                <div ng-messages="companyForm.build_nr.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="bankName" class="col-sm-3 control-label">Bank Name*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bankName" name="bankName" placeholder="Bank Name" ng-model="addCompDCtrl.company.bankName" required>
-                            <div ng-messages="companyForm.bankName.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">Company's bank name required min. length is 2</div>
+
+                        <div class="form-group">
+                            <label for="flat_nr" class="col-sm-3 control-label">Flat number</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="flat_nr" placeholder="Flat number" ng-model="addCompDCtrl.company.address.flatNr">
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="bankAccount" class="col-sm-3 control-label">Bank Account*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="Bank Account" ng-model="addCompDCtrl.company.bankAccount" required>
-                            <div ng-messages="companyForm.bankAccount.$error" style="color:maroon" role="alert">
-                                <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+
+                        <div class="form-group">
+                            <label for="post_code" class="col-sm-3 control-label">Post code*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="post_code" name="companyPostcode" placeholder="Post code"
+                                       ng-model="addCompDCtrl.company.address.postCode" required>
+                                <div ng-messages="companyForm.companyPostcode.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="form-group">
+                            <label for="city" class="col-sm-3 control-label">City*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="city" name="city" placeholder="City" ng-model="addCompDCtrl.company.address.city"
+                                       required>
+                                <div ng-messages="companyForm.city.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">Company's street required min. length is 2</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="country" class="col-sm-3 control-label">Country*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="country" name="country" placeholder="Country"
+                                       ng-model="addCompDCtrl.company.address.country" required>
+                                <div ng-messages="companyForm.country.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
+                            </div>
+
+                            <label for="countryCode" class="col-sm-3 control-label">Country Code*</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="countryCode" name="countryCode" capitalize placeholder="Country code"
+                                       ng-model="addCompDCtrl.company.address.countryCode" required>
+                                <div ng-messages="companyForm.countryCode.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-md-offset-0">
+                                <add-bank-account accounts="addCompDCtrl.accounts"></add-bank-account></div>
+                        </div>
 
 
-                        <div ng-show="addCompDCtrl.addComp" uib-alert class="alert-success col-xs-offset-3 col-xs-9 undisabled" close="addCompDCtrl.closeAddSuccess()">
+                        <div ng-show="addCompDCtrl.addComp" uib-alert class="alert-success col-xs-offset-3 col-xs-9 undisabled"
+                             close="addCompDCtrl.closeAddSuccess()">
                             <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
                             <span class="sr-only">Success:</span>
                             {{addCompDCtrl.edit ? 'Company updated' : 'Company Added'}}
                         </div>
 
 
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <div ng-show="addCompDCtrl.invalidFormAlert" uib-alert class="alert-danger undisabled" id="alert" role="alert"
-                                 close="addCompDCtrl.closeInvalidFormAlert()">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Error:</span>
-                                Requested fields are not correct!
-                            </div>
-                            <div ng-show="addCompDCtrl.showError" uib-alert class="alert-danger undisabled" role="alert" close="addCompDCtrl.closeShowError()">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Error:</span>
-                                {{addCompDCtrl.errorMessage}}
-                            </div>
-                            <div  ng-if="!addCompDCtrl.edit"><button type="submit" class="btn btn-success">Add new company</button></div>
-                            <div ng-if="addCompDCtrl.edit">
-                                <button type="submit" ng-if="!addCompDCtrl.disableFormCompany" class="btn btn-success">Edit company</button>
-                                <button type="button" role="button" ng-if="!addCompDCtrl.disableFormCompany" ng-click="addCompDCtrl.cancelCompany()" class="btn btn-warning">Cancel</button>
-                                <button type="button" role="button" ng-if="addCompDCtrl.disableFormCompany" ng-click="addCompDCtrl.toggleEditCompany()" class="btn btn-primary undisabled"
-                                        ng-class="{'undisabled' : addCompDCtrl.disableFormCompany}">Toggle edit</button>
-                            </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <div ng-show="addCompDCtrl.invalidFormAlert" uib-alert class="alert-danger undisabled" id="alert" role="alert"
+                                     close="addCompDCtrl.closeInvalidFormAlert()">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    Requested fields are not correct!
+                                </div>
+                                <div ng-show="addCompDCtrl.showError" uib-alert class="alert-danger undisabled" role="alert"
+                                     close="addCompDCtrl.closeShowError()">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    {{addCompDCtrl.errorMessage}}
+                                </div>
+                                <div ng-if="!addCompDCtrl.edit">
+                                    <button type="submit" class="btn btn-success">Add new company</button>
+                                </div>
+                                <div ng-if="addCompDCtrl.edit">
+                                    <button type="submit" ng-if="!addCompDCtrl.disableFormCompany" class="btn btn-success">Edit company</button>
+                                    <button type="button" role="button" ng-if="!addCompDCtrl.disableFormCompany" ng-click="addCompDCtrl.cancelCompany()"
+                                            class="btn btn-warning">Cancel
+                                    </button>
+                                    <button type="button" role="button" ng-if="addCompDCtrl.disableFormCompany" ng-click="addCompDCtrl.toggleEditCompany()"
+                                            class="btn btn-primary undisabled" ng-class="{'undisabled' : addCompDCtrl.disableFormCompany}">Toggle edit
+                                    </button>
+                                </div>
 
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div></div>
+                    </form>
+                </div>
+            </div>
         </uib-tab>
 
         <uib-tab heading="Add person" index="1" disable="addCompDCtrl.disablePerson">
             <h2 class="page-header text-center">{{addCompDCtrl.edit ? 'Edit person' : 'Add new person'}}</h2>
 
-            <div class="row"><div class="col-md-10 col-xs-12">
+            <div class="row">
+                <div class="col-md-10 col-xs-12">
 
-                <form class="form-horizontal" name="personForm" ng-submit="addCompDCtrl.addPerson(personForm)" novalidate ng-class="{'disabled': addCompDCtrl.disableFormPerson}">
-                    <div class="form-group">
-                        <label for="firsName" class="col-sm-3 control-label">First Name*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="firsName" name="firsName" placeholder="First name" ng-model="addCompDCtrl.person.firstName"
-                                   required minlength="2">
-                            <div ng-messages="personForm.firsName.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">person's  first name required min. length is 2</div>
+                    <form class="form-horizontal" name="personForm" ng-submit="addCompDCtrl.addPerson(personForm)" novalidate
+                          ng-class="{'disabled': addCompDCtrl.disableFormPerson}">
+                        <div class="form-group">
+                            <label for="firsName" class="col-sm-3 control-label">First Name*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="firsName" name="firsName" placeholder="First name"
+                                       ng-model="addCompDCtrl.person.firstName" required minlength="2">
+                                <div ng-messages="personForm.firsName.$error" style="color:maroon" role="alert">
+                                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">person's first name required min. length is 2</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="firsName" class="col-sm-3 control-label">Last Name*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" ng-model="addCompDCtrl.person.lastName"
-                                   required minlength="2">
-                            <div ng-messages="personForm.lastName.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">person's  last name required min. length is 2</div>
+                        <div class="form-group">
+                            <label for="firsName" class="col-sm-3 control-label">Last Name*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name"
+                                       ng-model="addCompDCtrl.person.lastName" required minlength="2">
+                                <div ng-messages="personForm.lastName.$error" style="color:maroon" role="alert">
+                                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">person's last name required min. length is 2</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="shortcutP" class="col-sm-3 control-label">Person Shortcut*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="shortcutP" name="shortcutP" placeholder="person shortcut" ng-model="addCompDCtrl.person.shortcut"
-                                   required minlength="2" ng-change="addCompDCtrl.validateShortcutPerson()" required>
-                            <div ng-messages="personForm.shortcutP.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">person's shortcut required min. length is 2</div>
-                            </div>
-                            <div ng-show="personForm.shortcutP.$error" class="input-error" role="alert">
-                                <div ng-show="addCompDCtrl.showShortcut">Shortcut already exists</div>
+                        <div class="form-group">
+                            <label for="shortcutP" class="col-sm-3 control-label">Person Shortcut*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="shortcutP" name="shortcutP" placeholder="person shortcut"
+                                       ng-model="addCompDCtrl.person.shortcut" required minlength="2" ng-change="addCompDCtrl.validateShortcutPerson()"
+                                       required>
+                                <div ng-messages="personForm.shortcutP.$error" style="color:maroon" role="alert">
+                                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">person's shortcut required min. length is 2</div>
+                                </div>
+                                <div ng-show="personForm.shortcutP.$error" class="input-error" role="alert">
+                                    <div ng-show="addCompDCtrl.showShortcut">Shortcut already exists</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="nip_comp" class="col-sm-3 control-label">NIP</label>
-                        <div class="col-sm-9">
-                            <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_pers" name="personNip" placeholder="NIP"
-                                   ng-model="addCompDCtrl.person.nip" nip-mask ng-change="addCompDCtrl.validateNipPerson()">
-                            <div ng-messages="personForm.personNip.$error" style="color:maroon" role="alert">
-                                <div ng-message="pattern">person's nip required length is 10</div>
-                            </div>
-                            <div ng-show="personForm.personNip.$error" style="color:maroon" role="alert">
-                                <div ng-show="addCompDCtrl.showAlert">Nip already exsist</div>
+                        <div class="form-group">
+                            <label for="nip_comp" class="col-sm-3 control-label">NIP</label>
+                            <div class="col-sm-9">
+                                <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_pers" name="personNip" placeholder="NIP"
+                                       ng-model="addCompDCtrl.person.nip" nip-mask ng-change="addCompDCtrl.validateNipPerson()">
+                                <div ng-messages="personForm.personNip.$error" style="color:maroon" role="alert">
+                                    <div ng-message="pattern">person's nip required length is 10</div>
+                                </div>
+                                <div ng-show="personForm.personNip.$error" style="color:maroon" role="alert">
+                                    <div ng-show="addCompDCtrl.showAlert">Nip already exsist</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="streetP" class="col-sm-3 control-label">Street*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="streetP" name="personStreet" placeholder="Street" ng-model="addCompDCtrl.person.address.street"
-                                   required minlength="2">
-                            <div ng-messages="personForm.personStreet.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">person's street required min. length is 2</div>
+                        <div class="form-group">
+                            <label for="streetP" class="col-sm-3 control-label">Street*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="streetP" name="personStreet" placeholder="Street"
+                                       ng-model="addCompDCtrl.person.address.street" required minlength="2">
+                                <div ng-messages="personForm.personStreet.$error" style="color:maroon" role="alert">
+                                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">person's street required min. length is 2</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="build_nrP" class="col-sm-3 control-label">Build number*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="build_nrP" name="build_nrP" placeholder="Build number" ng-model="addCompDCtrl.person.address.buildNr" required>
-                            <div ng-messages="personForm.build_nrP.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                        <div class="form-group">
+                            <label for="build_nrP" class="col-sm-3 control-label">Build number*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="build_nrP" name="build_nrP" placeholder="Build number"
+                                       ng-model="addCompDCtrl.person.address.buildNr" required>
+                                <div ng-messages="personForm.build_nrP.$error" style="color:maroon" role="alert">
+                                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="flat_nrP" class="col-sm-3 control-label">Flat number</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="flat_nrP" placeholder="Flat number" ng-model="addCompDCtrl.person.address.flatNr">
+                        <div class="form-group">
+                            <label for="flat_nrP" class="col-sm-3 control-label">Flat number</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="flat_nrP" placeholder="Flat number" ng-model="addCompDCtrl.person.address.flatNr">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="post_codeP" class="col-sm-3 control-label">Post code*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="post_codeP" name="personPostcode" placeholder="Example: 32820"
-                                   ng-model="addCompDCtrl.person.address.postCode" required>
-                            <div ng-messages="personForm.personPostcode.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                        <div class="form-group">
+                            <label for="post_codeP" class="col-sm-3 control-label">Post code*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="post_codeP" name="personPostcode" placeholder="Post code"
+                                       ng-model="addCompDCtrl.person.address.postCode" required>
+                                <div ng-messages="personForm.personPostcode.$error" style="color:maroon" role="alert">
+                                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="cityP" class="col-sm-3 control-label">City*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="cityP" name="city" placeholder="City" ng-model="addCompDCtrl.person.address.city" required>
-                            <div ng-messages="personForm.city.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">person's street required min. length is 2</div>
+                        <div class="form-group">
+                            <label for="cityP" class="col-sm-3 control-label">City*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="cityP" name="city" placeholder="City" ng-model="addCompDCtrl.person.address.city"
+                                       required>
+                                <div ng-messages="personForm.city.$error" style="color:maroon" role="alert">
+                                    <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                    <div ng-message="minlength">person's street required min. length is 2</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="bankNameP" class="col-sm-3 control-label">Bank Name*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bankNameP" name="bankNameP" placeholder="Bank Name" ng-model="addCompDCtrl.person.bankName" required>
-                            <div ng-messages="personForm.bankNameP.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                                <div ng-message="minlength">person's bank name required min. length is 2</div>
+                        <div class="form-group">
+                            <label for="countryPerson" class="col-sm-3 control-label">Country*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="countryPerson" name="countryPerson" placeholder="Country"
+                                       ng-model="addCompDCtrl.person.address.country" required>
+                                <div ng-messages="companyForm.countryPerson.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="bankAccountP" class="col-sm-3 control-label">Bank Account*</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bankAccountP" name="bankAccountP" placeholder="Bank Account" ng-model="addCompDCtrl.person.bankAccount" required>
-                            <div ng-messages="personForm.bankAccountP.$error" style="color:maroon" role="alert">
-                                <div ng-if="personForm.$submitted" ng-message="required">Please enter a value for this field.</div>
-                            </div>
-                        </div>
-                    </div>
 
-                        <div ng-show="addCompDCtrl.personAdded" uib-alert class="alert-success col-xs-offset-3 col-xs-9 undisabled" close="addCompDCtrl.closeAddPerson()">
+                            <label for="countryCodePerson" class="col-sm-3 control-label">Country Code*</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="countryCodePerson" name="countryCodePerson" capitalize placeholder="Country code"
+                                       ng-model="addCompDCtrl.person.address.countryCode" required>
+                                <div ng-messages="companyForm.countryCodePerson.$error" style="color:maroon" role="alert">
+                                    <div ng-if="companyForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-md-offset-0"><add-bank-account accounts="addCompDCtrl.accounts"></add-bank-account></div>
+                        </div>
+
+                        <div ng-show="addCompDCtrl.personAdded" uib-alert class="alert-success col-xs-offset-3 col-xs-9 undisabled"
+                             close="addCompDCtrl.closeAddPerson()">
                             <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
                             <span class="sr-only">Success:</span>
                             {{addCompDCtrl.edit ? 'Person updated' : 'Person Added'}}
                         </div>
 
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <div ng-show="addCompDCtrl.invalidFormAlert" uib-alert class="alert-dange undisabledr" role="alert"
-                                 close="addCompDCtrl.closeInvalidFormAlert()">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Error:</span>
-                                Requested fields are not correct!
-                            </div>
-                            <div ng-show="addCompDCtrl.showError" uib-alert class="alert-danger undisabled" role="alert" close="addCompDCtrl.closeShowError()">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Error:</span>
-                                {{addCompDCtrl.errorMessage}}
-                            </div>
-                            <div  ng-if="!addCompDCtrl.edit"><button type="submit" class="btn btn-success">Add new person</button></div>
-                            <div ng-if="addCompDCtrl.edit">
-                                <button type="submit" ng-if="!addCompDCtrl.disableFormPerson" class="btn btn-success">Edit person</button>
-                                <button type="button" role="button" ng-if="!addCompDCtrl.disableFormPerson" ng-click="addCompDCtrl.cancelPerson()" class="btn btn-warning">Cancel</button>
-                                <button type="button" role="button" ng-if="addCompDCtrl.disableFormPerson" ng-click="addCompDCtrl.toggleEditPerson()" class="btn btn-primary undisabled"
-                                        ng-class="{'undisabled' : addCompDCtrl.disableFormPerson}">Toggle edit</button>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <div ng-show="addCompDCtrl.invalidFormAlert" uib-alert class="alert-dange undisabledr" role="alert"
+                                     close="addCompDCtrl.closeInvalidFormAlert()">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    Requested fields are not correct!
+                                </div>
+                                <div ng-show="addCompDCtrl.showError" uib-alert class="alert-danger undisabled" role="alert"
+                                     close="addCompDCtrl.closeShowError()">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    {{addCompDCtrl.errorMessage}}
+                                </div>
+                                <div ng-if="!addCompDCtrl.edit">
+                                    <button type="submit" class="btn btn-success">Add new person</button>
+                                </div>
+                                <div ng-if="addCompDCtrl.edit">
+                                    <button type="submit" ng-if="!addCompDCtrl.disableFormPerson" class="btn btn-success">Edit person</button>
+                                    <button type="button" role="button" ng-if="!addCompDCtrl.disableFormPerson" ng-click="addCompDCtrl.cancelPerson()"
+                                            class="btn btn-warning">Cancel
+                                    </button>
+                                    <button type="button" role="button" ng-if="addCompDCtrl.disableFormPerson" ng-click="addCompDCtrl.toggleEditPerson()"
+                                            class="btn btn-primary undisabled" ng-class="{'undisabled' : addCompDCtrl.disableFormPerson}">Toggle edit
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div></div>
+                    </form>
+                </div>
+            </div>
         </uib-tab>
     </uib-tabset>
 

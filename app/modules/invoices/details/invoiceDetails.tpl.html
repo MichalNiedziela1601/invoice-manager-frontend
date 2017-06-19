@@ -11,13 +11,14 @@
                 <div class="col-sm-12 no-padding-side">
                     <div class="col-md-6 col-xs-12">
                         <p><strong>Create Date: </strong>{{invoiceDetailsCtrl.details.createDate | date:'dd-MM-yyyy'}} </p>
-                        <p><strong>Execution Date: </strong>{{invoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}} </p>
+                        <p><strong>Pay Date: </strong>{{invoiceDetailsCtrl.details.executionEndDate | date:'dd-MM-yyyy'}} </p>
 
                         <p><strong>Type: </strong>{{invoiceDetailsCtrl.details.type}} </p>
                         <p><strong> Status:</strong> <span class="status"
                                                            ng-class="{'green' : ('paid' === invoiceDetailsCtrl.details.status), 'red': ('unpaid' === invoiceDetailsCtrl.details.status)}">
                             {{invoiceDetailsCtrl.details.status}}</span>
-                            <a ng-click="invoiceDetailsCtrl.changeStatus()" class="pointer-cursor" uib-tooltip="{{invoiceDetailsCtrl.tooltip}}"><i class="fa fa-refresh"></i> </a></p>
+                            <a ng-click="invoiceDetailsCtrl.changeStatus()" class="pointer-cursor" uib-tooltip="{{invoiceDetailsCtrl.tooltip}}"><i
+                                    class="fa fa-refresh"></i> </a></p>
                     </div>
                     <div class="col-md-6 col-xs-12">
                         <div class="button-edit-pdf">
@@ -50,7 +51,8 @@
                                                  address="invoiceDetailsCtrl.details.personRecipent.address"></contractor-info-invoice>
                     </div>
                 </div>
-                <div class="col-xs-12 no-padding-side" ng-if="invoiceDetailsCtrl.details.description"><b>Notes:</b> {{invoiceDetailsCtrl.details.description}}</div>
+                <div class="col-xs-12 no-padding-side" ng-if="invoiceDetailsCtrl.details.description"><b>Notes:</b> {{invoiceDetailsCtrl.details.description}}
+                </div>
                 <div class="col-xs-12 no-padding-side">
                     <table class="table table-responsive table-invoice-details">
                         <thead class="gray" ng-switch="invoiceDetailsCtrl.details.reverseCharge">
@@ -106,11 +108,11 @@
                             </tr>
                             <tr>
                                 <td class="gray">Bank Account</td>
-                                <td class="wrap-word">{{invoiceDetailsCtrl.details.companyDealer.bankAccount}}</td>
+                                <td class="wrap-word">{{invoiceDetailsCtrl.dealer.bankAccounts[invoiceDetailsCtrl.details.dealerAccountNr].account}}</td>
                             </tr>
                             <tr>
                                 <td class="gray">SWIFT</td>
-                                <td>{{invoiceDetailsCtrl.details.companyDealer.swift}}</td>
+                                <td>{{invoiceDetailsCtrl.dealer.bankAccounts[invoiceDetailsCtrl.details.dealerAccountNr].swift}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -172,7 +174,6 @@
             </div>
 
 
-
             <div ng-hide="invoiceDetailsCtrl.showDetailsInvoice" class="animate-show-hide">
                 <p>
                     <button ng-click="invoiceDetailsCtrl.toggleContractorChange()" class="btn btn-info">Change contractor</button>
@@ -182,7 +183,8 @@
                     <contractor-info company="invoiceDetailsCtrl.contractor" ng-if="!invoiceDetailsCtrl.contractorChange"
                                      class="col-sm-6 col-xs-12 no-padding-side"></contractor-info>
                     <find-contractor company="invoiceDetailsCtrl.contractor" contractor-type="invoiceDetailsCtrl.details.contractorType"
-                                     show-box="invoiceDetailsCtrl.showBox" ng-if="invoiceDetailsCtrl.contractorChange"></find-contractor>
+                                     show-box="invoiceDetailsCtrl.showBox" account-nr="invoiceDetailsCtrl.accountNr"
+                                     ng-if="invoiceDetailsCtrl.contractorChange"></find-contractor>
                 </div>
 
                 <form class="form-horizontal form-invoice-details" name="invoice" ng-submit="invoiceDetailsCtrl.editInvoice(invoice)" novalidate>
@@ -194,8 +196,8 @@
                                                             placeholder="Invoice number" ng-model="invoiceDetailsCtrl.details.invoiceNr" required
                                                             ng-disabled="invoiceDetailsCtrl.changeNumber">
                                 <span class="input-group-addon no-padding"><button role="button" type="button" class="btn"
-                                                                        ng-click="invoiceDetailsCtrl.toogleChangeNumber()" uib-tooltip="Click to change"><i
-                                        class="fa fa-refresh"></i> </button></span>
+                                                                                   ng-click="invoiceDetailsCtrl.toogleChangeNumber()"
+                                                                                   uib-tooltip="Click to change"><i class="fa fa-refresh"></i> </button></span>
                             </div>
 
                             <div ng-messages="invoice.invoiceNumber.$error" class="input-error" role="alert">
@@ -218,7 +220,7 @@
                             </p>
                         </div>
 
-                        <label for="invoice_expire_date" class="col-lg-2 col-md-2 col-sm-3 control-label">Expire date</label>
+                        <label for="invoice_expire_date" class="col-lg-2 col-md-2 col-sm-3 control-label">Pay date</label>
                         <div class="col-lg-2 col-md-3 col-sm-3">
                             <p class="input-group">
                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="invoiceDetailsCtrl.executionDatePicker.date"
@@ -252,7 +254,7 @@
                         <label class="col-lg-2 col-sm-3 control-label ">Payment method </label>
                         <div class="col-lg-2 col-sm-3">
                             <select id="payment" class="form-control" name="payment" ng-options="type.type as type.type for type in invoiceDetailsCtrl.payment"
-                                    ng-model="invoiceDetailsCtrl.details.paymentMethod" required>
+                                    ng-model="invoiceDetailsCtrl.details.paymentMethod" required ng-change="invoiceDetailsCtrl.checkAccounts()">
                             </select></div>
 
                         <div class="col-lg-1 col-md-offset-0 col-sm-offset-3 col-sm-1">
@@ -262,8 +264,8 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-2 col-sm-2 pd-top-5px"><label><input type="radio" ng-model="invoiceDetailsCtrl.details.language" name="language"
-                                                                     value="en">EN</label>
+                        <div class="col-lg-2 col-sm-2 pd-top-5px"><b>Language: </b><label><input type="radio" ng-model="invoiceDetailsCtrl.details.language"
+                                                                                                 name="language" value="en">EN</label>
                             <label><input type="radio" ng-model="invoiceDetailsCtrl.details.language" name="language" value="pl">PL</label>
                             <div ng-messages="invoice.language.$error" class="input-error" role="alert">
                                 <div ng-if="invoice.$submitted" ng-message="required">
@@ -294,9 +296,25 @@
                         </div>
 
                         <label for="currency" class="col-lg-2 col-md-3 col-sm-3 col-md-pull-1 control-label pd-top-5px">Currency</label>
-                        <div class="col-lg-2 col-md-3 col-sm-3 col-md-pull-1 pd-top-5px"><input type="text" id="currency" ng-model="invoiceDetailsCtrl.details.currency" name="currency" placeholder="Currency"
-                                                              class="form-control" required capitalize>
+                        <div class="col-lg-2 col-md-3 col-sm-3 col-md-pull-1 pd-top-5px"><input type="text" id="currency"
+                                                                                                ng-model="invoiceDetailsCtrl.details.currency" name="currency"
+                                                                                                placeholder="Currency" class="form-control" required capitalize>
                             <div ng-messages="invoice.currency.$error" class="input-error" role="alert">
+                                <div ng-if="invoice.$submitted" ng-message="required">
+                                    Please enter a value for this field
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="invoiceDetailsCtrl.showChooseAccount">
+                        <label for="dealerAccount" class="col-lg-2 col-md-2 col-sm-3 control-label">Choose account</label>
+                        <div class="col-sm-4">
+                            <select ng-model="invoiceDetailsCtrl.details.dealerAccountNr"
+                                    ng-options="key as (value.name + ' - ' + value.account) for (key,value) in invoiceDetailsCtrl.dealer.bankAccounts"
+                                    class="form-control" name="dealerAccount" ng-required="invoiceDetailsCtrl.checkTypeTransaction()"
+                                    id="dealerAccount"></select>
+                            <div ng-messages="invoice.dealerAccount.$error" class="input-error" role="alert">
                                 <div ng-if="invoice.$submitted" ng-message="required">
                                     Please enter a value for this field
                                 </div>
@@ -333,6 +351,13 @@
                             {{invoiceDetailsCtrl.errorMessage}}
                         </div>
 
+                        <div ng-show="invoiceDetailsCtrl.showAccountNotChosen" uib-alert class="alert-danger"
+                             close="invoiceDetailsCtrl.closeAccountNotChosen()">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            Dealer account not chosen
+                        </div>
+
                         <div ng-show="invoiceDetailsCtrl.addInvoice" uib-alert class="alert-success" close="invoiceDetailsCtrl.closeAddInvoiceSuccess()">
                             <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
                             <span class="sr-only">Success:</span>
@@ -345,7 +370,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-sm-offset-3 col-lg-9 col-sm-9">
-                            <button type="submit" class="btn btn-success">Edit</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                             <button type="button" ng-click="invoiceDetailsCtrl.showEdit()" class="btn btn-warning">Cancel</button>
                         </div>
                     </div>
