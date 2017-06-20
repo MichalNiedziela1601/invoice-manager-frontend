@@ -115,28 +115,6 @@ describe('CompanyDAO', function ()
         });
     });
 
-    describe('getNips', function ()
-    {
-        it('should return nips', function ()
-        {
-            mockResponse = [
-                {nip: 8987564321, name: 'Firma TAK'},
-                {nip: 4564561234, name: 'FHU "POLAND"'}
-            ];
-            httpBackend.expectGET('/api/companies/56').respond(200, mockResponse);
-            var companies = companyDAOMock.getNips(56).then(function (data)
-            {
-                for (var i = 0; i < 2; i++) {
-                    expect(data[i].nip).toEqual(mockResponse[i].nip);
-                    expect(data[i].name).toEqual(mockResponse[i].name);
-                }
-            });
-            httpBackend.flush();
-            scope.$digest();
-            return companies;
-        });
-    });
-
     describe('findShortcut', function ()
     {
         describe('when find shortcut', function ()

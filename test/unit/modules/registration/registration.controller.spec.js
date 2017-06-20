@@ -11,10 +11,6 @@ describe('RegistrationController', function()
     {
         userDaoMock = UserDAO;
 
-        spyOn(userDaoMock, 'registration').and.callFake(function(){
-            return successfulPromise();
-        });
-
         registerCtrl = $controller('RegistrationCompanyController', {AuthDAO: userDaoMock});
     }));
 
@@ -71,6 +67,9 @@ describe('RegistrationController', function()
         {
             beforeEach(function()
             {
+                spyOn(userDaoMock, 'registration').and.callFake(function(){
+                    return successfulPromise();
+                });
                 registerCtrl.registrationCredential = {
                     name: 'ola', nip: '1111111111', email: 'ola@wp.pl', password: 'olaola'
                 };
@@ -92,6 +91,9 @@ describe('RegistrationController', function()
         {
             beforeEach(function()
             {
+                spyOn(userDaoMock, 'registration').and.callFake(function(){
+                    return successfulPromise();
+                });
                 registerCtrl.registrationCredential.password = 'olaola';
                 registerCtrl.registrationRepeatPassword.repeatPassword = 'olaola1';
             });
@@ -99,6 +101,36 @@ describe('RegistrationController', function()
             {
                 expect(registerCtrl.isPasswordsEqual()).toEqual(true);
             });
+        });
+
+        describe('when registration throw error', function ()
+        {
+            beforeEach(function ()
+            {
+                spyOn(userDaoMock, 'registration').and.callFake(function(){
+                    return unsuccessfulPromise({data: 'This email exist in database'});
+                });
+                registerCtrl.registrationCredential = {
+                    name: 'ola', nip: '1111111111', email: 'ola@wp.pl', password: 'olaola'
+                };
+                registerCtrl.registration();
+            });
+            it('should set errorMessage', function ()
+            {
+                expect(registerCtrl.errorMessage).toEqual('This email exist in database');
+            });
+        });
+    });
+
+    describe('closeInvalidFormAlert', function ()
+    {
+        beforeEach(function ()
+        {
+            registerCtrl.closeInvalidFormAlert();
+        });
+        it('should set invalidFormAlert to true', function ()
+        {
+            expect(registerCtrl.invalidFormAlert).toBeTruthy();
         });
     });
 });

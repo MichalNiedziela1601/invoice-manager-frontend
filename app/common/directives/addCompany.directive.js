@@ -40,7 +40,7 @@
             {
                 ctrl.company.bankAccounts = ctrl.accounts;
                 if (form.$valid) {
-                    if (undefined !== ctrl.company.regon && 0 === ctrl.company.regon.length) {
+                    if (_.isEmpty(ctrl.company.regon)) {
                         delete ctrl.company.regon;
                     }
                     if (!ctrl.edit) {

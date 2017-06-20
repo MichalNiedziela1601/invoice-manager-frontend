@@ -8,15 +8,14 @@ describe('FindContractorDirective', function ()
     var userInfoMock;
     var personsMock;
     var form;
-    var timeout;
+    var companyListMock;
 
     beforeEach(module('app'));
-    beforeEach(inject(function (findContractorDirective, $controller, CompanyDAO, Person, _$window_, _$timeout_)
+    beforeEach(inject(function (findContractorDirective, $controller, CompanyDAO, Person, _$window_)
     {
         companyDaoMock = CompanyDAO;
         personDaoMock = Person;
         $window = _$window_;
-        timeout = _$timeout_;
         findContrCtrl = findContractorDirective[0];
 
         userInfoMock = {
@@ -55,10 +54,16 @@ describe('FindContractorDirective', function ()
                 }
             }
         };
-        nips = [
-            {nip: 1234567890, id: 1},
-            {nip: 1224567890, id: 2}
-        ];
+
+        companyListMock = [{
+            name: 'Firma X', nip: 5454545454, address: {
+                street: 'Zielona', buildNr: '12', flatNr: '14', postCode: '11-111', city: 'Lublin'
+            }
+        }, {
+            name: 'Firma X', nip: 5454545454, address: {
+                street: 'Niebieska', buildNr: '15', flatNr: '1', postCode: '22-333', city: 'Warszawa'
+            }
+        }, mockFoundTestCompany];
 
         personsMock = [
             {id: 1, firstName: 'Jan', lastName: 'Kowalski', bankAccounts: {
@@ -74,23 +79,14 @@ describe('FindContractorDirective', function ()
                 }
             }}
         ];
+
+
         spyOn(companyDaoMock, 'getById').and.callFake(function (id)
         {
             if (id === 1) {
                 return successfulPromise(mockTestCompany);
             } else {
                 return unsuccessfulPromise();
-            }
-        });
-
-        spyOn(companyDaoMock, 'getNips').and.callFake(function (nip)
-        {
-            if (nip === 12) {
-                return successfulPromise(nips);
-            } else if (nip === 1233) {
-                return successfulPromise([]);
-            } else {
-                return unsuccessfulPromise('Error with something');
             }
         });
 
@@ -128,6 +124,36 @@ describe('FindContractorDirective', function ()
             it('should set userInfo', function ()
             {
                 expect(controller.userInfo).toEqual(mockFoundTestCompany);
+            });
+        });
+
+        describe('getCompanies', function ()
+        {
+            beforeEach(function ()
+            {
+                spyOn(companyDaoMock,'query').and.callFake(function(){
+                    return successfulPromise(companyListMock);
+                });
+                controller.getCompanies();
+            });
+            it('should return list of companies', function ()
+            {
+                expect(controller.companies).toEqual(companyListMock);
+            });
+        });
+
+        describe('getPersons', function ()
+        {
+            beforeEach(function ()
+            {
+                spyOn(personDaoMock,'getPersons').and.callFake(function(){
+                    return successfulPromise(personsMock);
+                });
+                controller.getPersons();
+            });
+            it('should return list of persons', function ()
+            {
+                expect(controller.persons).toEqual(personsMock);
             });
         });
 
@@ -268,47 +294,6 @@ describe('FindContractorDirective', function ()
             });
         });
 
-        describe('findCompaniesByNip', function ()
-        {
-            var nipsResult;
-            describe('when pass valid part of nip', function ()
-            {
-                beforeEach(function ()
-                {
-                    controller.findCompaniesByNip(12).then(function (result)
-                    {
-                        nipsResult = result;
-                    });
-                });
-                it('should call CompanyDAO.getNips', function ()
-                {
-                    expect(companyDaoMock.getNips).toHaveBeenCalled();
-                });
-                it('should call CompanyDAO.getNIps with args', function ()
-                {
-                    expect(companyDaoMock.getNips).toHaveBeenCalledWith(12);
-                });
-                it('should return array of nips', function ()
-                {
-                    expect(nipsResult).toEqual(nips);
-                });
-            });
-
-            describe('when not pass valid part of nip', function ()
-            {
-                beforeEach(function ()
-                {
-                    controller.findCompaniesByNip(1233).then(function (result)
-                    {
-                        nipsResult = result;
-                    });
-                });
-                it('should return empty array', function ()
-                {
-                    expect(nipsResult).toEqual([]);
-                });
-            });
-        });
 
         describe('onSelect', function ()
         {
@@ -317,11 +302,11 @@ describe('FindContractorDirective', function ()
                 beforeEach(function ()
                 {
                     spyOn(controller, 'findContractor');
-                    controller.onSelectCompany(nips[0]);
+                    controller.onSelectCompany({id: 1, nip: '1234567890'});
                 });
                 it('should set nipContractor', function ()
                 {
-                    expect(controller.idCompany).toBe(nips[0].id);
+                    expect(controller.idCompany).toBe(1);
                 });
                 it('should set contractorType', function ()
                 {
@@ -334,26 +319,6 @@ describe('FindContractorDirective', function ()
             });
         });
 
-        describe('findPersonByLastName', function ()
-        {
-            beforeEach(function ()
-            {
-                spyOn(personDaoMock, 'findByName').and.callFake(function ()
-                {
-                    return successfulPromise(personsMock);
-                });
-                controller.findPersonByLastName('ski');
-            });
-            it('should call Person.findByName', function ()
-            {
-                expect(personDaoMock.findByName).toHaveBeenCalledTimes(1);
-            });
-            it('should call Person.findByName with args', function ()
-            {
-                expect(personDaoMock.findByName).toHaveBeenCalledWith('ski');
-            });
-
-        });
 
         describe('onSelectPerson', function ()
         {
@@ -526,30 +491,56 @@ describe('FindContractorDirective', function ()
 
         describe('when addCompany throw error', function ()
         {
-            beforeEach(function ()
+            describe('when error.data', function ()
             {
-                form = {};
-                form.$valid = true;
-                form.$setPristine = angular.noop;
-                spyOn(form, '$setPristine');
-                spyOn(companyDaoMock, 'addCompany').and.callFake(function ()
+                beforeEach(function ()
                 {
-                    return unsuccessfulPromise({data: 'Error'});
+                    form = {};
+                    form.$valid = true;
+                    form.$setPristine = angular.noop;
+                    spyOn(form, '$setPristine');
+                    spyOn(companyDaoMock, 'addCompany').and.callFake(function ()
+                    {
+                        return unsuccessfulPromise({data: 'Error'});
+                    });
+                    controller.company = {name: 'Jakub', regon: '', nip: 1234567890};
+                    controller.addCompany(form);
                 });
-                controller.company = {name: 'Jakub', regon: '', nip: 1234567890};
-                controller.addCompany(form);
+                it('should set showError to true', function ()
+                {
+                    expect(controller.showError).toBeTruthy();
+                });
+                it('should set errorMessage', function ()
+                {
+                    expect(controller.errorMessage).toEqual('Error');
+                });
             });
-            it('should set showError to true', function ()
+
+            describe('when error.data.message', function ()
             {
-                expect(controller.showError).toBeTruthy();
-            });
-            it('should set errorMessage', function ()
-            {
-                expect(controller.errorMessage).toEqual('Error');
+                beforeEach(function ()
+                {
+                    form = {};
+                    form.$valid = true;
+                    form.$setPristine = angular.noop;
+                    spyOn(form, '$setPristine');
+                    spyOn(companyDaoMock, 'addCompany').and.callFake(function ()
+                    {
+                        return unsuccessfulPromise({data: { message: 'Error'}});
+                    });
+                    controller.company = {name: 'Jakub', regon: '', nip: 1234567890};
+                    controller.addCompany(form);
+                });
+                it('should set showError to true', function ()
+                {
+                    expect(controller.showError).toBeTruthy();
+                });
+                it('should set errorMessage', function ()
+                {
+                    expect(controller.errorMessage).toEqual('Error');
+                });
             });
         });
-
-
     });
 
     describe('closeInvalidFormAlert', function ()
@@ -616,12 +607,12 @@ describe('FindContractorDirective', function ()
                         return unsuccessfulPromise();
                     }
                 });
-                controller.company = {nip: 12345890};
+                controller.company = {nip: 123458901234};
                 controller.validateNip();
             });
             it('companyDaoMock.findByNip should be called with 12345890', function ()
             {
-                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(12345890);
+                expect(companyDaoMock.findByNip).toHaveBeenCalledWith(123458901234);
             });
             it('should function go to catch, controller.showAlert must be false', function ()
             {
@@ -686,9 +677,6 @@ describe('FindContractorDirective', function ()
                     return successfulPromise({});
                 });
                 controller.validateShortcut();
-                timeout.flush(401);
-                timeout.verifyNoPendingTasks();
-
             });
             it('should set showShortcut to false', function ()
             {
@@ -705,8 +693,6 @@ describe('FindContractorDirective', function ()
                     return successfulPromise({0: {shortcut: 'short'}});
                 });
                 controller.validateShortcut();
-                timeout.flush(401);
-                timeout.verifyNoPendingTasks();
 
             });
             it('should set showShortcut to false', function ()
@@ -725,8 +711,6 @@ describe('FindContractorDirective', function ()
                 });
                 spyOn(console, 'error');
                 controller.validateShortcut();
-                timeout.flush(401);
-                timeout.verifyNoPendingTasks();
 
             });
             it('should call console.error', function ()
@@ -752,8 +736,6 @@ describe('FindContractorDirective', function ()
                     return successfulPromise({});
                 });
                 controller.validateShortcutPerson();
-                timeout.flush(401);
-                timeout.verifyNoPendingTasks();
 
             });
             it('should set showShortcut to false', function ()
@@ -771,8 +753,6 @@ describe('FindContractorDirective', function ()
                     return successfulPromise({0: {shortcut: 'short'}});
                 });
                 controller.validateShortcutPerson();
-                timeout.flush(401);
-                timeout.verifyNoPendingTasks();
 
             });
             it('should set showShortcut to false', function ()
@@ -791,8 +771,6 @@ describe('FindContractorDirective', function ()
                 });
                 spyOn(window.console, 'error');
                 controller.validateShortcutPerson();
-                timeout.flush(401);
-                timeout.verifyNoPendingTasks();
 
             });
             it('should call console.error', function ()
@@ -830,18 +808,18 @@ describe('FindContractorDirective', function ()
                 });
                 spyOn(personDaoMock, 'getById').and.callFake(function ()
                 {
-                    return successfulPromise({firstName: 'Jakub', regon: '', nip: 1234567890, id: 4});
+                    return successfulPromise({firstName: 'Jakub', nip: 1234567890, id: 4});
                 });
                 form = {};
                 form.$valid = true;
                 form.$setPristine = angular.noop;
                 spyOn(form, '$setPristine');
-                controller.company = {firstName: 'Jakub', regon: '', nip: 1234567890};
+                controller.company = {firstName: 'Jakub', nip: 1234567890};
                 controller.addPerson(form);
             });
             it('should set company to result  ', function ()
             {
-                expect(controller.company).toEqual({firstName: 'Jakub', regon: '', nip: 1234567890, id: 4});
+                expect(controller.company).toEqual({firstName: 'Jakub', nip: 1234567890, id: 4});
             });
             describe('Person.addPerson should be called with ', function ()
             {
@@ -914,26 +892,54 @@ describe('FindContractorDirective', function ()
 
         describe('when addPerson throw error', function ()
         {
-            beforeEach(function ()
+            describe('when error.data', function ()
             {
-                form = {};
-                form.$valid = true;
-                form.$setPristine = angular.noop;
-                spyOn(form, '$setPristine');
-                spyOn(personDaoMock, 'addPerson').and.callFake(function ()
+                beforeEach(function ()
                 {
-                    return unsuccessfulPromise({data: 'Error'});
+                    form = {};
+                    form.$valid = true;
+                    form.$setPristine = angular.noop;
+                    spyOn(form, '$setPristine');
+                    spyOn(personDaoMock, 'addPerson').and.callFake(function ()
+                    {
+                        return unsuccessfulPromise({data: 'Error'});
+                    });
+                    controller.company = {firstName: 'Jakub', nip: 1234567890};
+                    controller.addPerson(form);
                 });
-                controller.company = {firstName: 'Jakub', nip: 1234567890};
-                controller.addPerson(form);
+                it('should set showError to true', function ()
+                {
+                    expect(controller.showError).toBeTruthy();
+                });
+                it('should set errorMessage', function ()
+                {
+                    expect(controller.errorMessage).toEqual('Error');
+                });
             });
-            it('should set showError to true', function ()
+
+            describe('when error.data.message', function ()
             {
-                expect(controller.showError).toBeTruthy();
-            });
-            it('should set errorMessage', function ()
-            {
-                expect(controller.errorMessage).toEqual('Error');
+                beforeEach(function ()
+                {
+                    form = {};
+                    form.$valid = true;
+                    form.$setPristine = angular.noop;
+                    spyOn(form, '$setPristine');
+                    spyOn(personDaoMock, 'addPerson').and.callFake(function ()
+                    {
+                        return unsuccessfulPromise({data: {message: 'Error'}});
+                    });
+                    controller.company = {firstName: 'Jakub', nip: 1234567890};
+                    controller.addPerson(form);
+                });
+                it('should set showError to true', function ()
+                {
+                    expect(controller.showError).toBeTruthy();
+                });
+                it('should set errorMessage', function ()
+                {
+                    expect(controller.errorMessage).toEqual('Error');
+                });
             });
         });
     });

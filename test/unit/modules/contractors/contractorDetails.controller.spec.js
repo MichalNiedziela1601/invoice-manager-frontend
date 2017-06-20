@@ -8,14 +8,15 @@ describe('ContractorDetaildController', function ()
     var resultMock;
 
     beforeEach(module('app'));
-    beforeEach(inject(function($controller, _$routeParams_, _CompanyDAO_, _Person_){
+    beforeEach(inject(function ($controller, _$routeParams_, _CompanyDAO_, _Person_)
+    {
         routeParams = _$routeParams_;
         CompanyDAOMock = _CompanyDAO_;
         PersonMock = _Person_;
 
         routeParams.id = 1;
         routeParams.type = 'company';
-        contractorCtrl = $controller('ContractorDetailsController',{$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
+        contractorCtrl = $controller('ContractorDetailsController', {$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
     }));
 
     describe('initialization', function ()
@@ -30,12 +31,13 @@ describe('ContractorDetaildController', function ()
             {
                 beforeEach(inject(function ($controller)
                 {
-                    resultMock = { name: 'FIrma'};
+                    resultMock = {name: 'FIrma'};
                     routeParams.type = 'company';
-                    spyOn(CompanyDAOMock,'getById').and.callFake(function(){
+                    spyOn(CompanyDAOMock, 'getById').and.callFake(function ()
+                    {
                         return successfulPromise(resultMock);
                     });
-                    contractorCtrl = $controller('ContractorDetailsController',{$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
+                    contractorCtrl = $controller('ContractorDetailsController', {$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
                 }));
                 it('should set type to company', function ()
                 {
@@ -59,11 +61,12 @@ describe('ContractorDetaildController', function ()
                 beforeEach(inject(function ($controller)
                 {
                     routeParams.type = 'company';
-                    spyOn(console,'error');
-                    spyOn(CompanyDAOMock,'getById').and.callFake(function(){
+                    spyOn(console, 'error');
+                    spyOn(CompanyDAOMock, 'getById').and.callFake(function ()
+                    {
                         return unsuccessfulPromise({error: 'Cannot find company'});
                     });
-                    contractorCtrl = $controller('ContractorDetailsController',{$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
+                    contractorCtrl = $controller('ContractorDetailsController', {$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
                 }));
                 it('should call console.error', function ()
                 {
@@ -81,12 +84,13 @@ describe('ContractorDetaildController', function ()
             {
                 beforeEach(inject(function ($controller)
                 {
-                    resultMock = { firstName: 'John'};
+                    resultMock = {firstName: 'John'};
                     routeParams.type = 'person';
-                    spyOn(PersonMock,'getById').and.callFake(function(){
+                    spyOn(PersonMock, 'getById').and.callFake(function ()
+                    {
                         return successfulPromise(resultMock);
                     });
-                    contractorCtrl = $controller('ContractorDetailsController',{$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
+                    contractorCtrl = $controller('ContractorDetailsController', {$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
                 }));
                 it('should set type to company', function ()
                 {
@@ -110,11 +114,12 @@ describe('ContractorDetaildController', function ()
                 beforeEach(inject(function ($controller)
                 {
                     routeParams.type = 'person';
-                    spyOn(console,'error');
-                    spyOn(PersonMock,'getById').and.callFake(function(){
+                    spyOn(console, 'error');
+                    spyOn(PersonMock, 'getById').and.callFake(function ()
+                    {
                         return unsuccessfulPromise({error: 'Cannot find person'});
                     });
-                    contractorCtrl = $controller('ContractorDetailsController',{$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
+                    contractorCtrl = $controller('ContractorDetailsController', {$routeParams: routeParams, CompanyDAO: CompanyDAOMock, Person: PersonMock});
                 }));
                 it('should call console.error', function ()
                 {

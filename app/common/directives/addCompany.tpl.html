@@ -226,11 +226,8 @@
                         <div class="form-group">
                             <label for="nip_comp" class="col-sm-3 control-label">NIP</label>
                             <div class="col-sm-9">
-                                <input pattern="[0-9]{10}" type="text" class="form-control" id="nip_pers" name="personNip" placeholder="NIP"
-                                       ng-model="addCompDCtrl.person.nip" nip-mask ng-change="addCompDCtrl.validateNipPerson()">
-                                <div ng-messages="personForm.personNip.$error" style="color:maroon" role="alert">
-                                    <div ng-message="pattern">person's nip required length is 10</div>
-                                </div>
+                                <input type="text" class="form-control" id="nip_pers" name="personNip" placeholder="NIP"
+                                       ng-model="addCompDCtrl.person.nip" ng-change="addCompDCtrl.validateNipPerson()">
                                 <div ng-show="personForm.personNip.$error" style="color:maroon" role="alert">
                                     <div ng-show="addCompDCtrl.showAlert">Nip already exsist</div>
                                 </div>
