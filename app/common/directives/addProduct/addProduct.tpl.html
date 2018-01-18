@@ -1,0 +1,84 @@
+<div class="col-md-12">
+    <table class="table table-responsive" id="tableProduct">
+        <tr ng-repeat="(key,value) in addProductCtrl.products track by $index">
+            <td>
+                <ng-form name="productForm" class="form-inline no-margin product-box">
+                    <div class="form-group"><span ng-hide="value.editMode">
+                                                        <b>Name:</b> <p>{{value.name}}</p></span>
+                        <div ng-class="{'has-error' : productForm.name.$invalid}" ng-show="value.editMode">
+                            <label class="sr-only">Name</label>
+                            <input type="text" class="form-control" name="name" ng-model="value.name" required placeholder="Name"></div>
+                    </div>
+
+                    <div class="form-group"  ng-show="addProductCtrl.showAmount || !addProductCtrl.reverseCharge"><span ng-hide="value.editMode">
+                                                        <b ng-show="value.amount">Amount: </b>
+                                                        <p>{{value.amount}}</p></span>
+                        <label class="sr-only">Amount</label>
+                        <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.amount"
+                               ng-change="addProductCtrl.calculateBrutto(value)" placeholder="Amount">
+                    </div>
+
+                    <div class="form-group" ng-show="addProductCtrl.showAmount || !addProductCtrl.reverseCharge"><span ng-hide="value.editMode">
+                                                        <b ng-if="value.unit">Unit: </b><p>{{value.unit}}</p></span>
+                        <input type="text" class="form-control" ng-show="value.editMode" ng-model="value.unit" placeholder="Unit">
+                    </div>
+
+                    <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Netto: </b>
+                                                            <p>{{value.netto}}</p></span>
+                        <div ng-class="{'has-error' : productForm.netto.$invalid}" ng-show="value.editMode">
+                            <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.netto"
+                                   ng-change="addProductCtrl.calculateBrutto(value)" name="netto" required min="0" placeholder="Netto"></div>
+                    </div>
+
+                    <div class="form-group" id="vat" ng-show="!addProductCtrl.reverseCharge">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Vat: </b>
+                                                            <p>{{value.vat}}</p></span>
+                        <div ng-class="{'has-error' : productForm.vat.$invalid}" ng-show="value.editMode">
+                            <select class="form-control" ng-show="value.editMode" ng-options="v as v for v in addProductCtrl.vats" ng-model="value.vat"
+                                    ng-change="addProductCtrl.calculateBrutto(value)" ng-required="!addProductCtrl.reverseCharge" name="vat">
+                                <option value="" hidden>Vat</option>
+                            </select></div>
+                    </div>
+
+                    <div class="form-group">
+                                                        <span ng-hide="value.editMode">
+                                                            <b>Brutto: </b>
+                                                            <p>{{value.brutto}}</p></span>
+                        <div ng-class="{'has-error' : productForm.brutto.$invalid}" ng-show="value.editMode">
+                            <input type="number" class="form-control" ng-show="value.editMode" ng-model="value.brutto" required name="brutto"
+                            placeholder="Brutto"></div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <button type="button" data-ng-hide="value.editMode" data-ng-click="addProductCtrl.edit(value)" class="btn btn-primary">Edit
+                        </button>
+                        <button type="button" data-ng-hide="value.editMode" data-ng-click="addProductCtrl.deleteProduct(key)" class="btn btn-danger">Delete
+                        </button>
+                        <button type="button" ng-disabled="productForm.$invalid" data-ng-show="value.editMode" data-ng-click="addProductCtrl.save(value)"
+                                class="btn btn-primary">Save
+                        </button>
+                        <button type="button" data-ng-show="value.editMode" data-ng-click="addProductCtrl.cancel(value, key)" class="btn btn-default">Cancel
+                        </button>
+                    </div>
+                </ng-form>
+
+            </td>
+        </tr>
+
+    </table>
+    <div>
+        <button type="button" class="btn btn-info" ng-click="addProductCtrl.addNew()">Add new product/service</button>
+        <span class="checkbox inline">
+        <label><input type="checkbox" ng-model="addProductCtrl.reverseCharge" name="reverse" ng-true-value="true"
+                      ng-false-value="false" id="reverse"> Reverse charge</label>
+    </span>
+        <span class="checkbox inline" ng-show="addProductCtrl.reverseCharge">
+        <label uib-tooltip="Show amount and unit on pdf in product section"><input type="checkbox" ng-model="addProductCtrl.showAmount" name="reverse" ng-true-value="true"
+                      ng-false-value="false">Show amount</label>
+    </span>
+    </div>
+</div>

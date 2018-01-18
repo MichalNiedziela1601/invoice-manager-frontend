@@ -2,38 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Manager</title>
+    <base href="/"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/ng-table-bundle/ng-table.min.css">
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.min.css">
     <link rel="stylesheet" href="style/main.style.css">
 </head>
 <body ng-app="app">
-<div class="col-md-3">
-    <div id='mySidenav' class='sidenav'>
-        <h1 class="h1_MENU">MENU</h1>
-        <ul class='sidebar-hide'>
-            <li><a class='menu-1' ng-href="/"><i class="fa fa-home" aria-hidden="true"></i>Start</a></li>
-            <li><a class='menu-2' ng-href="/contractors"><i class="fa fa-list" aria-hidden="true"></i>Contractors</a></li>
-            <li><a class='menu-3' ng-href='/invoice'><i class="fa fa-file" aria-hidden="true"></i>Invoice</a></li>
-            <li><a class='menu-4' ng-href='/calendar'><i class="fa fa-calendar" aria-hidden="true"></i>Calendar</a></li>
-            <li><a class='menu-5' ng-href='/info'><i class="fa fa-info" aria-hidden="true"></i>Info</a></li>
-            <li><a class='menu-6' ng-href='/help'><i class="fa fa-question" aria-hidden="true"></i>Help</a></li>
-        </ul>
-    </div>
-</div>
-<div class="col-md-9">
-    <div ng-view></div>
-</div>
 
+<div ng-controller="AppController as appCtrl">
+    <nav class="navbar navbar-default" id="navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a>
+                    <img class="logo" src="assets/img/logo.png">
+                </a>
+
+            </div>
+
+            <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+                <div class="user-info"> <div ng-if="!appCtrl.isAuth" class="nav-login">
+                    <a href="/login" >
+                        <button class="btn btn-info btn-sm">Sign In</button>
+                    </a>
+
+                </div>
+                    <div ng-if="appCtrl.isAuth" class="nav-login">
+                        <p><a href="/user">{{appCtrl.token.email}}</a>
+                            <a href="" ng-click="appCtrl.logout()">
+                                <button type="button" class="btn btn-primary btn-sm">Logout</button>
+                            </a></p>
+                    </div></div>
+                <ul class="nav navbar-nav" >
+                    <li><a ng-href="/" ng-click="navCollapsed=true"><i class="fa fa-home" aria-hidden="true"></i> Start</a></li>
+                    <li uib-dropdown><a href uib-dropdown-toggle><i class="fa fa-user " aria-hidden="true"></i> Contractors<span class="caret"></span> </a>
+
+                        <ul class="dropdown-menu" uib-dropdown-menu>
+                            <li><a ng-href="/add/contractors" ng-click="navCollapsed=true"><i class="fa fa-plus" aria-hidden="true"></i> Add contractors</a></li>
+                            <li><a ng-href='/contractors' ng-click="navCollapsed=true"><i class="fa fa-list" aria-hidden="true"></i> List contractors</a></li>
+                        </ul>
+                    </li>
+
+                    <li uib-dropdown><a href uib-dropdown-toggle><i class="fa fa-arrow-right" aria-hidden="true"></i> Invoice<span class="caret"></span></a>
+                        <ul class="dropdown-menu" uib-dropdown-menu>
+                            <li><a ng-href="/add/invoice" ng-click="navCollapsed=true"><i class="fa fa-file" aria-hidden="true"></i> Add invoice</a></li>
+                            <li><a ng-href='/invoices' ng-click="navCollapsed=true"><i class="fa fa-clone" aria-hidden="true"></i> List of Invoices</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="container-fluid">
+
+        <div ng-view class="container-fluid"></div>
+    </div>
+
+    <div class="footer"></div>
+</div>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/lodash/dist/lodash.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/angular-jwt/dist/angular-jwt.min.js"></script>
+<script src="bower_components/ng-table-bundle/ng-table.min.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.min.js"></script>
 
 <script src="app.js"></script>
 <script src="app.config.js"></script>
 <script src="app.route.js"></script>
+<script src="app.run.js"></script>
 
 <!-- Controllers-->
+<script src="app.controller.js"></script>
 <script src="modules/start/start.controller.js"></script>
-<script src="modules/contractors/contractors.controller.js"></script>
+<script src="modules/login/login.controller.js"></script>
+<script src="modules/contractors/listView/contractors.controller.js"></script>
+<script src="modules/invoices/list/invoices.controller.js"></script>
+<script src="modules/invoices/add/upload/uploadInvoice.controller.js"></script>
+<script src="modules/registration/registrationCompany.controller.js"></script>
+<script src="modules/user/user.controller.js"></script>
+<script src="modules/invoices/details/invoiceDetails.controller.js"></script>
+<script src="modules/contractors/add/addContractors.controller.js"></script>
+<script src="modules/invoices/add/issue/issueInvoice.controller.js"></script>
+<script src="modules/contractors/details/contractorDetails.controller.js"></script>
+
+<!-- Services -->
+<script src="common/dao/company.dao.js"></script>
+<script src="common/dao/invoice.dao.js"></script>
+<script src="common/dao/invoiceDetails.dao.js"></script>
+<script src="common/dao/user.dao.js"></script>
+<script src="common/dao/person.dao.js"></script>
+
+<!-- Directives -->
+<script src="common/directives/addCompany.directive.js"></script>
+<script src="common/directives/contratorInfo.directive.js"></script>
+<script src="common/directives/contractorInfoInvoice.directive.js"></script>
+<script src="common/directives/findContractor/findContractor.directive.js"></script>
+<script src="common/directives/addProduct/addProduct.directive.js"></script>
+<script src="common/directives/capitalize.directive.js"></script>
+<script src="common/directives/addBankAccount/addBankAccount.directive.js"></script>
+
 </body>
 </html>

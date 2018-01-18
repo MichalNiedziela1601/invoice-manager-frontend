@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title"><span ng-if="company.name">{{company.name}}</span>
+            <span ng-if="company.firstName">{{company.firstName}} {{company.lastName}}</span>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-condensed no-bottom-margin">
+            <tbody><tr ng-if="company.nip">
+                <td>nip</td>
+                <td>{{company.nip}}</td>
+            </tr>
+            <tr ng-if="company.regon">
+                <td>regon</td>
+                <td>{{company.regon}}</td>
+            </tr>
+            <tr ng-if="'GB' !== address.countryCode">
+                <td>Address</td>
+                <td>{{company.address.street}} {{company.address.buildNr}}<span
+                        ng-if="company.address.flatNr">{{'/'+company.address.flatNr}}</span>
+                    <p>{{company.address.postCode}} {{company.address.city }}</p>
+                </td>
+            </tr>
+            <tr ng-if="'GB' === address.countryCode">
+                <td>Address</td>
+                <td>{{company.address.buildNr}}<span
+                        ng-if="company.address.flatNr">{{'/'+company.address.flatNr}}</span>, {{company.address.street}},
+                    <p>{{company.address.postCode}} {{company.address.city }}</p>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-offset-0 col-xs-12">
+        <h2 class="page-header text-center">{{contractorsCtrl.message}}</h2>
+
+
+        <table ng-table="contractorsCtrl.companyTable" class="table table-striped table-condensed table-responsive">
+            <tr class="ng-table-group">
+                <td colspan="3">
+                    <input type="text" class="form-control" ng-model="contractorsCtrl.globalSearchTerm" placeholder="Global search..."
+                           ng-change="contractorsCtrl.applyGlobalSearch()"></td>
+            </tr>
+            <tr ng-repeat="row in $data track by $index" >
+                <td data-title="'Name'" sortable="'name'"><a ng-href="/contractors/details/{{row.id}}/{{row.firstName ? 'person' : 'company'}}">
+                    {{row.name}}</a></td>
+                <td data-title="'Nip'" sortable="'nip'">{{row.nip}}</td>
+                <td data-title="'Address'" sortable="'address'">{{row.address}}</td>
+            </tr>
+        </table>
+
+    </div>
+</div>

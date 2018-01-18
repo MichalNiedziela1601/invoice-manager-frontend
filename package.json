@@ -4,22 +4,37 @@
   "authors": [
     "sylwek2531 <sylwester.sztajner@labnoratory.com>",
     "lukasss88 <lukasz.szymanski@labnoratory.com>",
-    "Bielbiel <bartlomiej.biel@labnoratory.com>" ,
+    "Bielbiel <bartlomiej.biel@labnoratory.com>",
     "MichalNiedziela1601 <michal.niedziela@labnoratory.com>"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aniaw/invoice-manager-frontend.git"
   },
+  "scripts": {
+    "test": "grunt verify --force"
+  },
   "license": "ISC",
   "devDependencies": {
+    "connect-livereload": "0.5.2",
     "connect-modrewrite": "0.9.0",
     "grunt": "0.4.5",
     "grunt-cli": "0.1.13",
+    "grunt-connect-proxy": "0.2",
     "grunt-contrib-connect": "0.7.1",
     "grunt-contrib-jshint": "0.11.3",
+    "grunt-contrib-less": "1.4.1",
     "grunt-contrib-watch": "0.6.1",
+    "grunt-karma": "2.0.0",
+    "jasmine": "2.5.3",
+    "jasmine-core": "2.5.2",
+    "jasmine-reporters": "2.2.1",
+    "karma": "1.5.0",
+    "karma-chrome-launcher": "2.0.0",
+    "karma-coverage": "1.1.1",
+    "karma-jasmine": "1.1.0",
+    "karma-junit-reporter": "1.2.0",
+    "karma-spec-reporter": "0.0.30",
     "load-grunt-tasks": "3.0.0"
   }
-
 }

@@ -4,15 +4,26 @@
   "authors": [
     "sylwek2531 <sylwester.sztajner@labnoratory.com>",
     "lukasss88 <lukasz.szymanski@labnoratory.com>",
-    "Bielbiel <bartlomiej.biel@labnoratory.com>" ,
+    "Bielbiel <bartlomiej.biel@labnoratory.com>",
     "MichalNiedziela1601 <michal.niedziela@labnoratory.com>"
   ],
   "license": "ISC",
   "homepage": "https://github.com/aniaw/invoice-manager-frontend",
   "dependencies": {
     "angular": "1.6.0",
+    "angular-animate": "1.6.0",
+    "angular-bootstrap": "2.5.0",
+    "angular-jwt": "0.1.9",
+    "angular-messages": "1.6.0",
+    "angular-mocks": "1.6.0",
+    "angular-resource": "1.6.0",
+    "angular-route": "1.6.0",
+    "angular-sanitize": "1.6.0",
     "bootstrap": "3.3.7",
     "font-awesome": "4.7.0",
-    "angular-route": "1.6.0"
+    "ng-file-upload": "12.2.13",
+    "ng-table-bundle": "^4.0.0",
+    "lodash": "4.17.4",
+    "angular-ui-select": "0.19.8"
   }
 }

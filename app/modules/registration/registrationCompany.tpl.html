@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="ccol-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-offset-0 col-xs-12 ">
+        <div class="row form-horizontal">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h2 class="page-header">{{registrationCompanyCtrl.message}}</h2>
+                </div>
+            </div>
+            <div class="main-login main-center">
+                <form class="form-horizontal" name="registerForm" ng-submit="registrationCompanyCtrl.registration()" novalidate>
+
+                    <div class="form-group">
+                        <label for="name" class="cols-sm-2 control-label">Company Name*</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" ng-required="true" ng-maxlength="30" ng-minlength="2" class="form-control"
+                                       ng-model="registrationCompanyCtrl.registrationCredential.name" name="name" id="name" placeholder="Enter Company Name">
+                            </div>
+                            <div ng-messages="registerForm.name.$error" style="color:maroon" role="alert">
+                                <div ng-if="registerForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                <div ng-message="minlength">Company's name required min. length is 2</div>
+                                <div ng-message="maxlength">Company's name required min. length is 30</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="cols-sm-2 control-label">Your Email*</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                <input type="email" ng-maxlength="40" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.email"
+                                       name="email" id="email" placeholder="Enter your Email" required>
+                            </div>
+                            <div ng-messages="registerForm.email.$error" style="color:maroon" role="alert">
+                                <div ng-if="registerForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                <div ng-message="email">This field must be a valid email address.</div>
+                                <div ng-message="maxlength">Company's name required min. length is 40</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nip" class="cols-sm-2 control-label">NIP*</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                <input pattern="[0-9]{10}" type="text" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.nip"
+                                       nip-mask name="nip" id="nip" placeholder="Enter your NIP" required>
+                            </div>
+                            <div ng-messages="registerForm.nip.$error" style="color:maroon" role="alert">
+                                <div ng-if="registerForm.$submitted" ng-message="required">Please enter a value for this field.</div>
+                                <div ng-message="pattern">Company's nip required length is 10</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">Password*</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" ng-model="registrationCompanyCtrl.registrationCredential.password" name="password"
+                                       id="password" placeholder="Enter your Password" required>
+                            </div>
+                            <div ng-show="registrationCompanyCtrl.alertMinLength" class="alert alert-danger" id="alertMinLength" role="alert">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                Password required min. length is 4
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm" class="cols-sm-2 control-label">Confirm Password*</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" ng-model="registrationCompanyCtrl.registrationRepeatPassword.repeatPassword"
+                                       name="confirm" id="confirm" placeholder="Confirm your Password" required>
+                            </div>
+                            <div ng-show="registrationCompanyCtrl.isPasswordsEqual()" class="alert alert-danger" id="alert" role="alert">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                Passwords do not match
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="col-sm-9">
+                            <div ng-show="registrationCompanyCtrl.invalidFormAlert" uib-alert class="alert-danger" id="alert2" role="alert"
+                                 close="registrationCompanyCtrl.closeInvalidFormAlert()">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                {{registrationCompanyCtrl.errorMessage}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <input type="submit" class="btn btn-primary btn-lg btn-block login-button" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
